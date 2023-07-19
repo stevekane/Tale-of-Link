@@ -93,7 +93,10 @@ public class WallMover : MonoBehaviour {
     Debug.DrawRay(rayOrigin, MaxDistance * rayDirection, didHit ? Color.green : Color.black);
     Hits.Clear();
     if (didHit) {
-      Collider = hit.collider;
+      if (hit.collider != Collider) {
+        transform.SetParent(hit.collider.transform, true);
+        Collider = hit.collider;
+      }
       Hits.Add(hit);
       for (var i = 0; i < MaxSearchCount; i++) {
         var nextHit = FindNext(hit);
@@ -114,12 +117,21 @@ public class WallMover : MonoBehaviour {
       Debug.DrawLine(corners[i].point, corners[i-1].point);
     }
     DistanceTraveled += distance;
-    var newHit = Move(corners, DistanceTraveled);
+    var newHit = Move(corners, distance);
     var p = newHit.point;
     var n = newHit.normal;
-    var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    var r = Quaternion.RotateTowards(Wanderer.rotation, rTarget, 180 * Time.fixedDeltaTime);
-    Wanderer.SetPositionAndRotation(p, rTarget);
+    // TODO: Must account for there not being a next corner (I think this is always technically possible?)
+    var distanceToNextCorner = Vector3.Distance(corners[0].point, corners[1].point);
+    var distanceToStartTurning = 1f;
+    var interpolant = Mathf.Clamp01(distanceToNextCorner / distanceToStartTurning);
+    var forward = Vector3.Lerp(corners[2].normal, corners[1].normal, interpolant); // very weird. looking ahead two corners here because of the way normals are stored currently
+    Debug.DrawRay(corners[0].point, corners[0].normal, Color.cyan);
+    Debug.DrawRay(corners[1].point, corners[1].normal, Color.yellow);
+    Debug.Log($"DISTANCE: {distanceToNextCorner} | INTERPOLANT: {interpolant} | FORWARD: {forward}");
+    // var rTarget = Quaternion.LookRotation(n, Vector3.up);
+    var rTarget = Quaternion.LookRotation(forward, Vector3.up);
+    // var r = Quaternion.RotateTowards(transform.rotation, rTarget, 180 * Time.fixedDeltaTime);
+    transform.SetPositionAndRotation(p, rTarget);
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
