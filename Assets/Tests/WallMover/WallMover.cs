@@ -10,14 +10,9 @@ public class WallMover : MonoBehaviour {
   [Tooltip("Distance from wall to cast rays from")]
   public float WallOffset = .05f;
   public float MaxDistance => SampleSpacing + WallOffset;
-  public bool ShowHits;
   public Collider Collider;
   public float Speed = 2;
-  public Transform P0;
-  public Transform P1;
-  public Transform P2;
-  public Transform Wanderer;
-  float DistanceTraveled;
+  public WallSegment[] WallSegments;
 
   public static List<RaycastHit> Corners(List<RaycastHit> hits) {
     List<RaycastHit> corners = new List<RaycastHit>();
@@ -116,21 +111,25 @@ public class WallMover : MonoBehaviour {
     for (var i = 1; i < corners.Count; i++) {
       Debug.DrawLine(corners[i].point, corners[i-1].point);
     }
-    DistanceTraveled += distance;
     var newHit = Move(corners, distance);
     var p = newHit.point;
     var n = newHit.normal;
-    // TODO: Must account for there not being a next corner (I think this is always technically possible?)
-    var distanceToNextCorner = Vector3.Distance(corners[0].point, corners[1].point);
-    var distanceToStartTurning = 1f;
-    var interpolant = Mathf.Clamp01(distanceToNextCorner / distanceToStartTurning);
-    var forward = Vector3.Lerp(corners[2].normal, corners[1].normal, interpolant); // very weird. looking ahead two corners here because of the way normals are stored currently
-    Debug.DrawRay(corners[0].point, corners[0].normal, Color.cyan);
-    Debug.DrawRay(corners[1].point, corners[1].normal, Color.yellow);
-    Debug.Log($"DISTANCE: {distanceToNextCorner} | INTERPOLANT: {interpolant} | FORWARD: {forward}");
-    // var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    var rTarget = Quaternion.LookRotation(forward, Vector3.up);
-    // var r = Quaternion.RotateTowards(transform.rotation, rTarget, 180 * Time.fixedDeltaTime);
+    var rTarget = Quaternion.LookRotation(n, Vector3.up);
+    const float WIDTH = 1; // TODO: make param
+    const float WALL_OFFSET = .1f; // TODO: make param
+    var firstSegmentLocalPosition = -WIDTH/2 * Vector3.left;
+    var segmentSpacing = -WIDTH/WallSegments.Length;
+    for (var i = 0; i < WallSegments.Length; i++) {
+      var segment = WallSegments[i];
+      var direction = Quaternion.LookRotation(-n, Vector3.up);
+      segment.transform.localPosition = firstSegmentLocalPosition + i*segmentSpacing*Vector3.right + WALL_OFFSET*Vector3.forward;
+      segment.Width = 1;
+      segment.Height = 1;
+      segment.Depth = 1;
+      segment.Min = (float)i/WallSegments.Length;
+      segment.Max = (float)(i+1)/WallSegments.Length;
+      segment.transform.rotation = direction;
+    }
     transform.SetPositionAndRotation(p, rTarget);
   }
 
