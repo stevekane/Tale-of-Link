@@ -12,57 +12,74 @@ public class WallMover : MonoBehaviour {
   public float MaxDistance => SampleSpacing + WallOffset;
   public bool ShowHits;
   public Collider Collider;
+  public float Speed = 2;
+  public Transform P0;
+  public Transform P1;
+  public Transform P2;
+  public Transform Wanderer;
+  float DistanceTraveled;
 
   public static List<RaycastHit> Corners(List<RaycastHit> hits) {
     List<RaycastHit> corners = new List<RaycastHit>();
     for (int i = 0; i < hits.Count - 1; i++) {
       Vector3 currentPoint = hits[i].point;
-      Vector3 nextPoint = hits[i + 1].point;
       Vector3 currentNormal = hits[i].normal;
+      Vector3 currentTangent = Vector3.Cross(currentNormal, Vector3.up);
+      Vector3 nextPoint = hits[i + 1].point;
       Vector3 nextNormal = hits[i + 1].normal;
-      if (Vector3.Angle(currentNormal, nextNormal) > 5) {
-        Vector3 corner = FindIntersection(hits[i], hits[i+1]);
+      Vector3 nextTangent = Vector3.Cross(nextNormal, Vector3.up);
+      if (LineLineIntersection(out var corner, currentPoint, currentTangent, nextPoint, nextTangent)) {
         corners.Add(new RaycastHit() { point = corner, normal = currentNormal });
       }
     }
     return corners;
   }
 
-  private static Vector3 FindIntersection(RaycastHit hit1, RaycastHit hit2) {
-    // Calculate the slopes (m1 and m2)
-    Vector3 tangent1 = Vector3.Cross(hit1.normal, Vector3.up);
-    Vector3 tangent2 = Vector3.Cross(hit2.normal, Vector3.up);
-    float m1 = tangent1.z / tangent1.x;
-    float m2 = tangent2.z / tangent2.x;
+  public static bool LineLineIntersection(
+  out Vector3 intersection,
+  Vector3 linePoint1,
+  Vector3 lineDirection1,
+  Vector3 linePoint2,
+  Vector3 lineDirection2) {
+    var lineVec3 = linePoint2 - linePoint1;
+    var crossVec1and2 = Vector3.Cross(lineDirection1, lineDirection2);
+    var crossVec3and2 = Vector3.Cross(lineVec3, lineDirection2);
+    var planarFactor = Vector3.Dot(lineVec3, crossVec1and2);
 
-    // Calculate the intercepts (b1 and b2)
-    float b1 = hit1.point.z - m1 * hit1.point.x;
-    float b2 = hit2.point.z - m2 * hit2.point.x;
-
-    // Calculate the intersection point
-    float x = (b2 - b1) / (m1 - m2);
-    float z = m1 * x + b1;
-
-    // Since all points are assumed to be in the same XZ plane (heights are the same along the Y axis),
-    // we can take the y coordinate from any of the RaycastHit points.
-    return new Vector3(x, hit1.point.y, z);
+    if (Mathf.Abs(planarFactor) < 0.0001f && crossVec1and2.sqrMagnitude > 0.0001f) {
+      var s = Vector3.Dot(crossVec3and2, crossVec1and2) / crossVec1and2.sqrMagnitude;
+      intersection = linePoint1 + (lineDirection1 * s);
+      return true;
+    } else {
+      intersection = Vector3.zero;
+      return false;
+    }
   }
 
-  public static RaycastHit GetNewPositionAndNormal(List<RaycastHit> hits, float distance) {
-    Vector3 lastPoint = hits[0].point;
-    Vector3 normal = hits[0].normal;
-    for (int i = 1; i < hits.Count; i++) {
-      Vector3 currentPoint = hits[i].point;
-      float segmentDistance = Vector3.Distance(lastPoint, currentPoint);
-      if (segmentDistance >= distance) {
-        Vector3 newPosition = Vector3.Lerp(lastPoint, currentPoint, distance / segmentDistance);
-        return new RaycastHit() { point = newPosition, normal = normal };
+  public static RaycastHit Move(List<RaycastHit> hits, float distance) {
+    for (var i = 1; i < hits.Count; i++) {
+      var p0 = hits[i-1].point;
+      var p1 = hits[i].point;
+      var d = Vector3.Distance(p0, p1);
+      if (d >= distance) {
+        var np = Vector3.Lerp(p0, p1, distance / d);
+        return new RaycastHit() { point = np, normal = hits[i].normal };
+      } else {
+        distance -= d;
       }
-      distance -= segmentDistance;
-      lastPoint = currentPoint;
-      normal = hits[i].normal;
     }
-    return new RaycastHit() { point = hits[hits.Count - 1].point, normal = hits[hits.Count - 1].normal };
+    return hits[hits.Count - 1];
+  }
+
+  public static float Distance(List<RaycastHit> hits) {
+    var distance = 0f;
+    if (hits.Count <= 1)
+      return distance;
+
+    for (var i = 1; i < hits.Count; i++) {
+      distance += Vector3.Distance(hits[i].point, hits[i-1].point);
+    }
+    return distance;
   }
 
   List<RaycastHit> Hits = new();
@@ -88,20 +105,21 @@ public class WallMover : MonoBehaviour {
         }
       }
     }
-    // IMPORTANT: We are assuming for the moment the path is always long enough
-    // in reality, there are lots of reasons the path may be too short. In those cases,
-    // restrict motion to the length of the path
-    var speed = 1;
-    var distance = speed * Time.fixedDeltaTime;
     var corners = Corners(Hits);
-    Debug.Log(corners.Count);
     corners.Insert(0, Hits[0]);
     corners.Add(Hits[Hits.Count - 1]);
-    foreach (var point in corners) {
-      Debug.DrawRay(point.point, point.normal, Color.blue);
+    var pathDistance = Distance(corners);
+    var distance = Mathf.Min(Speed * Time.fixedDeltaTime, pathDistance);
+    for (var i = 1; i < corners.Count; i++) {
+      Debug.DrawLine(corners[i].point, corners[i-1].point);
     }
-    var newHit = GetNewPositionAndNormal(corners, distance);
-    // transform.SetPositionAndRotation(newHit.point, Quaternion.LookRotation(newHit.normal, Vector3.up));
+    DistanceTraveled += distance;
+    var newHit = Move(corners, DistanceTraveled);
+    var p = newHit.point;
+    var n = newHit.normal;
+    var rTarget = Quaternion.LookRotation(n, Vector3.up);
+    var r = Quaternion.RotateTowards(Wanderer.rotation, rTarget, 180 * Time.fixedDeltaTime);
+    Wanderer.SetPositionAndRotation(p, rTarget);
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
@@ -161,22 +179,6 @@ public class WallMover : MonoBehaviour {
       return hit;
     } else {
       return null;
-    }
-  }
-
-  public Transform P0;
-  public Transform P1;
-  public Transform P2;
-
-  void OnDrawGizmos() {
-    var hit0 = new RaycastHit { point = P0.position, normal = P0.forward };
-    var hit1 = new RaycastHit { point = P1.position, normal = P1.forward };
-    var hit2 = new RaycastHit { point = P2.position, normal = P2.forward };
-    var corners = Corners(new() { hit0, hit1, hit2 });
-    corners.Insert(0, hit0);
-    corners.Add(hit2);
-    for (var i = 1; i < corners.Count; i++) {
-      Debug.DrawLine(corners[i].point, corners[i-1].point);
     }
   }
 }
