@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
+  public Player Player { get; internal set; }
+
   public float Speed = 10f;
   public float RotationSpeed = 180f;
 
@@ -12,6 +14,8 @@ public class PlayerMove : MonoBehaviour {
   }
 
   void FixedUpdate() {
+    if (Player.Sword.IsRunning)
+      return;
     transform.position += Time.fixedDeltaTime * Velocity;
     transform.rotation = Quaternion.RotateTowards(transform.rotation, Rotation, Time.fixedDeltaTime * RotationSpeed);
   }
