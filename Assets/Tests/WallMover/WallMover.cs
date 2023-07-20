@@ -66,18 +66,19 @@ public class WallMover : MonoBehaviour {
     return hits[hits.Count - 1];
   }
 
-  public static float Distance(List<RaycastHit> hits) {
-    var distance = 0f;
-    if (hits.Count <= 1)
-      return distance;
-
+  public static float Distance(List<RaycastHit> hits, float distance = 0) {
     for (var i = 1; i < hits.Count; i++) {
       distance += Vector3.Distance(hits[i].point, hits[i-1].point);
     }
     return distance;
   }
 
-  List<RaycastHit> Hits = new();
+  void Start() {
+    Debug.Log(Distance(new()));
+  }
+
+  List<RaycastHit> RightHits = new();
+  List<RaycastHit> LeftHits = new();
   void FixedUpdate() {
     var position = transform.position;
     var normal = transform.forward;
@@ -86,32 +87,68 @@ public class WallMover : MonoBehaviour {
     var rayDirection = -normal;
     var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance);
     Debug.DrawRay(rayOrigin, MaxDistance * rayDirection, didHit ? Color.green : Color.black);
-    Hits.Clear();
     if (didHit) {
       if (hit.collider != Collider) {
         transform.SetParent(hit.collider.transform, true);
         Collider = hit.collider;
       }
-      Hits.Add(hit);
+
+      // right tracing
+      RightHits.Clear();
+      RightHits.Add(hit);
+      var rightHit = hit;
       for (var i = 0; i < MaxSearchCount; i++) {
-        var nextHit = FindNext(hit);
+        var nextHit = FindNext(rightHit);
         if (nextHit.HasValue) {
-          Hits.Add(nextHit.Value);
-          hit = nextHit.Value;
+          RightHits.Add(nextHit.Value);
+          rightHit = nextHit.Value;
+        } else {
+          break;
+        }
+      }
+
+      // left tracing
+      LeftHits.Clear();
+      LeftHits.Add(hit);
+      var leftHit = hit;
+      for (var i = 0; i < MaxSearchCount; i++) {
+        var nextHit = FindNext(leftHit, sign:-1);
+        if (nextHit.HasValue) {
+          LeftHits.Add(nextHit.Value);
+          leftHit = nextHit.Value;
         } else {
           break;
         }
       }
     }
-    var corners = Corners(Hits);
-    corners.Insert(0, Hits[0]);
-    corners.Add(Hits[Hits.Count - 1]);
-    var pathDistance = Distance(corners);
+    /*
+    Next steps:
+
+    Trace both forward and backward paths and corners
+    March along the backward corners by half your width
+      For every corner encountered, measure the distance of that strip
+      and assign a segment
+    March along the forward corners by half your width
+      For every corner encountered, measure the distance of that strip
+      and assign a segment
+    */
+
+    // right corner calcs
+    var rightCorners = Corners(RightHits);
+    rightCorners.Insert(0, RightHits[0]);
+    rightCorners.Add(RightHits[RightHits.Count - 1]);
+
+    // left corner calcs
+    var leftCorners = Corners(LeftHits);
+    leftCorners.Insert(0, LeftHits[0]);
+    leftCorners.Add(RightHits[LeftHits.Count - 1]);
+
+    var pathDistance = Distance(rightCorners);
     var distance = Mathf.Min(Speed * Time.fixedDeltaTime, pathDistance);
-    for (var i = 1; i < corners.Count; i++) {
-      Debug.DrawLine(corners[i].point, corners[i-1].point);
+    for (var i = 1; i < rightCorners.Count; i++) {
+      Debug.DrawLine(rightCorners[i].point, rightCorners[i-1].point);
     }
-    var newHit = Move(corners, distance);
+    var newHit = Move(rightCorners, distance);
     var p = newHit.point;
     var n = newHit.normal;
     var rTarget = Quaternion.LookRotation(n, Vector3.up);
@@ -143,11 +180,11 @@ public class WallMover : MonoBehaviour {
   }
 
   List<RaycastHit> PotentialHits = new();
-  RaycastHit? FindNext(RaycastHit previousHit) {
+  RaycastHit? FindNext(RaycastHit previousHit, float sign = 1) {
     PotentialHits.Clear();
 
     var normal = previousHit.normal;
-    var tangent = Vector3.Cross(normal, Vector3.up);
+    var tangent = sign * Vector3.Cross(normal, Vector3.up);
     var position = previousHit.point + SampleSpacing * tangent;
 
     // let's check continuing along the path
@@ -162,7 +199,7 @@ public class WallMover : MonoBehaviour {
     // let's check an outside 90-degree corner
     {
       var rayOrigin = position - WallOffset * normal;
-      var rayDirection = Quaternion.Euler(0, -90, 0) * -normal;
+      var rayDirection = Quaternion.Euler(0, -sign * 90, 0) * -normal;
       if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit)) {
         PotentialHits.Add(hit);
       }
@@ -171,7 +208,7 @@ public class WallMover : MonoBehaviour {
     // let's check an inside 90-degree corner
     {
       var rayOrigin = previousHit.point + WallOffset * normal;
-      var rayDirection = Quaternion.Euler(0, 90, 0) * -normal;
+      var rayDirection = Quaternion.Euler(0, sign * 90, 0) * -normal;
       if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit)) {
         PotentialHits.Add(hit);
       }
@@ -190,6 +227,15 @@ public class WallMover : MonoBehaviour {
       return hit;
     } else {
       return null;
+    }
+  }
+
+  void OnDrawGizmos() {
+    foreach (var hit in RightHits) {
+      Debug.DrawRay(hit.point, hit.normal, Color.green);
+    }
+    foreach (var hit in LeftHits) {
+      Debug.DrawRay(hit.point, hit.normal, Color.yellow);
     }
   }
 }
