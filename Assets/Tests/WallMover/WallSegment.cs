@@ -3,6 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 [ExecuteAlways]
 public class WallSegment : MonoBehaviour {
+  public Color Color;
   public float Width = 1f;
   public float Height = 1;
   public float Depth = .125f;

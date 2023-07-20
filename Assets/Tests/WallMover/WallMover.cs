@@ -12,7 +12,8 @@ public class WallMover : MonoBehaviour {
   public float MaxDistance => SampleSpacing + WallOffset;
   public Collider Collider;
   public float Speed = 2;
-  public WallSegment[] WallSegments;
+  public WallSegment[] RightWallSegments;
+  public WallSegment[] LeftWallSegments;
 
   public static List<RaycastHit> Corners(List<RaycastHit> hits) {
     List<RaycastHit> corners = new List<RaycastHit>();
@@ -28,6 +29,50 @@ public class WallMover : MonoBehaviour {
       }
     }
     return corners;
+  }
+
+  // returns number of segments used
+  public static int ConfigureSegments(float distance, List<RaycastHit> corners, WallSegment[] wallSegments) {
+    const float WALL_OFFSET = .1f;
+    int segments = 0;
+    float remainingDistance = distance;
+    for (var i = 1; i < corners.Count; i++) {
+      var c0 = corners[i-1];
+      var c1 = corners[i];
+      var delta = c1.point-c0.point;
+      var direction = delta.normalized;
+      var d = Vector3.Distance(c0.point, c1.point);
+      if (d >= remainingDistance) {
+        // create final segment
+        var segment = wallSegments[segments];
+        segment.transform.position = c0.point + direction * remainingDistance / 2 + WALL_OFFSET * c0.normal;
+        segment.transform.rotation = Quaternion.LookRotation(-c0.normal, Vector3.up);
+        segment.Width = distance * 2;
+        segment.Height = 1;
+        segment.Depth = 1;
+        // TODO: Correct Min/Max
+        segment.Min = 0;
+        segment.Max = 1;
+        Debug.DrawLine(c0.point, c0.point + remainingDistance*direction, segment.Color);
+        segments += 1;
+        break;
+      } else {
+        // create segment and continue
+        var segment = wallSegments[segments];
+        segment.transform.position = delta / 2 + WALL_OFFSET * c0.normal;
+        segment.transform.rotation = Quaternion.LookRotation(-c0.normal, Vector3.up);
+        segment.Width = distance * 2;
+        segment.Height = 1;
+        segment.Depth = 1;
+        // TODO: Correct Min/Max
+        segment.Min = 0;
+        segment.Max = 1;
+        Debug.DrawLine(c0.point, c1.point, segment.Color);
+        remainingDistance -= d;
+        segments += 1;
+      }
+    }
+    return segments;
   }
 
   public static bool LineLineIntersection(
@@ -73,10 +118,6 @@ public class WallMover : MonoBehaviour {
     return distance;
   }
 
-  void Start() {
-    Debug.Log(Distance(new()));
-  }
-
   List<RaycastHit> RightHits = new();
   List<RaycastHit> LeftHits = new();
   void FixedUpdate() {
@@ -86,7 +127,6 @@ public class WallMover : MonoBehaviour {
     var rayOrigin = position + WallOffset * normal;
     var rayDirection = -normal;
     var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance);
-    Debug.DrawRay(rayOrigin, MaxDistance * rayDirection, didHit ? Color.green : Color.black);
     if (didHit) {
       if (hit.collider != Collider) {
         transform.SetParent(hit.collider.transform, true);
@@ -137,17 +177,35 @@ public class WallMover : MonoBehaviour {
     var rightCorners = Corners(RightHits);
     rightCorners.Insert(0, RightHits[0]);
     rightCorners.Add(RightHits[RightHits.Count - 1]);
+    var rightSegments = ConfigureSegments(.5f, rightCorners, RightWallSegments);
+    for (var i = 0; i < RightWallSegments.Length; i++) {
+      RightWallSegments[i].gameObject.SetActive(i < rightSegments);
+    }
 
     // left corner calcs
     var leftCorners = Corners(LeftHits);
     leftCorners.Insert(0, LeftHits[0]);
-    leftCorners.Add(RightHits[LeftHits.Count - 1]);
+    leftCorners.Add(LeftHits[LeftHits.Count - 1]);
+    var leftSegments = ConfigureSegments(.5f, leftCorners, LeftWallSegments);
+    for (var i = 0; i < LeftWallSegments.Length; i++) {
+      LeftWallSegments[i].gameObject.SetActive(i < leftSegments);
+    }
+
+    // foreach (var corner in rightCorners) {
+    //   Debug.DrawRay(corner.point, corner.normal);
+    // }
+    // foreach (var corner in leftCorners) {
+    //   Debug.DrawRay(corner.point, corner.normal);
+    // }
+    // for (var i = 1; i < rightCorners.Count; i++) {
+    //   Debug.DrawLine(rightCorners[i].point, rightCorners[i-1].point);
+    // }
+    // for (var i = 1; i < leftCorners.Count; i++) {
+    //   Debug.DrawLine(leftCorners[i].point, leftCorners[i-1].point);
+    // }
 
     var pathDistance = Distance(rightCorners);
     var distance = Mathf.Min(Speed * Time.fixedDeltaTime, pathDistance);
-    for (var i = 1; i < rightCorners.Count; i++) {
-      Debug.DrawLine(rightCorners[i].point, rightCorners[i-1].point);
-    }
     var newHit = Move(rightCorners, distance);
     var p = newHit.point;
     var n = newHit.normal;
@@ -155,16 +213,16 @@ public class WallMover : MonoBehaviour {
     const float WIDTH = 1; // TODO: make param
     const float WALL_OFFSET = .1f; // TODO: make param
     var firstSegmentLocalPosition = -WIDTH/2 * Vector3.left;
-    var segmentSpacing = -WIDTH/WallSegments.Length;
-    for (var i = 0; i < WallSegments.Length; i++) {
-      var segment = WallSegments[i];
+    var segmentSpacing = -WIDTH/RightWallSegments.Length;
+    for (var i = 0; i < RightWallSegments.Length; i++) {
+      var segment = RightWallSegments[i];
       var direction = Quaternion.LookRotation(-n, Vector3.up);
       segment.transform.localPosition = firstSegmentLocalPosition + i*segmentSpacing*Vector3.right + WALL_OFFSET*Vector3.forward;
       segment.Width = 1;
       segment.Height = 1;
       segment.Depth = 1;
-      segment.Min = (float)i/WallSegments.Length;
-      segment.Max = (float)(i+1)/WallSegments.Length;
+      segment.Min = (float)i/RightWallSegments.Length;
+      segment.Max = (float)(i+1)/RightWallSegments.Length;
       segment.transform.rotation = direction;
     }
     transform.SetPositionAndRotation(p, rTarget);
@@ -175,7 +233,6 @@ public class WallMover : MonoBehaviour {
     var didHitBackward = didHit
       ? Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance)
       : false;
-    // Debug.DrawRay(origin, MaxDistance * direction, didHit && !didHitBackward ? Color.green : Color.black);
     return didHit && !didHitBackward;
   }
 
@@ -227,15 +284,6 @@ public class WallMover : MonoBehaviour {
       return hit;
     } else {
       return null;
-    }
-  }
-
-  void OnDrawGizmos() {
-    foreach (var hit in RightHits) {
-      Debug.DrawRay(hit.point, hit.normal, Color.green);
-    }
-    foreach (var hit in LeftHits) {
-      Debug.DrawRay(hit.point, hit.normal, Color.yellow);
     }
   }
 }

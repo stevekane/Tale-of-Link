@@ -235,7 +235,6 @@ Transform:
   - {fileID: 528504698}
   - {fileID: 733762447}
   - {fileID: 1696997691}
-  - {fileID: 1195766717}
   - {fileID: 909912065}
   - {fileID: 358257368}
   m_Father: {fileID: 0}
@@ -253,15 +252,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8932fe57c0a55044889b67a13297751a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSearchCount: 16
+  MaxSearchCount: 8
   SampleSpacing: 0.25
   WallOffset: 0.1
   Collider: {fileID: 0}
   Speed: 1
-  WallSegments:
+  RightWallSegments:
   - {fileID: 733762449}
   - {fileID: 1696997693}
-  - {fileID: 1195766719}
+  LeftWallSegments:
   - {fileID: 909912063}
   - {fileID: 358257366}
 --- !u!1 &70323208
@@ -333,6 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color: {r: 0, g: 0, b: 0, a: 0}
   Width: 1
   Height: 1
   Depth: 1
@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color: {r: 0, g: 0, b: 0, a: 0}
   Width: 1
   Height: 1
   Depth: 1
@@ -426,7 +427,7 @@ GameObject:
   - component: {fileID: 358257366}
   - component: {fileID: 358257367}
   m_Layer: 0
-  m_Name: Wall Segment 3 (2)
+  m_Name: Left Wall Segment 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -444,6 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color: {r: 0.7490196, g: 0.5568628, b: 0, a: 1}
   Width: 1
   Height: 1
   Depth: 1
@@ -557,7 +559,7 @@ GameObject:
   - component: {fileID: 733762449}
   - component: {fileID: 733762448}
   m_Layer: 0
-  m_Name: Wall Segment 1
+  m_Name: Right Wall Segment 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -614,6 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color: {r: 1, g: 0.5039347, b: 0, a: 1}
   Width: 1
   Height: 1
   Depth: 1
@@ -769,7 +772,7 @@ GameObject:
   - component: {fileID: 909912063}
   - component: {fileID: 909912064}
   m_Layer: 0
-  m_Name: Wall Segment 3 (1)
+  m_Name: Left Wall Segment 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -787,6 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color: {r: 1, g: 0.5330188, b: 0.87926173, a: 1}
   Width: 1
   Height: 1
   Depth: 1
@@ -1023,81 +1027,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!1 &1195766716
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1195766717}
-  - component: {fileID: 1195766719}
-  - component: {fileID: 1195766718}
-  m_Layer: 0
-  m_Name: Wall Segment 3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1195766717
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195766716}
-  m_LocalRotation: {x: -0, y: -0.7071072, z: -0, w: -0.7071064}
-  m_LocalPosition: {x: 0, y: 0, z: 0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 41313717}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &1195766718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195766716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: e1111a556a541354886867bb23fcf5da, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
-  m_StartAngleFade: 0
-  m_EndAngleFade: 7.7411957
-  m_UVScale: {x: 0.25, y: 1}
-  m_UVBias: {x: 0.75, y: 0}
-  m_DecalLayerMask: 1
-  m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0}
-  m_Size: {x: 0.25, y: 1, z: 1}
-  m_FadeFactor: 1
---- !u!114 &1195766719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195766716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Width: 1
-  Height: 1
-  Depth: 1
-  Projector: {fileID: 1195766718}
-  Min: 0.75
-  Max: 1
 --- !u!1 &1235798892
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,7 +1210,7 @@ GameObject:
   - component: {fileID: 1696997693}
   - component: {fileID: 1696997692}
   m_Layer: 0
-  m_Name: Wall Segment 2
+  m_Name: Right Wall Segment 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1338,6 +1267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814a4488840325b4fa493bf89869dafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Color: {r: 0, g: 0.42459965, b: 1, a: 1}
   Width: 1
   Height: 1
   Depth: 1
