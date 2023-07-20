@@ -9,21 +9,13 @@ public class Timeval {
 
   [SerializeField] public float Millis = 1;
 
-  public static Timeval FromSeconds(float seconds) {
-    return new Timeval { Millis = seconds*1000f };
-  }
-  public static Timeval FromMillis(float millis) {
-    return new Timeval { Millis = millis };
-  }
-  public static Timeval FromTicks(int frames) {
-    return new Timeval { Millis = (float)frames * 1000f / FixedUpdatePerSecond };
-  }
+  public static Timeval FromSeconds(float seconds) => new Timeval { Millis = seconds*1000f };
+  public static Timeval FromMillis(float millis) => new Timeval { Millis = millis };
+  public static Timeval FromTicks(int frames) => new Timeval { Millis = (float)frames * 1000f / FixedUpdatePerSecond };
 
   public int Ticks {
     set { Millis = value * 1000f / FixedUpdatePerSecond; }
-    get { return Mathf.RoundToInt(Millis * FixedUpdatePerSecond / 1000f); }
+    get { return Mathf.RoundToInt(Seconds * FixedUpdatePerSecond); }
   }
-  public float Seconds {
-    get { return Millis * .001f; }
-  }
+  public float Seconds => Millis * .001f;
 }
