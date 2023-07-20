@@ -15,5 +15,8 @@ public class WallSegment : MonoBehaviour {
     Projector.size = new Vector3((Max-Min) * Width, Height, Depth);
     Projector.uvBias = new Vector3(Min, 0);
     Projector.uvScale = new Vector3(Max-Min, 1);
+    // NOTE: The "Pivot" setting of DecalProjector is important.
+    // I don't entirely understand it yet but I have set it manually
+    // to work with magic values in the code... should fix this
   }
 }

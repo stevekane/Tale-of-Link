@@ -31,48 +31,53 @@ public class WallMover : MonoBehaviour {
     return corners;
   }
 
-  // returns number of segments used
-  public static int ConfigureSegments(float distance, List<RaycastHit> corners, WallSegment[] wallSegments) {
+  public static void ConfigureSegment(
+  float length,
+  float totalDistance,
+  float distanceOffset,
+  Vector3 center,
+  Vector3 normal,
+  WallSegment segment,
+  bool right) {
+    // Steve: Magic 2s are symptoms of the totalDistance being half the width of the actual image
     const float WALL_OFFSET = .1f;
-    int segments = 0;
-    float remainingDistance = distance;
-    for (var i = 1; i < corners.Count; i++) {
-      var c0 = corners[i-1];
-      var c1 = corners[i];
-      var delta = c1.point-c0.point;
-      var direction = delta.normalized;
-      var d = Vector3.Distance(c0.point, c1.point);
-      if (d >= remainingDistance) {
-        // create final segment
-        var segment = wallSegments[segments];
-        segment.transform.position = c0.point + direction * remainingDistance / 2 + WALL_OFFSET * c0.normal;
-        segment.transform.rotation = Quaternion.LookRotation(-c0.normal, Vector3.up);
-        segment.Width = distance * 2;
-        segment.Height = 1;
-        segment.Depth = 1;
-        // TODO: Correct Min/Max
-        segment.Min = 0;
-        segment.Max = 1;
-        Debug.DrawLine(c0.point, c0.point + remainingDistance*direction, segment.Color);
-        segments += 1;
-        break;
-      } else {
-        // create segment and continue
-        var segment = wallSegments[segments];
-        segment.transform.position = delta / 2 + WALL_OFFSET * c0.normal;
-        segment.transform.rotation = Quaternion.LookRotation(-c0.normal, Vector3.up);
-        segment.Width = distance * 2;
-        segment.Height = 1;
-        segment.Depth = 1;
-        // TODO: Correct Min/Max
-        segment.Min = 0;
-        segment.Max = 1;
-        Debug.DrawLine(c0.point, c1.point, segment.Color);
-        remainingDistance -= d;
-        segments += 1;
-      }
+    segment.transform.SetPositionAndRotation(center+WALL_OFFSET*normal, Quaternion.LookRotation(-normal, Vector3.up));
+    segment.Width = totalDistance * 2;
+    segment.Height = 1;
+    segment.Depth = 2*WALL_OFFSET;
+    if (right) {
+      segment.Min = 0.5f + distanceOffset / totalDistance / 2;
+      segment.Max = 0.5f + (distanceOffset + length) / totalDistance / 2;
+    } else {
+      segment.Max = 0.5f - distanceOffset / totalDistance / 2;
+      segment.Min = 0.5f - (distanceOffset + length) / totalDistance / 2;
     }
-    return segments;
+  }
+
+  // returns number of segments used
+  public static int ConfigureSegments(
+  float totalDistance,
+  List<RaycastHit> corners,
+  WallSegment[] wallSegments,
+  bool right) {
+    var distanceOffset = 0f;
+    var i = 0;
+    while (i < corners.Count-1 && distanceOffset < totalDistance) {
+      var c0 = corners[i];
+      var c1 = corners[i+1];
+      var delta = c1.point-c0.point;
+      var cornerDistance = delta.magnitude;
+      var direction = delta / cornerDistance;
+      var distance = Mathf.Min(totalDistance-distanceOffset, cornerDistance);
+      var start = c0.point;
+      var end = start+distance*direction;
+      var center = start+(end-start) / 2;
+      var normal = Vector3.Cross(right ? -direction : direction, Vector3.up);
+      ConfigureSegment(distance, totalDistance, distanceOffset, center, normal, wallSegments[i], right);
+      distanceOffset += distance;
+      i++;
+    }
+    return i;
   }
 
   public static bool LineLineIntersection(
@@ -161,48 +166,24 @@ public class WallMover : MonoBehaviour {
         }
       }
     }
-    /*
-    Next steps:
 
-    Trace both forward and backward paths and corners
-    March along the backward corners by half your width
-      For every corner encountered, measure the distance of that strip
-      and assign a segment
-    March along the forward corners by half your width
-      For every corner encountered, measure the distance of that strip
-      and assign a segment
-    */
+    // TODO!!!!!! I think when the point lies directly on the corner, you end up adding
+    // the same point two times to the corners set. This cases some fuckiness...test this
+    // and decide what to do instead
+    // One thing you could do is NOT include anything but corners in the data
+    // You would always begin your marches out from the current position
+    // You would not stop just because you have run out of corners but rather
+    // you would use the know the trajactory just continues along the line
+    // towards some un-sampled distant corner
 
     // right corner calcs
     var rightCorners = Corners(RightHits);
     rightCorners.Insert(0, RightHits[0]);
     rightCorners.Add(RightHits[RightHits.Count - 1]);
-    var rightSegments = ConfigureSegments(.5f, rightCorners, RightWallSegments);
-    for (var i = 0; i < RightWallSegments.Length; i++) {
-      RightWallSegments[i].gameObject.SetActive(i < rightSegments);
-    }
-
     // left corner calcs
     var leftCorners = Corners(LeftHits);
     leftCorners.Insert(0, LeftHits[0]);
     leftCorners.Add(LeftHits[LeftHits.Count - 1]);
-    var leftSegments = ConfigureSegments(.5f, leftCorners, LeftWallSegments);
-    for (var i = 0; i < LeftWallSegments.Length; i++) {
-      LeftWallSegments[i].gameObject.SetActive(i < leftSegments);
-    }
-
-    // foreach (var corner in rightCorners) {
-    //   Debug.DrawRay(corner.point, corner.normal);
-    // }
-    // foreach (var corner in leftCorners) {
-    //   Debug.DrawRay(corner.point, corner.normal);
-    // }
-    // for (var i = 1; i < rightCorners.Count; i++) {
-    //   Debug.DrawLine(rightCorners[i].point, rightCorners[i-1].point);
-    // }
-    // for (var i = 1; i < leftCorners.Count; i++) {
-    //   Debug.DrawLine(leftCorners[i].point, leftCorners[i-1].point);
-    // }
 
     var pathDistance = Distance(rightCorners);
     var distance = Mathf.Min(Speed * Time.fixedDeltaTime, pathDistance);
@@ -210,22 +191,17 @@ public class WallMover : MonoBehaviour {
     var p = newHit.point;
     var n = newHit.normal;
     var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    const float WIDTH = 1; // TODO: make param
-    const float WALL_OFFSET = .1f; // TODO: make param
-    var firstSegmentLocalPosition = -WIDTH/2 * Vector3.left;
-    var segmentSpacing = -WIDTH/RightWallSegments.Length;
-    for (var i = 0; i < RightWallSegments.Length; i++) {
-      var segment = RightWallSegments[i];
-      var direction = Quaternion.LookRotation(-n, Vector3.up);
-      segment.transform.localPosition = firstSegmentLocalPosition + i*segmentSpacing*Vector3.right + WALL_OFFSET*Vector3.forward;
-      segment.Width = 1;
-      segment.Height = 1;
-      segment.Depth = 1;
-      segment.Min = (float)i/RightWallSegments.Length;
-      segment.Max = (float)(i+1)/RightWallSegments.Length;
-      segment.transform.rotation = direction;
-    }
     transform.SetPositionAndRotation(p, rTarget);
+
+    // Move segments after the parent
+    var rightSegments = ConfigureSegments(.5f, rightCorners, RightWallSegments, right:true);
+    for (var i = 0; i < RightWallSegments.Length; i++) {
+      RightWallSegments[i].gameObject.SetActive(i < rightSegments);
+    }
+    var leftSegments = ConfigureSegments(.5f, leftCorners, LeftWallSegments, right:false);
+    for (var i = 0; i < LeftWallSegments.Length; i++) {
+      LeftWallSegments[i].gameObject.SetActive(i < leftSegments);
+    }
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
