@@ -259,6 +259,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxSearchCount: 128
   SampleSpacing: 0.125
+  Height: 1
+  Width: 1
   WallOffset: 0.1
   Collider: {fileID: 0}
   Speed: 1
@@ -1117,7 +1119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5239728576824267344, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.4999995
+      value: -6.2499995
       objectReference: {fileID: 0}
     - target: {fileID: 5239728576824267344, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1153,15 +1155,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5239728576824267351, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5239728576824267351, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 5239728578070794970, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239728578070794970, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239728578070794970, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5239728578070794974, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5239728578070794974, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
       propertyPath: m_StaticEditorFlags

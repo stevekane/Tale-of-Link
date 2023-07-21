@@ -8,6 +8,8 @@ public class WallMover : MonoBehaviour {
   [Tooltip("Distance along the wall to check for next contact")]
   public float SampleSpacing = .25f;
   [Tooltip("Distance from wall to cast rays from")]
+  public float Height = 1;
+  public float Width = 1;
   public float WallOffset = .05f;
   public float MaxDistance => SampleSpacing + WallOffset;
   public Collider Collider;
@@ -78,6 +80,12 @@ public class WallMover : MonoBehaviour {
       i++;
     }
     return i;
+  }
+
+  public static void ActivateN<T>(T[] ts, int count) where T : MonoBehaviour {
+    for (var i = 0; i < count; i++) {
+      ts[i].gameObject.SetActive(i<count);
+    }
   }
 
   public static bool LineLineIntersection(
@@ -167,24 +175,15 @@ public class WallMover : MonoBehaviour {
       }
     }
 
-    // TODO!!!!!! I think when the point lies directly on the corner, you end up adding
-    // the same point two times to the corners set. This cases some fuckiness...test this
-    // and decide what to do instead
-    // One thing you could do is NOT include anything but corners in the data
-    // You would always begin your marches out from the current position
-    // You would not stop just because you have run out of corners but rather
-    // you would use the know the trajactory just continues along the line
-    // towards some un-sampled distant corner
-
-    // right corner calcs
+    // calculate corners
     var rightCorners = Corners(RightHits);
     rightCorners.Insert(0, RightHits[0]);
     rightCorners.Add(RightHits[RightHits.Count - 1]);
-    // left corner calcs
     var leftCorners = Corners(LeftHits);
     leftCorners.Insert(0, LeftHits[0]);
     leftCorners.Add(LeftHits[LeftHits.Count - 1]);
 
+    // compute movement
     var pathDistance = Distance(rightCorners);
     var distance = Mathf.Min(Speed * Time.fixedDeltaTime, pathDistance);
     var newHit = Move(rightCorners, distance);
@@ -194,14 +193,10 @@ public class WallMover : MonoBehaviour {
     transform.SetPositionAndRotation(p, rTarget);
 
     // Move segments after the parent
-    var rightSegments = ConfigureSegments(.5f, rightCorners, RightWallSegments, right:true);
-    for (var i = 0; i < RightWallSegments.Length; i++) {
-      RightWallSegments[i].gameObject.SetActive(i < rightSegments);
-    }
-    var leftSegments = ConfigureSegments(.5f, leftCorners, LeftWallSegments, right:false);
-    for (var i = 0; i < LeftWallSegments.Length; i++) {
-      LeftWallSegments[i].gameObject.SetActive(i < leftSegments);
-    }
+    var rightSegmentCount = ConfigureSegments(Width/2, rightCorners, RightWallSegments, right:true);
+    var leftSegmentCount = ConfigureSegments(Width/2, leftCorners, LeftWallSegments, right:false);
+    ActivateN(LeftWallSegments, leftSegmentCount);
+    ActivateN(RightWallSegments, rightSegmentCount);
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
