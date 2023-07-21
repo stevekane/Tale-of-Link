@@ -4,6 +4,13 @@ using UnityEngine;
 public class WallCameraExtension : CinemachineExtension {
     public WallMover WallMover;
     public float DistanceFromTarget = 5f;
+    public float ZoomSpeed = 5;
+
+    float TargetDistance;
+
+    protected override void OnEnable() {
+      TargetDistance = DistanceFromTarget;
+    }
 
     protected override void PostPipelineStageCallback(
     CinemachineVirtualCameraBase vcam,
@@ -16,8 +23,16 @@ public class WallCameraExtension : CinemachineExtension {
         var weightedNormal = WallMover.WeightedNormal;
         if (weightedNormal.sqrMagnitude <= 0)
           return;
-        state.RawPosition = vcam.Follow.position - weightedNormal * DistanceFromTarget;
-        state.RawOrientation = Quaternion.LookRotation(weightedNormal, Vector3.up);
+        var didHit = Physics.Raycast(vcam.LookAt.position, weightedNormal, out var hit, DistanceFromTarget);
+        var distance = 0f;
+        if (didHit) {
+          distance = hit.distance;
+        } else {
+          distance = DistanceFromTarget;
+        }
+        TargetDistance = Mathf.MoveTowards(TargetDistance, distance, Time.deltaTime * ZoomSpeed);
+        state.RawPosition = vcam.LookAt.position + weightedNormal * TargetDistance;
+        state.RawOrientation = Quaternion.LookRotation(-weightedNormal, Vector3.up);
       }
   }
 }

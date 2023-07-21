@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [DefaultExecutionOrder(-700)]
 public class SimpleCharacter : MonoBehaviour {
@@ -10,6 +13,8 @@ public class SimpleCharacter : MonoBehaviour {
   [SerializeField] float WallSpeed = 3;
   [SerializeField] CinemachineVirtualCamera TopdownCamera;
   [SerializeField] CinemachineVirtualCamera WallCamera;
+  [SerializeField] CapsuleCollider CapsuleCollider;
+  [SerializeField] Mesh CapsuleMesh;
 
   Inputs Inputs;
   WallMover WallMover;
@@ -96,5 +101,73 @@ public class SimpleCharacter : MonoBehaviour {
       if (move.sqrMagnitude > 0)
         transform.rotation = Quaternion.LookRotation(move.XZ(), Vector3.up);
     }
+  }
+
+  void OnDrawGizmos() {
+    if (InWall) {
+      RenderWallExitInfo();
+    } else {
+      RenderWallEnterInfo();
+    }
+  }
+
+  static bool CapsuleColliderCast(
+  CapsuleCollider capsuleCollider,
+  Vector3 position,
+  Vector3 direction,
+  float maxDistance,
+  out RaycastHit hit) {
+    Vector3 point1;
+    Vector3 point2;
+    switch (capsuleCollider.direction) {
+      case 0: // X-axis
+        point1 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.left * (capsuleCollider.height / 2 - capsuleCollider.radius));
+        point2 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.right * (capsuleCollider.height / 2 - capsuleCollider.radius));
+        break;
+      case 1: // Y-axis
+        point1 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.down * (capsuleCollider.height / 2 - capsuleCollider.radius));
+        point2 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.up * (capsuleCollider.height / 2 - capsuleCollider.radius));
+        break;
+      case 2: // Z-axis
+        point1 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.back * (capsuleCollider.height / 2 - capsuleCollider.radius));
+        point2 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.forward * (capsuleCollider.height / 2 - capsuleCollider.radius));
+        break;
+      default:
+        throw new System.NotImplementedException("Unknown capsule direction!");
+    }
+
+    float radius = capsuleCollider.radius;
+    Debug.DrawLine(point1, point2);
+    return Physics.CapsuleCast(point1, point2, radius, direction, out hit, maxDistance);
+  }
+
+  void RenderWallEnterInfo() {
+    var distance = 1;
+    var start = transform.position;
+    var direction = transform.forward;
+    var didHit = Physics.Raycast(start, direction, out var hit, distance);
+    if (didHit) {
+      var meshFilters = hit.collider.GetComponentsInChildren<MeshFilter>();
+      var color = Color.white;
+      color.a = .2f;
+      foreach (var mf in meshFilters) {
+        var mesh = Application.isPlaying ? mf.mesh : mf.sharedMesh;
+        Gizmos.color = color;
+        Gizmos.DrawWireMesh(mesh, submeshIndex: -1, mf.transform.position, mf.transform.rotation, mf.transform.lossyScale);
+      }
+    }
+  }
+
+  void RenderWallExitInfo() {
+    var distance = 1;
+    var start = transform.position;
+    var direction = transform.forward;
+    var end = start + distance * direction;
+    var didHit = CapsuleColliderCast(CapsuleCollider, start, direction, distance, out var hit);
+    var color = didHit ? Color.red : Color.white;
+    color.a = .2f;
+    Gizmos.color = color;
+    Gizmos.DrawWireMesh(CapsuleMesh, submeshIndex: -1, end, Quaternion.identity, Vector3.one);
+    Handles.Label(end + Vector3.up, $"{(hit.collider ? hit.collider.name : default)}");
   }
 }

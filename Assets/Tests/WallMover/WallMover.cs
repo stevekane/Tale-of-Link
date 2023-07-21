@@ -36,15 +36,15 @@ public class WallMover : MonoBehaviour {
   /*
   Requirements:
 
-    - Move robustly in either direction
+    + Move robustly in either direction
+    + Handle entering wall space
+    + Handle exiting wall space
     - Encounter obstacles that prevent you from passing
     - Handle case where you cannot move as much as you want to
     - Handle case where you cannot render as much as you want to
     - Handle case of moving onto a moving wall
     - Handle case of moving wall moving away
     - Handle collision detection with other wall items
-    - Handle entering wall space
-    - Handle exiting wall space
   */
 
   public static void ConfigureSegment(
@@ -162,7 +162,7 @@ public class WallMover : MonoBehaviour {
       foreach (var segment in ActiveSegments)
         totalWeight += segment.Width;
       foreach (var segment in ActiveSegments)
-        normal += segment.transform.forward * (segment.Max-segment.Min);
+        normal += -segment.transform.forward * (segment.Max-segment.Min);
       normal /= totalWeight;
       normal.Normalize();
       return normal;
@@ -185,7 +185,7 @@ public class WallMover : MonoBehaviour {
     var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance);
     if (didHit) {
       if (hit.collider != Collider) {
-        transform.SetParent(hit.collider.transform, true);
+        // transform.SetParent(hit.collider.transform, true);
         Collider = hit.collider;
       }
 
