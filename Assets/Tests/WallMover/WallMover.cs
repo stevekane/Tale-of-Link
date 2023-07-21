@@ -13,9 +13,9 @@ public class WallMover : MonoBehaviour {
   public float WallOffset = .05f;
   public float MaxDistance => SampleSpacing + WallOffset;
   public Collider Collider;
-  public float Speed = 2;
   public WallSegment[] RightWallSegments;
   public WallSegment[] LeftWallSegments;
+  public float Velocity;
 
   public static List<RaycastHit> Corners(List<RaycastHit> hits) {
     List<RaycastHit> corners = new List<RaycastHit>();
@@ -32,6 +32,20 @@ public class WallMover : MonoBehaviour {
     }
     return corners;
   }
+
+  /*
+  Requirements:
+
+    - Move robustly in either direction
+    - Encounter obstacles that prevent you from passing
+    - Handle case where you cannot move as much as you want to
+    - Handle case where you cannot render as much as you want to
+    - Handle case of moving onto a moving wall
+    - Handle case of moving wall moving away
+    - Handle collision detection with other wall items
+    - Handle entering wall space
+    - Handle exiting wall space
+  */
 
   public static void ConfigureSegment(
   float length,
@@ -56,7 +70,6 @@ public class WallMover : MonoBehaviour {
     }
   }
 
-  // returns number of segments used
   public static int ConfigureSegments(
   float totalDistance,
   List<RaycastHit> corners,
@@ -83,7 +96,7 @@ public class WallMover : MonoBehaviour {
   }
 
   public static void ActivateN<T>(T[] ts, int count) where T : MonoBehaviour {
-    for (var i = 0; i < count; i++) {
+    for (var i = 0; i < ts.Length; i++) {
       ts[i].gameObject.SetActive(i<count);
     }
   }
@@ -98,7 +111,6 @@ public class WallMover : MonoBehaviour {
     var crossVec1and2 = Vector3.Cross(lineDirection1, lineDirection2);
     var crossVec3and2 = Vector3.Cross(lineVec3, lineDirection2);
     var planarFactor = Vector3.Dot(lineVec3, crossVec1and2);
-
     if (Mathf.Abs(planarFactor) < 0.0001f && crossVec1and2.sqrMagnitude > 0.0001f) {
       var s = Vector3.Dot(crossVec3and2, crossVec1and2) / crossVec1and2.sqrMagnitude;
       intersection = linePoint1 + (lineDirection1 * s);
@@ -129,6 +141,37 @@ public class WallMover : MonoBehaviour {
       distance += Vector3.Distance(hits[i].point, hits[i-1].point);
     }
     return distance;
+  }
+
+  IEnumerable<WallSegment> ActiveSegments {
+    get {
+      for (var i = 0; i < RightWallSegments.Length; i++)
+        if (RightWallSegments[i].isActiveAndEnabled)
+          yield return RightWallSegments[i];
+      for (var i = 0; i < LeftWallSegments.Length; i++)
+        if (LeftWallSegments[i].isActiveAndEnabled)
+          yield return LeftWallSegments[i];
+    }
+  }
+
+  // returns the normal of the active segments weighted by its width
+  public Vector3 WeightedNormal {
+    get {
+      var normal = Vector3.zero;
+      var totalWeight = 0f;
+      foreach (var segment in ActiveSegments)
+        totalWeight += segment.Width;
+      foreach (var segment in ActiveSegments)
+        normal += segment.transform.forward * (segment.Max-segment.Min);
+      normal /= totalWeight;
+      normal.Normalize();
+      return normal;
+    }
+  }
+
+  void OnDisable() {
+    ActivateN(LeftWallSegments, 0);
+    ActivateN(RightWallSegments, 0);
   }
 
   List<RaycastHit> RightHits = new();
@@ -184,9 +227,10 @@ public class WallMover : MonoBehaviour {
     leftCorners.Add(LeftHits[LeftHits.Count - 1]);
 
     // compute movement
-    var pathDistance = Distance(rightCorners);
-    var distance = Mathf.Min(Speed * Time.fixedDeltaTime, pathDistance);
-    var newHit = Move(rightCorners, distance);
+    var corners = Velocity <= 0 ? leftCorners : rightCorners;
+    var pathDistance = Distance(corners);
+    var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance);
+    var newHit = Move(corners, distance);
     var p = newHit.point;
     var n = newHit.normal;
     var rTarget = Quaternion.LookRotation(n, Vector3.up);
@@ -197,6 +241,7 @@ public class WallMover : MonoBehaviour {
     var leftSegmentCount = ConfigureSegments(Width/2, leftCorners, LeftWallSegments, right:false);
     ActivateN(LeftWallSegments, leftSegmentCount);
     ActivateN(RightWallSegments, rightSegmentCount);
+    Debug.DrawRay(transform.position, WeightedNormal, Color.red);
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
