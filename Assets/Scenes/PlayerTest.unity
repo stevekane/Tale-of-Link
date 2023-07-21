@@ -755,6 +755,7 @@ GameObject:
   - component: {fileID: 1235798896}
   - component: {fileID: 1235798895}
   - component: {fileID: 1235798894}
+  - component: {fileID: 1235798897}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -820,13 +821,34 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1235798892}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 25, y: 1, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1235798897
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235798892}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1258494410 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5239728576824267351, guid: 7194ef3ef1b7315429cb899f7846e40e, type: 3}
@@ -888,7 +910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5518655672226566700, guid: 1bd4ca78ad68cea40b517b28e5f9334c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5518655672226566700, guid: 1bd4ca78ad68cea40b517b28e5f9334c, type: 3}
       propertyPath: m_LocalPosition.z
