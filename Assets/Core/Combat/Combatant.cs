@@ -2,13 +2,13 @@ using System;
 using UnityEngine;
 
 public class Combatant : MonoBehaviour {
-  public Action<Combatant> OnHit;
-  public Action<Combatant> OnHurt;
+  public Action<HitEvent> OnHit;
+  public Action<HitEvent> OnHurt;
 
-  public void HandleHit(Combatant victim) {
-    OnHit?.Invoke(victim);
+  public void HandleHit(HitEvent hit) {
+    OnHit?.Invoke(hit);
   }
-  public void HandleHurt(Combatant attacker) {
-    OnHurt?.Invoke(attacker);
+  public void HandleHurt(HitEvent hit) {
+    OnHurt?.Invoke(hit);
   }
 }
