@@ -12,6 +12,7 @@ public class WallSegment : MonoBehaviour {
   public float Max;
 
   void LateUpdate() {
+
     Projector.size = new Vector3((Max-Min) * Width, Height, Depth);
     Projector.uvBias = new Vector3(Min, 0);
     Projector.uvScale = new Vector3(Max-Min, 1);
