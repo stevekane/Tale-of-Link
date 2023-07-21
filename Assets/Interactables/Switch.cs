@@ -12,7 +12,7 @@ public class Switch : MonoBehaviour {
     Renderer.material = State ? MaterialOne : MaterialZero;
   }
 
-  void OnHurt(Combatant attacker) {
+  void OnHurt(HitEvent _) {
     State = !State;
     Renderer.material = State ? MaterialOne : MaterialZero;
   }

@@ -531,6 +531,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 0}
+  HitConfig:
+    HitType: 1
+    MaybeDamageOrSomething: 0
 --- !u!1 &7580340272743582478
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,3 +713,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 0}
+  HitConfig:
+    HitType: 0
+    MaybeDamageOrSomething: 1
