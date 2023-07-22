@@ -41,18 +41,28 @@ public class WallMover : MonoBehaviour {
     return corners.Count;
   }
 
+  // Remove any redundant points along the path ensuring the path segments have a direction/normal
+  public static void RefineToPath(List<RaycastHit> corners) {
+    for (var i = corners.Count-1; i > 0; i--) {
+      var c0 = corners[i-1];
+      var c1 = corners[i];
+      if (Mathf.Approximately(Vector3.SqrMagnitude(c0.point-c1.point), 0f))
+        corners.RemoveAt(i);
+    }
+  }
+
   /*
   Requirements:
 
     + Move robustly in either direction
     + Handle entering wall space
     + Handle exiting wall space
-    - Encounter obstacles that prevent you from passing
-    - Handle case where you cannot move as much as you want to
-    - Handle case where you cannot render as much as you want to
-    - Handle case of moving onto a moving wall
-    - Handle case of moving wall moving away
+    + Encounter obstacles that prevent you from passing
+    + Handle case where you cannot move as much as you want to
+    + Handle case where you cannot render as much as you want to
     - Handle collision detection with other wall items
+    - Handle case of moving wall moving away
+    - Handle case of moving onto a moving wall
   */
 
   public static void ConfigureSegment(
@@ -129,19 +139,19 @@ public class WallMover : MonoBehaviour {
     }
   }
 
-  public static RaycastHit Move(List<RaycastHit> hits, float distance) {
-    for (var i = 1; i < hits.Count; i++) {
-      var p0 = hits[i-1].point;
-      var p1 = hits[i].point;
+  public static RaycastHit Move(List<RaycastHit> corners, float distance) {
+    for (var i = 1; i < corners.Count; i++) {
+      var p0 = corners[i-1].point;
+      var p1 = corners[i].point;
       var d = Vector3.Distance(p0, p1);
       if (d >= distance) {
         var np = Vector3.Lerp(p0, p1, distance / d);
-        return new RaycastHit() { point = np, normal = hits[i].normal };
+        return new RaycastHit() { point = np, normal = corners[i].normal };
       } else {
         distance -= d;
       }
     }
-    return hits[hits.Count - 1];
+    return corners[corners.Count - 1];
   }
 
   public static float Distance(List<RaycastHit> hits, float distance = 0) {
@@ -190,7 +200,7 @@ public class WallMover : MonoBehaviour {
     var tangent = Vector3.Cross(transform.forward, Vector3.up);
     var rayOrigin = position + WallOffset * normal;
     var rayDirection = -normal;
-    var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance);
+    var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance, LayerMask);
     if (didHit) {
       if (hit.collider != Collider) {
         // transform.SetParent(hit.collider.transform, true);
@@ -231,15 +241,17 @@ public class WallMover : MonoBehaviour {
     RightCorners.Add(RightHits[0]);
     FindCorners(RightCorners, RightHits);
     RightCorners.Add(RightHits[RightHits.Count - 1]);
+    RefineToPath(RightCorners);
     LeftCorners.Clear();
     LeftCorners.Add(LeftHits[0]);
     FindCorners(LeftCorners, LeftHits);
     LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
+    RefineToPath(LeftCorners);
 
     // compute movement
     var corners = Velocity <= 0 ? LeftCorners : RightCorners;
     var pathDistance = Distance(corners);
-    var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance);
+    var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
     var newHit = Move(corners, distance);
     var p = newHit.point;
     var n = newHit.normal;
@@ -254,11 +266,12 @@ public class WallMover : MonoBehaviour {
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
-    var didHit = Physics.Raycast(origin, direction, out hit, MaxDistance);
-    var didHitBackward = didHit
-      ? Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance)
-      : false;
-    return didHit && !didHitBackward;
+    if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask)) {
+      var didHitBackward = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask);
+      var didHitBlocker = hit.collider.CompareTag("Blocker");
+      return !didHitBackward && !didHitBlocker;
+    }
+    return false;
   }
 
   List<RaycastHit> PotentialHits = new();
@@ -269,7 +282,6 @@ public class WallMover : MonoBehaviour {
     var tangent = sign * Vector3.Cross(normal, Vector3.up);
     var position = previousHit.point + SampleSpacing * tangent;
 
-    // let's check continuing along the path
     {
       var rayOrigin = position + WallOffset * normal;
       var rayDirection = -normal;
@@ -278,7 +290,6 @@ public class WallMover : MonoBehaviour {
       }
     }
 
-    // let's check an outside 90-degree corner
     {
       var rayOrigin = position - WallOffset * normal;
       var rayDirection = Quaternion.Euler(0, -sign * 90, 0) * -normal;
@@ -287,7 +298,6 @@ public class WallMover : MonoBehaviour {
       }
     }
 
-    // let's check an inside 90-degree corner
     {
       var rayOrigin = previousHit.point + WallOffset * normal;
       var rayDirection = Quaternion.Euler(0, sign * 90, 0) * -normal;
@@ -297,8 +307,8 @@ public class WallMover : MonoBehaviour {
     }
 
     if (PotentialHits.Count > 0) {
-      float bestScore = float.MinValue;
-      RaycastHit hit = PotentialHits[0];
+      var bestScore = float.MinValue;
+      var hit = PotentialHits[0];
       for (var p = 0; p < PotentialHits.Count; p++)  {
         var score = Vector3.Dot(normal, PotentialHits[p].normal);
         if (score > bestScore) {

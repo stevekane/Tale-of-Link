@@ -15,6 +15,8 @@ public class SimpleCharacter : MonoBehaviour {
   [SerializeField] CinemachineVirtualCamera WallCamera;
   [SerializeField] CapsuleCollider CapsuleCollider;
   [SerializeField] Mesh CapsuleMesh;
+  [SerializeField] float EnterDistance = 1;
+  [SerializeField] float ExitDistance = 1;
 
   Inputs Inputs;
   WallMover WallMover;
@@ -24,8 +26,8 @@ public class SimpleCharacter : MonoBehaviour {
   void TryEnterWall() {
     if (InTransition)
       return;
-    var validEntrance = Physics.Raycast(transform.position, transform.forward, out var hit, 1);
-    if (!validEntrance) {
+    var validEntrance = Physics.Raycast(transform.position, transform.forward, out var hit, EnterDistance);
+    if (!validEntrance || hit.collider.CompareTag("Blocker")) {
       Debug.LogWarning("not valid entrance");
     } else {
       InWall = true;
@@ -36,8 +38,9 @@ public class SimpleCharacter : MonoBehaviour {
   void TryExitWall() {
     if (InTransition)
       return;
-    // TODO: Maybe should be volumetric like a box/sphere cast?
-    var invalidExit = Physics.Raycast(transform.position, transform.forward, out var hit, 1);
+    var start = transform.position;
+    var direction = transform.forward;
+    var invalidExit = CapsuleCollider.CapsuleColliderCast(start, direction, ExitDistance, out var hit);
     if (invalidExit) {
       Debug.LogWarning("not valid exit");
     } else {
@@ -111,40 +114,12 @@ public class SimpleCharacter : MonoBehaviour {
     }
   }
 
-  static bool CapsuleColliderCast(
-  CapsuleCollider capsuleCollider,
-  Vector3 position,
-  Vector3 direction,
-  float maxDistance,
-  out RaycastHit hit) {
-    float radius = capsuleCollider.radius;
-    Vector3 point1;
-    Vector3 point2;
-    switch (capsuleCollider.direction) {
-      case 0: // X-axis
-        point1 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.left * (capsuleCollider.height / 2 - capsuleCollider.radius));
-        point2 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.right * (capsuleCollider.height / 2 - capsuleCollider.radius));
-        break;
-      case 1: // Y-axis
-        point1 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.down * (capsuleCollider.height / 2 - capsuleCollider.radius));
-        point2 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.up * (capsuleCollider.height / 2 - capsuleCollider.radius));
-        break;
-      case 2: // Z-axis
-        point1 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.back * (capsuleCollider.height / 2 - capsuleCollider.radius));
-        point2 = capsuleCollider.transform.TransformPoint(capsuleCollider.center + Vector3.forward * (capsuleCollider.height / 2 - capsuleCollider.radius));
-        break;
-      default:
-        throw new System.NotImplementedException("Unknown capsule direction!");
-    }
-    return Physics.CapsuleCast(point1, point2, radius, direction, out hit, maxDistance);
-  }
-
   void RenderWallEnterInfo() {
-    var distance = 1;
+    var distance = EnterDistance;
     var start = transform.position;
     var direction = transform.forward;
     var didHit = Physics.Raycast(start, direction, out var hit, distance);
-    if (didHit) {
+    if (didHit && !hit.collider.CompareTag("Blocker")) {
       var meshFilters = hit.collider.GetComponentsInChildren<MeshFilter>();
       var color = Color.white;
       color.a = .2f;
@@ -157,11 +132,11 @@ public class SimpleCharacter : MonoBehaviour {
   }
 
   void RenderWallExitInfo() {
-    var distance = 1;
+    var distance = ExitDistance;
     var start = transform.position;
     var direction = transform.forward;
     var end = start + distance * direction;
-    var didHit = CapsuleColliderCast(CapsuleCollider, start, direction, distance, out var hit);
+    var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, distance, out var hit);
     var color = didHit ? Color.red : Color.white;
     color.a = .2f;
     Gizmos.color = color;
