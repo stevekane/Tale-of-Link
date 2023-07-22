@@ -1,199 +1,74 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
+
+/*
+Requirements:
+
+  + Move robustly in either direction
+  + Handle entering wall space
+  + Handle exiting wall space
+  + Encounter obstacles that prevent you from passing
+  + Handle case where you cannot move as much as you want to
+  + Handle case where you cannot render as much as you want to
+  - Handle collision detection with other wall items
+  - Handle case of moving wall moving away
+  - Handle case of moving onto a moving wall
+*/
 
 public class WallMover : MonoBehaviour {
-  public LayerMask LayerMask;
-  [Tooltip("Max number of checks")]
-  public int MaxSearchCount = 10;
-  [Tooltip("Distance along the wall to check for next contact")]
-  public float SampleSpacing = .25f;
-  [Tooltip("Distance from wall to cast rays from")]
-  public float Height = 1;
-  public float Width = 1;
-  public float WallOffset = .05f;
-  public float MaxDistance => SampleSpacing + WallOffset;
-  public Collider Collider;
-  public WallSegment[] RightWallSegments;
-  public WallSegment[] LeftWallSegments;
-  public float Velocity;
-
+  [SerializeField] LayerMask LayerMask;
+  [SerializeField] int MaxSearchCount = 10;
+  [SerializeField] float SampleSpacing = .25f;
+  [SerializeField] float WallOffset = .05f;
+  [FormerlySerializedAs("RightProjector")]
+  [SerializeField] DecalProjector[] RightProjector;
+  [FormerlySerializedAs("LeftProjector")]
+  [SerializeField] DecalProjector[] LeftProjectors;
   #if UNITY_EDITOR
   public bool ShowHits;
   public bool ShowCorners;
-  public bool ShowSegments;
   #endif
-
-  List<RaycastHit> LeftCorners = new();
-  List<RaycastHit> RightCorners = new();
-
-  public static int FindCorners(List<RaycastHit> corners, List<RaycastHit> hits) {
-    for (int i = 0; i < hits.Count - 1; i++) {
-      Vector3 currentPoint = hits[i].point;
-      Vector3 currentNormal = hits[i].normal;
-      Vector3 currentTangent = Vector3.Cross(currentNormal, Vector3.up);
-      Vector3 nextPoint = hits[i + 1].point;
-      Vector3 nextNormal = hits[i + 1].normal;
-      Vector3 nextTangent = Vector3.Cross(nextNormal, Vector3.up);
-      if (LineLineIntersection(out var corner, currentPoint, currentTangent, nextPoint, nextTangent)) {
-        corners.Add(new RaycastHit() { point = corner, normal = currentNormal });
-      }
-    }
-    return corners.Count;
-  }
-
-  // Remove any redundant points along the path ensuring the path segments have a direction/normal
-  public static void RefineToPath(List<RaycastHit> corners) {
-    for (var i = corners.Count-1; i > 0; i--) {
-      var c0 = corners[i-1];
-      var c1 = corners[i];
-      if (Mathf.Approximately(Vector3.SqrMagnitude(c0.point-c1.point), 0f))
-        corners.RemoveAt(i);
-    }
-  }
-
-  /*
-  Requirements:
-
-    + Move robustly in either direction
-    + Handle entering wall space
-    + Handle exiting wall space
-    + Encounter obstacles that prevent you from passing
-    + Handle case where you cannot move as much as you want to
-    + Handle case where you cannot render as much as you want to
-    - Handle collision detection with other wall items
-    - Handle case of moving wall moving away
-    - Handle case of moving onto a moving wall
-  */
-
-  public static void ConfigureSegment(
-  float length,
-  float totalDistance,
-  float distanceOffset,
-  Vector3 center,
-  Vector3 normal,
-  WallSegment segment,
-  bool right) {
-    // Steve: Magic 2s are symptoms of the totalDistance being half the width of the actual image
-    const float WALL_OFFSET = .1f;
-    segment.transform.SetPositionAndRotation(center+WALL_OFFSET*normal, Quaternion.LookRotation(-normal, Vector3.up));
-    segment.Width = totalDistance * 2;
-    segment.Height = 1;
-    segment.Depth = 2*WALL_OFFSET;
-    if (right) {
-      segment.Min = 0.5f + distanceOffset / totalDistance / 2;
-      segment.Max = 0.5f + (distanceOffset + length) / totalDistance / 2;
-    } else {
-      segment.Max = 0.5f - distanceOffset / totalDistance / 2;
-      segment.Min = 0.5f - (distanceOffset + length) / totalDistance / 2;
-    }
-  }
-
-  public static int ConfigureSegments(
-  float totalDistance,
-  List<RaycastHit> corners,
-  WallSegment[] wallSegments,
-  bool right) {
-    var distanceOffset = 0f;
-    var i = 0;
-    while (i < corners.Count-1 && distanceOffset < totalDistance) {
-      var c0 = corners[i];
-      var c1 = corners[i+1];
-      var delta = c1.point-c0.point;
-      var cornerDistance = delta.magnitude;
-      var direction = delta / cornerDistance;
-      var distance = Mathf.Min(totalDistance-distanceOffset, cornerDistance);
-      var start = c0.point;
-      var end = start+distance*direction;
-      var center = start+(end-start) / 2;
-      var normal = Vector3.Cross(right ? -direction : direction, Vector3.up);
-      ConfigureSegment(distance, totalDistance, distanceOffset, center, normal, wallSegments[i], right);
-      distanceOffset += distance;
-      i++;
-    }
-    return i;
-  }
-
-  public static void ActivateN<T>(T[] ts, int count) where T : MonoBehaviour {
-    for (var i = 0; i < ts.Length; i++) {
-      ts[i].gameObject.SetActive(i<count);
-    }
-  }
-
-  public static bool LineLineIntersection(
-  out Vector3 intersection,
-  Vector3 linePoint1,
-  Vector3 lineDirection1,
-  Vector3 linePoint2,
-  Vector3 lineDirection2) {
-    var lineVec3 = linePoint2 - linePoint1;
-    var crossVec1and2 = Vector3.Cross(lineDirection1, lineDirection2);
-    var crossVec3and2 = Vector3.Cross(lineVec3, lineDirection2);
-    var planarFactor = Vector3.Dot(lineVec3, crossVec1and2);
-    if (Mathf.Abs(planarFactor) < 0.0001f && crossVec1and2.sqrMagnitude > 0.0001f) {
-      var s = Vector3.Dot(crossVec3and2, crossVec1and2) / crossVec1and2.sqrMagnitude;
-      intersection = linePoint1 + (lineDirection1 * s);
-      return true;
-    } else {
-      intersection = Vector3.zero;
-      return false;
-    }
-  }
-
-  public static RaycastHit Move(List<RaycastHit> corners, float distance) {
-    for (var i = 1; i < corners.Count; i++) {
-      var p0 = corners[i-1].point;
-      var p1 = corners[i].point;
-      var d = Vector3.Distance(p0, p1);
-      if (d >= distance) {
-        var np = Vector3.Lerp(p0, p1, distance / d);
-        return new RaycastHit() { point = np, normal = corners[i].normal };
-      } else {
-        distance -= d;
-      }
-    }
-    return corners[corners.Count - 1];
-  }
-
-  public static float Distance(List<RaycastHit> hits, float distance = 0) {
-    for (var i = 1; i < hits.Count; i++) {
-      distance += Vector3.Distance(hits[i].point, hits[i-1].point);
-    }
-    return distance;
-  }
-
-  IEnumerable<WallSegment> ActiveSegments {
-    get {
-      for (var i = 0; i < RightWallSegments.Length; i++)
-        if (RightWallSegments[i].isActiveAndEnabled)
-          yield return RightWallSegments[i];
-      for (var i = 0; i < LeftWallSegments.Length; i++)
-        if (LeftWallSegments[i].isActiveAndEnabled)
-          yield return LeftWallSegments[i];
-    }
-  }
-
-  // returns the normal of the active segments weighted by its width
+  public float Velocity;
+  public float Height = 1;
+  public float Width = 1;
+  public float MaxDistance => SampleSpacing + WallOffset;
   public Vector3 WeightedNormal {
     get {
       var normal = Vector3.zero;
       var totalWeight = 0f;
-      foreach (var segment in ActiveSegments)
-        totalWeight += segment.Width;
-      foreach (var segment in ActiveSegments)
-        normal += -segment.transform.forward * (segment.Max-segment.Min);
+      foreach (var projector in ActiveProjectors)
+        totalWeight += projector.uvScale.x;
+      foreach (var projector in ActiveProjectors)
+        normal += -projector.transform.forward * projector.uvScale.x;
       normal /= totalWeight;
       normal.Normalize();
       return normal;
     }
   }
 
-  void OnDisable() {
-    ActivateN(LeftWallSegments, 0);
-    ActivateN(RightWallSegments, 0);
-  }
-
+  List<RaycastHit> LeftCorners = new();
+  List<RaycastHit> RightCorners = new();
   List<RaycastHit> RightHits = new();
   List<RaycastHit> LeftHits = new();
+  List<RaycastHit> PotentialHits = new();
+  IEnumerable<DecalProjector> ActiveProjectors {
+    get {
+      for (var i = 0; i < RightProjector.Length; i++)
+        if (RightProjector[i].gameObject.activeInHierarchy)
+          yield return RightProjector[i];
+      for (var i = 0; i < LeftProjectors.Length; i++)
+        if (LeftProjectors[i].gameObject.activeInHierarchy)
+          yield return LeftProjectors[i];
+    }
+  }
+
+  void OnDisable() {
+    ActivateN(LeftProjectors, 0);
+    ActivateN(RightProjector, 0);
+  }
+
   void FixedUpdate() {
     var position = transform.position;
     var normal = transform.forward;
@@ -202,11 +77,6 @@ public class WallMover : MonoBehaviour {
     var rayDirection = -normal;
     var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance, LayerMask);
     if (didHit) {
-      if (hit.collider != Collider) {
-        // transform.SetParent(hit.collider.transform, true);
-        Collider = hit.collider;
-      }
-
       // right tracing
       RightHits.Clear();
       RightHits.Add(hit);
@@ -257,12 +127,132 @@ public class WallMover : MonoBehaviour {
     var n = newHit.normal;
     var rTarget = Quaternion.LookRotation(n, Vector3.up);
     transform.SetPositionAndRotation(p, rTarget);
+  }
 
-    // Move segments after the parent
-    var rightSegmentCount = ConfigureSegments(Width/2, RightCorners, RightWallSegments, right:true);
-    var leftSegmentCount = ConfigureSegments(Width/2, LeftCorners, LeftWallSegments, right:false);
-    ActivateN(LeftWallSegments, leftSegmentCount);
-    ActivateN(RightWallSegments, rightSegmentCount);
+  void LateUpdate() {
+    var rightProjectorCount = UpdateProjectors(Width/2, RightCorners, RightProjector, right:true);
+    var leftProjectorCount = UpdateProjectors(Width/2, LeftCorners, LeftProjectors, right:false);
+    ActivateN(LeftProjectors, leftProjectorCount);
+    ActivateN(RightProjector, rightProjectorCount);
+  }
+
+  int FindCorners(List<RaycastHit> corners, List<RaycastHit> hits) {
+    for (int i = 0; i < hits.Count - 1; i++) {
+      Vector3 currentPoint = hits[i].point;
+      Vector3 currentNormal = hits[i].normal;
+      Vector3 currentTangent = Vector3.Cross(currentNormal, Vector3.up);
+      Vector3 nextPoint = hits[i + 1].point;
+      Vector3 nextNormal = hits[i + 1].normal;
+      Vector3 nextTangent = Vector3.Cross(nextNormal, Vector3.up);
+      if (LineLineIntersection(out var corner, currentPoint, currentTangent, nextPoint, nextTangent)) {
+        corners.Add(new RaycastHit() { point = corner, normal = currentNormal });
+      }
+    }
+    return corners.Count;
+  }
+
+  void RefineToPath(List<RaycastHit> corners) {
+    for (var i = corners.Count-1; i > 0; i--) {
+      var c0 = corners[i-1];
+      var c1 = corners[i];
+      if (Mathf.Approximately(Vector3.SqrMagnitude(c0.point-c1.point), 0f))
+        corners.RemoveAt(i);
+    }
+  }
+
+  void UpdateProjector(
+  float length,
+  float halfLength,
+  float lengthOffset,
+  Vector3 center,
+  Vector3 normal,
+  DecalProjector projector,
+  bool right) {
+    var min = 0f;
+    var max = 0f;
+    if (right) {
+      min = 0.5f + lengthOffset / halfLength / 2;
+      max = 0.5f + (lengthOffset + length) / halfLength / 2;
+    } else {
+      max = 0.5f - lengthOffset / halfLength / 2;
+      min = 0.5f - (lengthOffset + length) / halfLength / 2;
+    }
+    projector.size = new((max-min)*halfLength*2, Height, 2*WallOffset);
+    projector.uvBias = new(min, 0);
+    projector.uvScale = new(max-min, 1);
+    projector.transform.SetPositionAndRotation(center+WallOffset*normal, Quaternion.LookRotation(-normal, Vector3.up));
+  }
+
+  int UpdateProjectors(
+  float halfLength,
+  List<RaycastHit> corners,
+  DecalProjector[] projectors,
+  bool right) {
+    var distanceOffset = 0f;
+    var i = 0;
+    while (i < corners.Count-1 && distanceOffset < halfLength) {
+      var c0 = corners[i];
+      var c1 = corners[i+1];
+      var delta = c1.point-c0.point;
+      var cornerDistance = delta.magnitude;
+      var direction = delta / cornerDistance;
+      var distance = Mathf.Min(halfLength-distanceOffset, cornerDistance);
+      var start = c0.point;
+      var end = start+distance*direction;
+      var center = start+(end-start) / 2;
+      var normal = Vector3.Cross(right ? -direction : direction, Vector3.up);
+      UpdateProjector(distance, halfLength, distanceOffset, center, normal, projectors[i], right);
+      distanceOffset += distance;
+      i++;
+    }
+    return i;
+  }
+
+  void ActivateN<T>(T[] ts, int count) where T : MonoBehaviour {
+    for (var i = 0; i < ts.Length; i++) {
+      ts[i].gameObject.SetActive(i<count);
+    }
+  }
+
+  bool LineLineIntersection(
+  out Vector3 intersection,
+  Vector3 linePoint1,
+  Vector3 lineDirection1,
+  Vector3 linePoint2,
+  Vector3 lineDirection2) {
+    var lineVec3 = linePoint2 - linePoint1;
+    var crossVec1and2 = Vector3.Cross(lineDirection1, lineDirection2);
+    var crossVec3and2 = Vector3.Cross(lineVec3, lineDirection2);
+    var planarFactor = Vector3.Dot(lineVec3, crossVec1and2);
+    if (Mathf.Abs(planarFactor) < 0.0001f && crossVec1and2.sqrMagnitude > 0.0001f) {
+      var s = Vector3.Dot(crossVec3and2, crossVec1and2) / crossVec1and2.sqrMagnitude;
+      intersection = linePoint1 + (lineDirection1 * s);
+      return true;
+    } else {
+      intersection = Vector3.zero;
+      return false;
+    }
+  }
+
+  RaycastHit Move(List<RaycastHit> corners, float distance) {
+    for (var i = 1; i < corners.Count; i++) {
+      var p0 = corners[i-1].point;
+      var p1 = corners[i].point;
+      var d = Vector3.Distance(p0, p1);
+      if (d >= distance) {
+        var np = Vector3.Lerp(p0, p1, distance / d);
+        return new RaycastHit() { point = np, normal = corners[i].normal };
+      } else {
+        distance -= d;
+      }
+    }
+    return corners[corners.Count - 1];
+  }
+
+  float Distance(List<RaycastHit> hits, float distance = 0) {
+    for (var i = 1; i < hits.Count; i++)
+      distance += Vector3.Distance(hits[i].point, hits[i-1].point);
+    return distance;
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
@@ -274,7 +264,6 @@ public class WallMover : MonoBehaviour {
     return false;
   }
 
-  List<RaycastHit> PotentialHits = new();
   RaycastHit? FindNext(RaycastHit previousHit, float sign = 1) {
     PotentialHits.Clear();
 
@@ -339,18 +328,7 @@ public class WallMover : MonoBehaviour {
     }
   }
 
-  void RenderSegments(WallSegment[] segments) {
-    foreach (var segment in segments) {
-      if (!segment.isActiveAndEnabled)
-        continue;
-      var offset = segment.Width * (segment.Max-segment.Min) * .5f * segment.transform.right;
-      var start = segment.transform.position + offset;
-      var end = segment.transform.position - offset;
-      Gizmos.color = segment.Color;
-      Gizmos.DrawLine(start, end);
-    }
-  }
-
+  #if UNITY_EDITOR
   void OnDrawGizmos() {
     if (ShowHits) {
       RenderHits(RightHits);
@@ -360,9 +338,6 @@ public class WallMover : MonoBehaviour {
       RenderCorners(RightCorners);
       RenderCorners(LeftCorners);
     }
-    if (ShowSegments) {
-      RenderSegments(RightWallSegments);
-      RenderSegments(LeftWallSegments);
-    }
   }
+  #endif
 }
