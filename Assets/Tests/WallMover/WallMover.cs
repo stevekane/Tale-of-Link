@@ -312,7 +312,47 @@ public class WallMover : MonoBehaviour {
     }
   }
 
-  void OnDrawGizmos() {
+  void RenderHits(List<RaycastHit> hits) {
+    Gizmos.color = Color.grey;
+    foreach (var hit in hits) {
+      Gizmos.DrawRay(hit.point, hit.normal);
+    }
+  }
 
+  void RenderCorners(List<RaycastHit> corners) {
+    Gizmos.color = Color.white;
+    for (var i = 1; i < corners.Count; i++) {
+      Gizmos.DrawLine(corners[i].point, corners[i-1].point);
+    }
+    foreach (var corner in corners) {
+      Gizmos.DrawWireSphere(corner.point, .25f);
+    }
+  }
+
+  void RenderSegments(WallSegment[] segments) {
+    foreach (var segment in segments) {
+      if (!segment.isActiveAndEnabled)
+        continue;
+      var offset = segment.Width * (segment.Max-segment.Min) * .5f * segment.transform.right;
+      var start = segment.transform.position + offset;
+      var end = segment.transform.position - offset;
+      Gizmos.color = segment.Color;
+      Gizmos.DrawLine(start, end);
+    }
+  }
+
+  void OnDrawGizmos() {
+    if (ShowHits) {
+      RenderHits(RightHits);
+      RenderHits(LeftHits);
+    }
+    if (ShowCorners) {
+      RenderCorners(RightCorners);
+      RenderCorners(LeftCorners);
+    }
+    if (ShowSegments) {
+      RenderSegments(RightWallSegments);
+      RenderSegments(LeftWallSegments);
+    }
   }
 }
