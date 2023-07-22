@@ -117,6 +117,7 @@ public class SimpleCharacter : MonoBehaviour {
   Vector3 direction,
   float maxDistance,
   out RaycastHit hit) {
+    float radius = capsuleCollider.radius;
     Vector3 point1;
     Vector3 point2;
     switch (capsuleCollider.direction) {
@@ -135,9 +136,6 @@ public class SimpleCharacter : MonoBehaviour {
       default:
         throw new System.NotImplementedException("Unknown capsule direction!");
     }
-
-    float radius = capsuleCollider.radius;
-    Debug.DrawLine(point1, point2);
     return Physics.CapsuleCast(point1, point2, radius, direction, out hit, maxDistance);
   }
 

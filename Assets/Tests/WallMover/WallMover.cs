@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WallMover : MonoBehaviour {
+  public LayerMask LayerMask;
   [Tooltip("Max number of checks")]
   public int MaxSearchCount = 10;
   [Tooltip("Distance along the wall to check for next contact")]
@@ -17,8 +17,16 @@ public class WallMover : MonoBehaviour {
   public WallSegment[] LeftWallSegments;
   public float Velocity;
 
-  public static List<RaycastHit> Corners(List<RaycastHit> hits) {
-    List<RaycastHit> corners = new List<RaycastHit>();
+  #if UNITY_EDITOR
+  public bool ShowHits;
+  public bool ShowCorners;
+  public bool ShowSegments;
+  #endif
+
+  List<RaycastHit> LeftCorners = new();
+  List<RaycastHit> RightCorners = new();
+
+  public static int FindCorners(List<RaycastHit> corners, List<RaycastHit> hits) {
     for (int i = 0; i < hits.Count - 1; i++) {
       Vector3 currentPoint = hits[i].point;
       Vector3 currentNormal = hits[i].normal;
@@ -30,7 +38,7 @@ public class WallMover : MonoBehaviour {
         corners.Add(new RaycastHit() { point = corner, normal = currentNormal });
       }
     }
-    return corners;
+    return corners.Count;
   }
 
   /*
@@ -219,15 +227,17 @@ public class WallMover : MonoBehaviour {
     }
 
     // calculate corners
-    var rightCorners = Corners(RightHits);
-    rightCorners.Insert(0, RightHits[0]);
-    rightCorners.Add(RightHits[RightHits.Count - 1]);
-    var leftCorners = Corners(LeftHits);
-    leftCorners.Insert(0, LeftHits[0]);
-    leftCorners.Add(LeftHits[LeftHits.Count - 1]);
+    RightCorners.Clear();
+    RightCorners.Add(RightHits[0]);
+    FindCorners(RightCorners, RightHits);
+    RightCorners.Add(RightHits[RightHits.Count - 1]);
+    LeftCorners.Clear();
+    LeftCorners.Add(LeftHits[0]);
+    FindCorners(LeftCorners, LeftHits);
+    LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
 
     // compute movement
-    var corners = Velocity <= 0 ? leftCorners : rightCorners;
+    var corners = Velocity <= 0 ? LeftCorners : RightCorners;
     var pathDistance = Distance(corners);
     var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance);
     var newHit = Move(corners, distance);
@@ -237,11 +247,10 @@ public class WallMover : MonoBehaviour {
     transform.SetPositionAndRotation(p, rTarget);
 
     // Move segments after the parent
-    var rightSegmentCount = ConfigureSegments(Width/2, rightCorners, RightWallSegments, right:true);
-    var leftSegmentCount = ConfigureSegments(Width/2, leftCorners, LeftWallSegments, right:false);
+    var rightSegmentCount = ConfigureSegments(Width/2, RightCorners, RightWallSegments, right:true);
+    var leftSegmentCount = ConfigureSegments(Width/2, LeftCorners, LeftWallSegments, right:false);
     ActivateN(LeftWallSegments, leftSegmentCount);
     ActivateN(RightWallSegments, rightSegmentCount);
-    Debug.DrawRay(transform.position, WeightedNormal, Color.red);
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
@@ -301,5 +310,9 @@ public class WallMover : MonoBehaviour {
     } else {
       return null;
     }
+  }
+
+  void OnDrawGizmos() {
+
   }
 }
