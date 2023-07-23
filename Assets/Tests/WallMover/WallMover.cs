@@ -10,7 +10,7 @@ Requirements:
   + Encounter obstacles that prevent you from passing
   + Handle case where you cannot move as much as you want to
   + Handle case where you cannot render as much as you want to
-  - Handle collision detection with other wall items
+  + Handle collision detection with other wall items
   - Handle case of moving wall moving away
   - Handle case of moving onto a moving wall
 */

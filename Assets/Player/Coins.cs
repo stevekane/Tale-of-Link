@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Hearts : MonoBehaviour {
-  const int INITIAL_CURRENT = 2;
-  const int INITIAL_TOTAL = 12;
+public class Coins : MonoBehaviour {
+  const int INITIAL_CURRENT = 0;
+  const int INITIAL_TOTAL = 99;
 
   int Current;
   int Total;
@@ -42,15 +42,10 @@ public class Hearts : MonoBehaviour {
   void OnGUI() {
     GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
     guiStyle.fontSize = 30;
-    guiStyle.normal.textColor = Color.red;
-    Rect rect = new Rect(10, 10, 300, 50);
+    guiStyle.normal.textColor = Color.white;
+    Rect rect = new Rect(350, 10, 300, 50);
     var total = Current / 4;
     var partial = Current % 4;
-    var str = "";
-    for (var i = 0; i < total; i++)
-      str += "||||  ";
-    for (var i = 0; i < partial; i++)
-      str += "|";
-    GUI.Label(rect, str, guiStyle);
+    GUI.Label(rect, $"{Current} Rupees", guiStyle);
   }
 }

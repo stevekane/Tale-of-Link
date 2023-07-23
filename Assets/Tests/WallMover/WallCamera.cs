@@ -5,6 +5,7 @@ public class WallCameraExtension : CinemachineExtension {
   public WallMover WallMover;
   public float DistanceFromTarget = 5f;
   public float ZoomSpeed = 5;
+  public LayerMask LayerMask;
 
   float TargetDistance;
 
@@ -23,7 +24,7 @@ public class WallCameraExtension : CinemachineExtension {
       var weightedNormal = WallMover.WeightedNormal;
       if (weightedNormal.sqrMagnitude <= 0)
         return;
-      var didHit = Physics.Raycast(vcam.LookAt.position, weightedNormal, out var hit, DistanceFromTarget);
+      var didHit = Physics.Raycast(vcam.LookAt.position, weightedNormal, out var hit, DistanceFromTarget, LayerMask);
       var distance = 0f;
       if (didHit) {
         distance = hit.distance;
