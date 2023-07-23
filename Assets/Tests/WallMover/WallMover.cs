@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 
 /*
 Requirements:
@@ -22,10 +20,8 @@ public class WallMover : MonoBehaviour {
   [SerializeField] int MaxSearchCount = 10;
   [SerializeField] float SampleSpacing = .25f;
   [SerializeField] float WallOffset = .05f;
-  [FormerlySerializedAs("RightProjector")]
-  [SerializeField] DecalProjector[] RightProjector;
-  [FormerlySerializedAs("LeftProjector")]
-  [SerializeField] DecalProjector[] LeftProjectors;
+  [SerializeField] WallEntitySegment[] RightSegments;
+  [SerializeField] WallEntitySegment[] LeftSegments;
   #if UNITY_EDITOR
   public bool ShowHits;
   public bool ShowCorners;
@@ -38,10 +34,10 @@ public class WallMover : MonoBehaviour {
     get {
       var normal = Vector3.zero;
       var totalWeight = 0f;
-      foreach (var projector in ActiveProjectors)
-        totalWeight += projector.uvScale.x;
-      foreach (var projector in ActiveProjectors)
-        normal += -projector.transform.forward * projector.uvScale.x;
+      foreach (var segment in ActiveSegments)
+        totalWeight += segment.Projector.uvScale.x;
+      foreach (var segment in ActiveSegments)
+        normal += -segment.transform.forward * segment.Projector.uvScale.x;
       normal /= totalWeight;
       normal.Normalize();
       return normal;
@@ -53,20 +49,20 @@ public class WallMover : MonoBehaviour {
   List<RaycastHit> RightHits = new();
   List<RaycastHit> LeftHits = new();
   List<RaycastHit> PotentialHits = new();
-  IEnumerable<DecalProjector> ActiveProjectors {
+  IEnumerable<WallEntitySegment> ActiveSegments {
     get {
-      for (var i = 0; i < RightProjector.Length; i++)
-        if (RightProjector[i].gameObject.activeInHierarchy)
-          yield return RightProjector[i];
-      for (var i = 0; i < LeftProjectors.Length; i++)
-        if (LeftProjectors[i].gameObject.activeInHierarchy)
-          yield return LeftProjectors[i];
+      for (var i = 0; i < RightSegments.Length; i++)
+        if (RightSegments[i].gameObject.activeInHierarchy)
+          yield return RightSegments[i];
+      for (var i = 0; i < LeftSegments.Length; i++)
+        if (LeftSegments[i].gameObject.activeInHierarchy)
+          yield return LeftSegments[i];
     }
   }
 
   void OnDisable() {
-    ActivateN(LeftProjectors, 0);
-    ActivateN(RightProjector, 0);
+    ActivateN(LeftSegments, 0);
+    ActivateN(RightSegments, 0);
   }
 
   void FixedUpdate() {
@@ -130,10 +126,10 @@ public class WallMover : MonoBehaviour {
   }
 
   void LateUpdate() {
-    var rightProjectorCount = UpdateProjectors(Width/2, RightCorners, RightProjector, right:true);
-    var leftProjectorCount = UpdateProjectors(Width/2, LeftCorners, LeftProjectors, right:false);
-    ActivateN(LeftProjectors, leftProjectorCount);
-    ActivateN(RightProjector, rightProjectorCount);
+    var rightSegmentCount = UpdateSegments(Width/2, RightCorners, RightSegments, right:true);
+    var leftSegmentCount = UpdateSegments(Width/2, LeftCorners, LeftSegments, right:false);
+    ActivateN(LeftSegments, leftSegmentCount);
+    ActivateN(RightSegments, rightSegmentCount);
   }
 
   int FindCorners(List<RaycastHit> corners, List<RaycastHit> hits) {
@@ -160,13 +156,13 @@ public class WallMover : MonoBehaviour {
     }
   }
 
-  void UpdateProjector(
+  void UpdateSegment(
   float length,
   float halfLength,
   float lengthOffset,
   Vector3 center,
   Vector3 normal,
-  DecalProjector projector,
+  WallEntitySegment segment,
   bool right) {
     var min = 0f;
     var max = 0f;
@@ -177,16 +173,18 @@ public class WallMover : MonoBehaviour {
       max = 0.5f - lengthOffset / halfLength / 2;
       min = 0.5f - (lengthOffset + length) / halfLength / 2;
     }
-    projector.size = new((max-min)*halfLength*2, Height, 2*WallOffset);
-    projector.uvBias = new(min, 0);
-    projector.uvScale = new(max-min, 1);
-    projector.transform.SetPositionAndRotation(center+WallOffset*normal, Quaternion.LookRotation(-normal, Vector3.up));
+    segment.Projector.size = new((max-min)*halfLength*2, Height, 2*WallOffset);
+    segment.Projector.uvBias = new(min, 0);
+    segment.Projector.uvScale = new(max-min, 1);
+    segment.Collider.size = new((max-min)*halfLength*2, Height, 2*WallOffset);
+    segment.Collider.center = new(0,0,WallOffset);
+    segment.transform.SetPositionAndRotation(center+WallOffset*normal, Quaternion.LookRotation(-normal, Vector3.up));
   }
 
-  int UpdateProjectors(
+  int UpdateSegments(
   float halfLength,
   List<RaycastHit> corners,
-  DecalProjector[] projectors,
+  WallEntitySegment[] segments,
   bool right) {
     var distanceOffset = 0f;
     var i = 0;
@@ -201,7 +199,7 @@ public class WallMover : MonoBehaviour {
       var end = start+distance*direction;
       var center = start+(end-start) / 2;
       var normal = Vector3.Cross(right ? -direction : direction, Vector3.up);
-      UpdateProjector(distance, halfLength, distanceOffset, center, normal, projectors[i], right);
+      UpdateSegment(distance, halfLength, distanceOffset, center, normal, segments[i], right);
       distanceOffset += distance;
       i++;
     }
