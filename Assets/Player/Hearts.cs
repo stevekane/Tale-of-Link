@@ -8,22 +8,28 @@ public class Hearts : MonoBehaviour {
   int Current;
   int Total;
 
-  public UnityEvent<int> OnSetCurrent;
-  public UnityEvent<int> OnChangeCurrent;
-  public UnityEvent OnDeath;
-  public UnityEvent<int> OnSetTotal;
-  public UnityEvent<int> OnChangeTotal;
+  public UnityAction<int> OnSetCurrent;
+  public UnityAction<int> OnChangeCurrent;
+  public UnityAction OnDeath;
+  public UnityAction<int> OnSetTotal;
+  public UnityAction<int> OnChangeTotal;
 
   void Start() {
-    Current = INITIAL_CURRENT;
-    Total = INITIAL_TOTAL;
-    OnSetCurrent?.Invoke(Current);
-    OnSetTotal?.Invoke(Total);
+    SetTotal(INITIAL_TOTAL);
+    SetCurrent(INITIAL_CURRENT);
   }
 
   public bool IsFull => Current >= Total;
 
-  public void Change(int delta) {
+  public void SetCurrent(int current) {
+    Current = current;
+    Current = Mathf.Min(Current, Total);
+    OnSetCurrent?.Invoke(Current);
+    if (Current <= 0)
+      OnDeath?.Invoke();
+  }
+
+  public void ChangeCurrent(int delta) {
     Current += delta;
     Current = Mathf.Min(Current, Total);
     OnChangeCurrent?.Invoke(Current);
@@ -31,26 +37,18 @@ public class Hearts : MonoBehaviour {
       OnDeath?.Invoke();
   }
 
+  public void SetTotal(int total) {
+    Total = total;
+    OnSetTotal?.Invoke(Total);
+  }
+
   public void ChangeTotal(int delta) {
     Total += delta;
+    Current += delta;
     Current = Mathf.Min(Current, Total);
+    OnChangeCurrent?.Invoke(Current);
     OnChangeTotal?.Invoke(Total);
     if (Current <= 0)
       OnDeath?.Invoke();
-  }
-
-  void OnGUI() {
-    GUIStyle guiStyle = new GUIStyle(GUI.skin.label);
-    guiStyle.fontSize = 30;
-    guiStyle.normal.textColor = Color.red;
-    Rect rect = new Rect(10, 10, 300, 50);
-    var total = Current / 4;
-    var partial = Current % 4;
-    var str = "";
-    for (var i = 0; i < total; i++)
-      str += "||||  ";
-    for (var i = 0; i < partial; i++)
-      str += "|";
-    GUI.Label(rect, str, guiStyle);
   }
 }

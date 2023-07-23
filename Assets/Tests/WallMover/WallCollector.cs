@@ -5,7 +5,7 @@ public class WallCollector : MonoBehaviour {
     if (c.TryGetComponent(out Heart heart)) {
       var hearts = gameObject.GetComponentInParent<Hearts>();
       if (!hearts.IsFull) {
-        hearts.Change(4);
+        hearts.ChangeCurrent(4);
         Destroy(c.gameObject);
       }
     } else if (c.TryGetComponent(out Coin coin)) {

@@ -8,11 +8,11 @@ public class Coins : MonoBehaviour {
   int Current;
   int Total;
 
-  public UnityEvent<int> OnSetCurrent;
-  public UnityEvent<int> OnChangeCurrent;
-  public UnityEvent OnDeath;
-  public UnityEvent<int> OnSetTotal;
-  public UnityEvent<int> OnChangeTotal;
+  public UnityAction<int> OnSetCurrent;
+  public UnityAction<int> OnChangeCurrent;
+  public UnityAction OnDeath;
+  public UnityAction<int> OnSetTotal;
+  public UnityAction<int> OnChangeTotal;
 
   void Start() {
     Current = INITIAL_CURRENT;
