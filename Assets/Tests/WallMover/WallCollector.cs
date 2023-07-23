@@ -11,7 +11,7 @@ public class WallCollector : MonoBehaviour {
     } else if (c.TryGetComponent(out Coin coin)) {
       var wallet = gameObject.GetComponentInParent<Coins>();
       if (!wallet.IsFull) {
-        wallet.Change(coin.Value);
+        wallet.ChangeCurrent(coin.Value);
         Destroy(c.gameObject);
       }
     } else {
