@@ -105,14 +105,12 @@ public class SimpleCharacter : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(move.XZ(), Vector3.up);
     }
     if (Inputs.Player.L1.WasPerformedThisFrame()) {
-      GetComponent<Hearts>().ChangeTotal(4);
+      GetComponent<Magic>().Consume(25);
     }
     if (Inputs.Player.L2.WasPerformedThisFrame()) {
-      GetComponent<Hearts>().ChangeCurrent(-1);
+      GetComponent<Magic>().Restore(101);
     }
     if (Inputs.Player.R2.WasPerformedThisFrame()) {
-      GetComponent<Hearts>().SetTotal(20*4);
-      GetComponent<Hearts>().ChangeCurrent(20*4);
     }
   }
 

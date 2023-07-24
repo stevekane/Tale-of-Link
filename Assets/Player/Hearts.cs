@@ -14,12 +14,12 @@ public class Hearts : MonoBehaviour {
   public UnityAction<int> OnSetTotal;
   public UnityAction<int> OnChangeTotal;
 
+  public bool IsFull => Current >= Total;
+
   void Start() {
     SetTotal(INITIAL_TOTAL);
     SetCurrent(INITIAL_CURRENT);
   }
-
-  public bool IsFull => Current >= Total;
 
   public void SetCurrent(int current) {
     Current = current;
