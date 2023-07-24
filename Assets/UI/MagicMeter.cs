@@ -1,11 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/*
-- flash anytime the meter is drained
-- restore nonlinearly it would appear?
-*/
-
 public class MagicMeter : MonoBehaviour {
   [SerializeField] Magic Magic;
   [SerializeField] Image Frame;
