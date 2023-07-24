@@ -6,6 +6,8 @@ public class WorldCoin : MonoBehaviour {
   [SerializeField] Coin Coin;
   [SerializeField] MeshRenderer MeshRenderer;
   void Update() {
-    MeshRenderer.sharedMaterial = CoinMaterials.ForValue(Coin.Value);
+    var material = CoinMaterials.ForValue(Coin.Value, CoinSpace.World);
+    if (material)
+      MeshRenderer.sharedMaterial = material;
   }
 }

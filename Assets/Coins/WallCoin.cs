@@ -7,6 +7,8 @@ public class WallCoin : MonoBehaviour {
   [SerializeField] Coin Coin;
   [SerializeField] DecalProjector DecalProjector;
   void Update() {
-    DecalProjector.material = CoinMaterials.ForValue(Coin.Value);
+    var material = CoinMaterials.ForValue(Coin.Value, CoinSpace.Wall);
+    if (material)
+      DecalProjector.material = material;
   }
 }
