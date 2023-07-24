@@ -84,7 +84,7 @@ public class CoinDisplay : MonoBehaviour {
 
   void ChangeCurent(int current) {
     var delta = current - TargetCurrent;
-    Speed = BaseChangeSpeed * Mathf.Log10(Mathf.Abs(delta * delta * delta) + 2);
+    Speed = Mathf.Max(Speed, BaseChangeSpeed * Mathf.Log10(Mathf.Abs(delta * delta * delta) + 2));
     TargetCurrent = current;
     ScrollState = ScrollState.SlideIn;
   }
