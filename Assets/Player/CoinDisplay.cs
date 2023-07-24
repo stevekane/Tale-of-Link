@@ -19,13 +19,11 @@ public class CoinDisplay : MonoBehaviour {
   float Current;
   float TargetCurrent;
   float Speed;
-  float VisibleRemaining;
-  float Visibility;
+  public float VisibleRemaining;
+  public float Visibility;
   public ScrollState ScrollState;
 
   void Awake() {
-    Current = 0;
-    TargetCurrent = 0;
     Coins.OnSetCurrent += SetCurrent;
     Coins.OnChangeCurrent += ChangeCurent;
     var height = RectTransform.rect.height;
@@ -44,10 +42,10 @@ public class CoinDisplay : MonoBehaviour {
       case ScrollState.SlideIn: {
         var height = RectTransform.rect.height;
         var position = RectTransform.anchoredPosition;
-        Visibility = Mathf.MoveTowards(Visibility, 0, ScrollSpeed * Time.deltaTime);
-        position.y = Visibility * height;
+        Visibility = Mathf.MoveTowards(Visibility, 1, ScrollSpeed * Time.deltaTime);
+        position.y = (1f-Visibility) * height;
         RectTransform.anchoredPosition = position;
-        if (Visibility == 0) {
+        if (Visibility == 1) {
           ScrollState = ScrollState.Visible;
           VisibleRemaining = VisibleDuration;
         }
@@ -57,10 +55,10 @@ public class CoinDisplay : MonoBehaviour {
       case ScrollState.SlideOut: {
         var height = RectTransform.rect.height;
         var position = RectTransform.anchoredPosition;
-        Visibility = Mathf.MoveTowards(Visibility, 1, ScrollSpeed * Time.deltaTime);
-        position.y = Visibility * height;
+        Visibility = Mathf.MoveTowards(Visibility, 0, ScrollSpeed * Time.deltaTime);
+        position.y = (1f-Visibility) * height;
         RectTransform.anchoredPosition = position;
-        if (Visibility == 1) {
+        if (Visibility == 0) {
           ScrollState = ScrollState.Hidden;
           VisibleRemaining = 0;
         }
@@ -86,8 +84,8 @@ public class CoinDisplay : MonoBehaviour {
 
   void ChangeCurent(int current) {
     var delta = current - TargetCurrent;
-    TargetCurrent = current;
     Speed = BaseChangeSpeed * Mathf.Log10(Mathf.Abs(delta * delta * delta) + 2);
+    TargetCurrent = current;
     ScrollState = ScrollState.SlideIn;
   }
 
