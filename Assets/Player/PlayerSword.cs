@@ -9,7 +9,8 @@ using UnityEngine;
 public class PlayerSword : MonoBehaviour {
   public Player Player { get; internal set; }
   public bool IsRunning { get; private set; }
-  public bool CanRun => !IsRunning && !Player.Hammer.IsRunning;
+  public bool CanRun => !IsRunning;  // TODO: AbilityManager handles it
+  //public bool CanRun => !IsRunning && !Player.Hammer.IsRunning;
 
   public GameObject Sword;
   public Hitbox Hitbox;

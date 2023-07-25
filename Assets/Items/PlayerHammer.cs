@@ -1,19 +1,26 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerHammer : MonoBehaviour {
-  public Player Player { get; internal set; }
-  public bool IsRunning { get; private set; }
+public class PlayerHammer : TmpAbility {
+  public Player Player => AbilityManager;
   public bool CanRun => !IsRunning && !Player.Sword.IsRunning;
 
-  public GameObject Hammer;
+  public Vector3 AttachOffsetTODO;
+  public GameObject Model;
   public Hitbox Hitbox;
   TaskScope Scope = new();
 
-  void Awake() {
-    GetComponent<InputHandler>().OnHammer += () => TryStart(Run);
+  void Start() {
+    if (Player) {
+      // TODO: Attach to player's hand.
+      transform.localPosition = AttachOffsetTODO;
+    }
   }
   void OnDestroy() => Scope.Dispose();
+
+  public override void TryStart() {
+    TryStart(Run);
+  }
 
   void TryStart(TaskFunc func) {
     if (CanRun)
@@ -23,12 +30,12 @@ public class PlayerHammer : MonoBehaviour {
   async Task Run(TaskScope scope) {
     try {
       IsRunning = true;
-      Hammer.SetActive(true);
+      Model.SetActive(true);
       Hitbox.EnableCollision = true;
       await scope.Seconds(.5f);
     } finally {
       IsRunning = false;
-      Hammer.SetActive(false);
+      Model.SetActive(false);
       Hitbox.EnableCollision = false;
     }
   }

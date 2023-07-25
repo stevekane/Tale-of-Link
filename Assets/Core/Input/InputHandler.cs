@@ -7,11 +7,26 @@ public class InputHandler : MonoBehaviour {
 
   public Action<Vector3> OnMove;
   public Action OnSword;
-  public Action OnHammer;
+  public Action OnWest;
+
+  Action CurrentOnWest;
+
+  public void BindWest(Action onWest) {
+    OnWest -= CurrentOnWest;
+    CurrentOnWest = onWest;
+    OnWest += onWest;
+  }
+
+  void OnNewItemAbility(TmpAbility ability) {
+    // TODO: UI for this
+    // TODO: Only do it if CurrentOnWest is empty.
+    BindWest(ability.TryStart);
+  }
 
   void Awake() {
     Inputs = new();
     Inputs.Enable();
+    GetComponent<Inventory>().OnNewItemAbility += OnNewItemAbility;
   }
 
   void OnDestroy() {
@@ -24,7 +39,7 @@ public class InputHandler : MonoBehaviour {
     OnMove?.Invoke(move.XZ());
     if (Inputs.Player.Sword.WasPerformedThisFrame())  // TODO: charging
       OnSword?.Invoke();
-    if (Inputs.Player.Hammer.WasPerformedThisFrame())
-      OnHammer?.Invoke();
+    if (Inputs.Player.West.WasPerformedThisFrame())
+      OnWest?.Invoke();
   }
 }

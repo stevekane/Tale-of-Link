@@ -55,7 +55,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Hammer"",
+                    ""name"": ""West"",
                     ""type"": ""Button"",
                     ""id"": ""f4d69f7c-c58b-4207-8dec-a77e723343af"",
                     ""expectedControlType"": ""Button"",
@@ -322,7 +322,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Hammer"",
+                    ""action"": ""West"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -333,7 +333,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Hammer"",
+                    ""action"": ""West"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1045,7 +1045,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Sword = m_Player.FindAction("Sword", throwIfNotFound: true);
-        m_Player_Hammer = m_Player.FindAction("Hammer", throwIfNotFound: true);
+        m_Player_West = m_Player.FindAction("West", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_North = m_Player.FindAction("North", throwIfNotFound: true);
         m_Player_L1 = m_Player.FindAction("L1", throwIfNotFound: true);
@@ -1129,7 +1129,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Sword;
-    private readonly InputAction m_Player_Hammer;
+    private readonly InputAction m_Player_West;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_North;
     private readonly InputAction m_Player_L1;
@@ -1144,7 +1144,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Sword => m_Wrapper.m_Player_Sword;
-        public InputAction @Hammer => m_Wrapper.m_Player_Hammer;
+        public InputAction @West => m_Wrapper.m_Player_West;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @North => m_Wrapper.m_Player_North;
         public InputAction @L1 => m_Wrapper.m_Player_L1;
@@ -1170,9 +1170,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Sword.started += instance.OnSword;
             @Sword.performed += instance.OnSword;
             @Sword.canceled += instance.OnSword;
-            @Hammer.started += instance.OnHammer;
-            @Hammer.performed += instance.OnHammer;
-            @Hammer.canceled += instance.OnHammer;
+            @West.started += instance.OnWest;
+            @West.performed += instance.OnWest;
+            @West.canceled += instance.OnWest;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1207,9 +1207,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Sword.started -= instance.OnSword;
             @Sword.performed -= instance.OnSword;
             @Sword.canceled -= instance.OnSword;
-            @Hammer.started -= instance.OnHammer;
-            @Hammer.performed -= instance.OnHammer;
-            @Hammer.canceled -= instance.OnHammer;
+            @West.started -= instance.OnWest;
+            @West.performed -= instance.OnWest;
+            @West.canceled -= instance.OnWest;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1416,7 +1416,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnSword(InputAction.CallbackContext context);
-        void OnHammer(InputAction.CallbackContext context);
+        void OnWest(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnNorth(InputAction.CallbackContext context);
         void OnL1(InputAction.CallbackContext context);
