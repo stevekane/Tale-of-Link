@@ -6,7 +6,7 @@ using UnityEngine;
 // CanRun: can this ability start given the state of the character/game?
 // maybe CanBeCancelled: can this ability be cancelled by the character?
 // maybe CanBeInterrupted: can this ability be interrupted by an event? alternative could just be each ability listens for the events that can interrupt it.
-public class PlayerSword : TmpAbility {
+public class Sword : TmpAbility {
   public bool CanRun => !IsRunning;  // TODO: AbilityManager handles it
   //public bool CanRun => !IsRunning && !Player.Hammer.IsRunning;
 

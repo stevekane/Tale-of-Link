@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerHammer : TmpAbility {
+public class Hammer : TmpAbility {
   public bool CanRun => !IsRunning; // TODO
   //public bool CanRun => !IsRunning && !Player.Sword.IsRunning;
 
