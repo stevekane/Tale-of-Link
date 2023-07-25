@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PlayerHammer : TmpAbility {
-  public Player Player => AbilityManager;
-  public bool CanRun => !IsRunning && !Player.Sword.IsRunning;
+public class Hammer : TmpAbility {
+  public bool CanRun => !IsRunning; // TODO
+  //public bool CanRun => !IsRunning && !Player.Sword.IsRunning;
 
   public Vector3 AttachOffsetTODO;
   public GameObject Model;

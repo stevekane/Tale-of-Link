@@ -6,9 +6,10 @@ public class InputHandler : MonoBehaviour {
   Inputs Inputs;
 
   public Action<Vector3> OnMove;
-  public Action OnSword;
+  public Action OnSouth;
   public Action OnWest;
 
+  Action CurrentOnSouth;
   Action CurrentOnWest;
 
   public void BindWest(Action onWest) {
@@ -17,10 +18,20 @@ public class InputHandler : MonoBehaviour {
     OnWest += onWest;
   }
 
+  public void BindSouth(Action onSouth) {
+    OnSouth -= CurrentOnSouth;
+    CurrentOnSouth = onSouth;
+    OnSouth += onSouth;
+  }
+
   void OnNewItemAbility(TmpAbility ability) {
     // TODO: UI for this
-    // TODO: Only do it if CurrentOnWest is empty.
-    BindWest(ability.TryStart);
+    // TODO: Only do it if Current is empty.
+    switch (ability.DefaultButtonAssignment) {
+    case TmpAbility.Buttons.South: BindSouth(ability.TryStart); break;
+    case TmpAbility.Buttons.West: BindWest(ability.TryStart); break;
+    default: Debug.Assert(false, "Not impl"); break;
+    }
   }
 
   void Awake() {
@@ -38,7 +49,7 @@ public class InputHandler : MonoBehaviour {
     var move = Inputs.Player.Move.ReadValue<Vector2>();
     OnMove?.Invoke(move.XZ());
     if (Inputs.Player.Sword.WasPerformedThisFrame())  // TODO: charging
-      OnSword?.Invoke();
+      OnSouth?.Invoke();
     if (Inputs.Player.West.WasPerformedThisFrame())
       OnWest?.Invoke();
   }

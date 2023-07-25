@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
   public Player Player { get; internal set; }
-  public bool CanMove => !Player.Sword.IsRunning; // TODO: Any ability IsRunning
+  public bool CanMove => true; // TODO: Any ability IsRunning
   //public bool CanMove => !Player.Sword.IsRunning && !Player.Hammer.IsRunning;
 
   public float Speed = 10f;
