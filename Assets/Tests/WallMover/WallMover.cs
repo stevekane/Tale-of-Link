@@ -1,20 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-Requirements:
-
-  + Move robustly in either direction
-  + Handle entering wall space
-  + Handle exiting wall space
-  + Encounter obstacles that prevent you from passing
-  + Handle case where you cannot move as much as you want to
-  + Handle case where you cannot render as much as you want to
-  + Handle collision detection with other wall items
-  - Handle case of moving wall moving away
-  - Handle case of moving onto a moving wall
-*/
-
 public class WallMover : MonoBehaviour {
   [SerializeField] LayerMask LayerMask;
   [SerializeField] int MaxSearchCount = 10;
@@ -26,7 +12,6 @@ public class WallMover : MonoBehaviour {
   public bool ShowHits;
   public bool ShowCorners;
   #endif
-  public float Velocity;
   public float Height = 1;
   public float Width = 1;
   public float MaxDistance => SampleSpacing + WallOffset;
@@ -60,9 +45,34 @@ public class WallMover : MonoBehaviour {
     }
   }
 
+  public void Move(float velocity) {
+    var corners = velocity <= 0 ? LeftCorners : RightCorners;
+    var pathDistance = Distance(corners);
+    var distance = Mathf.Min(Mathf.Abs(velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
+    var newHit = Move(corners, distance);
+    var p = newHit.point;
+    var n = newHit.normal;
+    var rTarget = Quaternion.LookRotation(n, Vector3.up);
+    GetComponent<Controller>().Position = p;
+    GetComponent<Controller>().Forward = n;
+  }
+
+  void OnEnable() {
+    ActivateN(LeftSegments, 0);
+    ActivateN(RightSegments, 0);
+    RightHits.Clear();
+    LeftHits.Clear();
+    RightCorners.Clear();
+    LeftCorners.Clear();
+  }
+
   void OnDisable() {
     ActivateN(LeftSegments, 0);
     ActivateN(RightSegments, 0);
+    RightHits.Clear();
+    LeftHits.Clear();
+    RightCorners.Clear();
+    LeftCorners.Clear();
   }
 
   void FixedUpdate() {
@@ -72,9 +82,11 @@ public class WallMover : MonoBehaviour {
     var rayOrigin = position + WallOffset * normal;
     var rayDirection = -normal;
     var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance, LayerMask);
+    RightHits.Clear();
+    LeftHits.Clear();
+    RightCorners.Clear();
+    LeftCorners.Clear();
     if (didHit) {
-      // right tracing
-      RightHits.Clear();
       RightHits.Add(hit);
       var rightHit = hit;
       for (var i = 0; i < MaxSearchCount; i++) {
@@ -86,9 +98,6 @@ public class WallMover : MonoBehaviour {
           break;
         }
       }
-
-      // left tracing
-      LeftHits.Clear();
       LeftHits.Add(hit);
       var leftHit = hit;
       for (var i = 0; i < MaxSearchCount; i++) {
@@ -100,31 +109,20 @@ public class WallMover : MonoBehaviour {
           break;
         }
       }
+
+      if (RightHits.Count > 0) {
+        RightCorners.Add(RightHits[0]);
+        FindCorners(RightCorners, RightHits);
+        RightCorners.Add(RightHits[RightHits.Count - 1]);
+        RefineToPath(RightCorners);
+      }
+      if (LeftHits.Count > 0) {
+        LeftCorners.Add(LeftHits[0]);
+        FindCorners(LeftCorners, LeftHits);
+        LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
+        RefineToPath(LeftCorners);
+      }
     }
-
-    // calculate corners
-    RightCorners.Clear();
-    RightCorners.Add(RightHits[0]);
-    FindCorners(RightCorners, RightHits);
-    RightCorners.Add(RightHits[RightHits.Count - 1]);
-    RefineToPath(RightCorners);
-    LeftCorners.Clear();
-    LeftCorners.Add(LeftHits[0]);
-    FindCorners(LeftCorners, LeftHits);
-    LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
-    RefineToPath(LeftCorners);
-
-    // compute movement
-    var corners = Velocity <= 0 ? LeftCorners : RightCorners;
-    var pathDistance = Distance(corners);
-    var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
-    var newHit = Move(corners, distance);
-    var p = newHit.point;
-    var n = newHit.normal;
-    var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    transform.SetPositionAndRotation(p, rTarget);
-    // GetComponent<Controller>().Position = p;
-    // GetComponent<Controller>().Forward = n;
   }
 
   void LateUpdate() {

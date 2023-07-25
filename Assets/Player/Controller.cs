@@ -3,47 +3,74 @@ using KinematicCharacterController;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
 public class Controller : MonoBehaviour, ICharacterController {
-  KinematicCharacterMotor Motor;
+  [SerializeField] SimpleAbilityManager AbilityManager;
+  [SerializeField] KinematicCharacterMotor Motor;
 
   public Vector3 Velocity;
-  public Vector3 Forward;
+  public bool WorldSpace {
+    get => Motor.enabled;
+    set => Motor.enabled = value;
+  }
+
   public Vector3 Position {
     get => transform.position;
-    set => Motor.SetPosition(value);
+    set {
+      if (WorldSpace) {
+        Motor.SetPosition(value);
+      } else {
+        transform.position = value;
+      }
+    }
   }
+
+  public Vector3 Forward {
+    get => transform.forward;
+    set {
+      if (WorldSpace) {
+        Motor.SetRotation(Quaternion.LookRotation(value, Vector3.up));
+      } else {
+        transform.forward = value;
+      }
+    }
+  }
+
   public bool DirectMove;
-  public bool IgnoreCollision;
 
   void Start() {
-    Motor = GetComponent<KinematicCharacterMotor>();
     Motor.CharacterController = this;
+  }
+
+  void FixedUpdate() {
+    AbilityManager.SetTag(AbilityTag.Grounded, WorldSpace && Motor.GroundingStatus.FoundAnyGround);
+    AbilityManager.SetTag(AbilityTag.Airborne, WorldSpace && !Motor.GroundingStatus.FoundAnyGround);
+    AbilityManager.SetTag(AbilityTag.WorldSpace, WorldSpace);
+    AbilityManager.SetTag(AbilityTag.WallSpace, !WorldSpace);
   }
 
   void OnDestroy() {
     Motor.CharacterController = null;
   }
 
-  public void AfterCharacterUpdate(float deltaTime) {
+  public void BeforeCharacterUpdate(float deltaTime) {
   }
 
   public void UpdateRotation(ref Quaternion currentRotation, float deltaTime) {
-    if (Forward.sqrMagnitude > 0)
-      currentRotation = Quaternion.LookRotation(Forward, Vector3.up);
+    // Could handle turn speed here
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) {
     if (DirectMove) {
       currentVelocity = Vector3.zero;
     } else {
-      currentVelocity = Velocity;
+      currentVelocity = Velocity + deltaTime * Physics.gravity;
     }
   }
 
-  public void BeforeCharacterUpdate(float deltaTime) {
+  public void AfterCharacterUpdate(float deltaTime) {
   }
 
   public bool IsColliderValidForCollisions(Collider coll) {
-    return !IgnoreCollision;
+    return true;
   }
 
   public void OnDiscreteCollisionDetected(Collider hitCollider) {

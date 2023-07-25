@@ -6,7 +6,9 @@ public static class PhysicsExtensions {
   Vector3 position,
   Vector3 direction,
   float maxDistance,
-  out RaycastHit hit) {
+  out RaycastHit hit,
+  LayerMask layerMask = default,
+  QueryTriggerInteraction queryTriggerInteraction = default) {
     float radius = capsuleCollider.radius;
     Vector3 point1;
     Vector3 point2;
@@ -26,6 +28,6 @@ public static class PhysicsExtensions {
       default:
         throw new System.NotImplementedException("Unknown capsule direction!");
     }
-    return Physics.CapsuleCast(point1, point2, radius, direction, out hit, maxDistance);
+    return Physics.CapsuleCast(point1, point2, radius, direction, out hit, maxDistance, layerMask, queryTriggerInteraction);
   }
 }
