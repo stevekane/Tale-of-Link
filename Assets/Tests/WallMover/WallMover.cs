@@ -122,8 +122,9 @@ public class WallMover : MonoBehaviour {
     var p = newHit.point;
     var n = newHit.normal;
     var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    GetComponent<Controller>().Position = p;
-    GetComponent<Controller>().Forward = n;
+    transform.SetPositionAndRotation(p, rTarget);
+    // GetComponent<Controller>().Position = p;
+    // GetComponent<Controller>().Forward = n;
   }
 
   void LateUpdate() {

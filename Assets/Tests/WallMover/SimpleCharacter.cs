@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
+using KinematicCharacterController;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -58,8 +59,11 @@ public class SimpleCharacter : MonoBehaviour {
     for (var i = 0; i < WallTransitionDuration.Ticks; i++) {
       yield return new WaitForFixedUpdate();
     }
-    GetComponent<Controller>().Position = position;
-    GetComponent<Controller>().Forward = forward;
+    transform.SetPositionAndRotation(position, Quaternion.LookRotation(forward, Vector3.up));
+    GetComponent<Controller>().enabled = false;
+    GetComponent<KinematicCharacterMotor>().enabled = false;
+    // GetComponent<Controller>().Position = position;
+    // GetComponent<Controller>().Forward = forward;
     Model.SetActive(false);
     WallMover.enabled = true;
     WallCamera.Priority = 1;
@@ -72,8 +76,12 @@ public class SimpleCharacter : MonoBehaviour {
     for (var i = 0; i < WallTransitionDuration.Ticks; i++) {
       yield return new WaitForFixedUpdate();
     }
-    GetComponent<Controller>().Position = position;
-    GetComponent<Controller>().Forward = forward;
+    // GetComponent<Controller>().Position = position;
+    // GetComponent<Controller>().Forward = forward;
+    transform.SetPositionAndRotation(position, Quaternion.LookRotation(forward, Vector3.up));
+    GetComponent<Controller>().enabled = true;
+    GetComponent<KinematicCharacterMotor>().enabled = true;
+    GetComponent<KinematicCharacterMotor>().SetPosition(position);
     Model.SetActive(true);
     WallMover.enabled = false;
     WallCamera.Priority = 0;
