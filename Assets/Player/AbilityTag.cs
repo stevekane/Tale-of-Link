@@ -1,0 +1,17 @@
+using System;
+
+public static class FlagLikeExtensions {
+  public static AbilityTag AddFlags(this ref AbilityTag tag, AbilityTag mask) => tag |= mask;
+  public static AbilityTag ClearFlags(this ref AbilityTag tag, AbilityTag mask) => tag &= ~mask;
+  public static bool HasAllFlags(this AbilityTag tag, AbilityTag mask) => (tag & mask) == mask;
+  public static bool HasAnyFlags(this AbilityTag tag, AbilityTag mask) => (tag & mask) != 0;
+}
+
+[Serializable, Flags]
+public enum AbilityTag {
+  Grounded = 1 << 0,
+  Airborne = 1 << 1,
+  WorldSpace = 1 << 2,
+  WallSpace = 1 << 3,
+  InSpaceTransition = 1 << 4,
+}
