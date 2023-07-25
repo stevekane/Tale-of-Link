@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
+using KinematicCharacterController;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -31,6 +32,8 @@ public class SimpleCharacter : MonoBehaviour {
       Debug.LogWarning("not valid entrance");
     } else {
       InWall = true;
+      GetComponent<Controller>().IgnoreCollision = true;
+      GetComponent<Controller>().DirectMove = true;
       StartCoroutine(EnterWall(hit.point, hit.normal));
     }
   }
@@ -45,6 +48,8 @@ public class SimpleCharacter : MonoBehaviour {
       Debug.LogWarning("not valid exit");
     } else {
       InWall = false;
+      GetComponent<Controller>().IgnoreCollision = false;
+      GetComponent<Controller>().DirectMove = false;
       StartCoroutine(ExitWall(transform.position + transform.forward, -transform.forward));
     }
   }
@@ -54,8 +59,11 @@ public class SimpleCharacter : MonoBehaviour {
     for (var i = 0; i < WallTransitionDuration.Ticks; i++) {
       yield return new WaitForFixedUpdate();
     }
-    transform.position = position;
-    transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+    transform.SetPositionAndRotation(position, Quaternion.LookRotation(forward, Vector3.up));
+    GetComponent<Controller>().enabled = false;
+    GetComponent<KinematicCharacterMotor>().enabled = false;
+    // GetComponent<Controller>().Position = position;
+    // GetComponent<Controller>().Forward = forward;
     Model.SetActive(false);
     WallMover.enabled = true;
     WallCamera.Priority = 1;
@@ -68,8 +76,12 @@ public class SimpleCharacter : MonoBehaviour {
     for (var i = 0; i < WallTransitionDuration.Ticks; i++) {
       yield return new WaitForFixedUpdate();
     }
-    transform.position = position;
-    transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+    // GetComponent<Controller>().Position = position;
+    // GetComponent<Controller>().Forward = forward;
+    transform.SetPositionAndRotation(position, Quaternion.LookRotation(forward, Vector3.up));
+    GetComponent<Controller>().enabled = true;
+    GetComponent<KinematicCharacterMotor>().enabled = true;
+    GetComponent<KinematicCharacterMotor>().SetPosition(position);
     Model.SetActive(true);
     WallMover.enabled = false;
     WallCamera.Priority = 0;
@@ -100,9 +112,9 @@ public class SimpleCharacter : MonoBehaviour {
     if (InWall) {
       WallMover.Velocity = WallSpeed * move.x;
     } else {
-      transform.position += Time.fixedDeltaTime * GroundSpeed * move.XZ();
+      GetComponent<Controller>().Velocity = GroundSpeed * move.XZ();
       if (move.sqrMagnitude > 0)
-        transform.rotation = Quaternion.LookRotation(move.XZ(), Vector3.up);
+        GetComponent<Controller>().Forward = move.XZ();
     }
     if (Inputs.Player.L1.WasPerformedThisFrame()) {
       GetComponent<Magic>().Consume(25);

@@ -18,6 +18,7 @@ public class PlayerSword : MonoBehaviour {
   void Awake() {
     GetComponent<InputHandler>().OnSword += () => TryStart(Run);
   }
+
   void OnDestroy() => Scope.Dispose();
 
   void TryStart(TaskFunc func) {
