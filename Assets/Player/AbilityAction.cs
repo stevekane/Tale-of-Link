@@ -5,11 +5,11 @@ using UnityEngine.Serialization;
 public class AbilityAction : IEventSource {
   EventSource Source = new();
   public AbilityTag Tags;
-  [FormerlySerializedAs("CancelAbilitiesWith")]
   public AbilityTag CancelAbilitiesWithAll;
   public AbilityTag CancelAbilitiesWithAny;
-  public AbilityTag AddToOwner;
   public AbilityTag AddToAbility;
+  public AbilityTag AddToOwner;
+  public AbilityTag RemoveFromOwner;
   public AbilityTag OwnerActivationRequired;
   public AbilityTag OwnerActivationBlocked;
   public bool CanRun;
@@ -20,6 +20,7 @@ public class AbilityAction : IEventSource {
   public void Clear() => Source.Clear();
   public void Fire() {
     Ability.AddedToOwner.AddFlags(AddToOwner);
+    Ability.RemovedFromOwner.AddFlags(RemoveFromOwner);
     Ability.Tags.AddFlags(AddToAbility);
     Source.Fire();
   }
@@ -32,8 +33,9 @@ public class AbilityAction<T> : IEventSource<T> {
   [FormerlySerializedAs("CancelAbilitiesWith")]
   public AbilityTag CancelAbilitiesWithAll;
   public AbilityTag CancelAbilitiesWithAny;
-  public AbilityTag AddToOwner;
   public AbilityTag AddToAbility;
+  public AbilityTag AddToOwner;
+  public AbilityTag RemoveFromOwner;
   public AbilityTag OwnerActivationRequired;
   public AbilityTag OwnerActivationBlocked;
   public bool CanRun;
@@ -44,6 +46,7 @@ public class AbilityAction<T> : IEventSource<T> {
   public void Clear() => Source.Clear();
   public void Fire(T t) {
     Ability.AddedToOwner.AddFlags(AddToOwner);
+    Ability.RemovedFromOwner.AddFlags(RemoveFromOwner);
     Ability.Tags.AddFlags(AddToAbility);
     Source.Fire(t);
   }

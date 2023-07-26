@@ -45,6 +45,8 @@ public class WallMover : MonoBehaviour {
     }
   }
 
+  // TODO: Possibly make this more resilient to being called inappropriately?
+  // Currently, it assumes there exists corner data that is valid.
   public void Move(float velocity) {
     var corners = velocity <= 0 ? LeftCorners : RightCorners;
     var pathDistance = Distance(corners);

@@ -1,6 +1,102 @@
 using UnityEngine;
 using KinematicCharacterController;
 
+/*
+Character state
+  WorldSpace
+    Spawning
+      Immune
+      NoTurn
+      NoItem
+      NoAttack
+      NoBlock
+    Teleport
+      Immune
+      NoTurn
+      NoMove
+      NoItem
+      NoAttack
+      NoBlock
+    Blocking
+      NoTurn
+      NoItem
+      NoAttack
+      NoBlock
+    Attacking
+      NoTurn
+      NoAttack
+      NoBlock
+    Using Item
+      NoAttack
+      NoItem
+      NoBlock
+    Grabbing
+      NoTurn
+      NoMove
+      NoAttack
+      NoItem
+      NoBlock
+    Holding
+      NoAttack
+      NoItem
+      NoBlock
+    Throwing
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    Falling
+      NoMove
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    Jumping
+      NoMove
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    Dazed
+      NoMove
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    Knockdown
+      NoMove
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    OnGround
+      NoMove
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    GetUp
+      NoMove
+      NoTurn
+      NoAttack
+      NoItem
+      NoBlock
+    Dying
+      Immune
+      NoTurn
+      NoMove
+      NoItem
+      NoAttack
+      NoBlock
+    Dead
+      Immune
+      NoTurn
+      NoMove
+      NoItem
+      NoAttack
+      NoBlock
+*/
+
 [RequireComponent(typeof(KinematicCharacterMotor))]
 public class Controller : MonoBehaviour, ICharacterController {
   [SerializeField] SimpleAbilityManager AbilityManager;
@@ -62,7 +158,8 @@ public class Controller : MonoBehaviour, ICharacterController {
     if (DirectMove) {
       currentVelocity = Vector3.zero;
     } else {
-      currentVelocity = Velocity + deltaTime * Physics.gravity;
+      Velocity.y = Motor.GroundingStatus.FoundAnyGround ? 0 : Velocity.y + deltaTime * Physics.gravity.y;
+      currentVelocity = Velocity;
     }
   }
 

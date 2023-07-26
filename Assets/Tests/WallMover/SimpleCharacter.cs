@@ -2,24 +2,13 @@ using UnityEngine;
 
 [DefaultExecutionOrder(-700)]
 public class SimpleCharacter : MonoBehaviour {
-  [SerializeField] float GroundSpeed = 5;
-  [SerializeField] float WallSpeed = 3;
-  [SerializeField] CapsuleCollider CapsuleCollider;
-  [SerializeField] Mesh CapsuleMesh;
-  [SerializeField] float EnterDistance = 1;
-  [SerializeField] float ExitDistance = 1;
-  [SerializeField] LayerMask LayerMask;
-
-  [SerializeField] Controller Controller;
   [SerializeField] SimpleAbilityManager AbilityManager;
   [SerializeField] EnterWallSpace EnterWallSpace;
   [SerializeField] ExitWallSpace ExitWallSpace;
-  [SerializeField] WallMover WallMover;
+  [SerializeField] WorldSpaceMove WorldSpaceMove;
+  [SerializeField] WallSpaceMove WallSpaceMove;
 
   Inputs Inputs;
-
-  bool InTransition => AbilityManager.HasTag(AbilityTag.InSpaceTransition);
-  bool InWall => AbilityManager.HasTag(AbilityTag.WallSpace);
 
   void Awake() {
     Inputs = new();
@@ -41,12 +30,10 @@ public class SimpleCharacter : MonoBehaviour {
       }
     }
     var move = Inputs.Player.Move.ReadValue<Vector2>();
-    if (InWall) {
-      WallMover.Move(WallSpeed * move.x);
-    } else {
-      Controller.Velocity = GroundSpeed * move.XZ();
-      if (move.sqrMagnitude > 0)
-        Controller.Forward = move.XZ();
+    if (AbilityManager.CanRun(WallSpaceMove.Move)) {
+      AbilityManager.Run(WallSpaceMove.Move, move);
+    } else if (AbilityManager.CanRun(WorldSpaceMove.Move)) {
+      AbilityManager.Run(WorldSpaceMove.Move, new(move.x, 0, move.y));
     }
     if (Inputs.Player.L1.WasPerformedThisFrame()) {
       GetComponent<Magic>().Consume(25);

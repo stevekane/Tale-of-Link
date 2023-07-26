@@ -14,4 +14,8 @@ public enum AbilityTag {
   WorldSpace = 1 << 2,
   WallSpace = 1 << 3,
   InSpaceTransition = 1 << 4,
+  CanMove = 1 << 5,
+  CanRotate = 1 << 6,
+  CanAttack = 1 << 7,
+  CanUseItem = 1 << 8,
 }

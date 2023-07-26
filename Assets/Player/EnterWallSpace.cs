@@ -20,8 +20,9 @@ public class EnterWallSpace : ClassicAbility {
   public override async Task MainAction(TaskScope scope) {
     var start = Controller.transform.position;
     var direction = Controller.transform.forward;
-    var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
-    if (didHit && !hit.collider.CompareTag("Blocker")) {
+    var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
+    var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    if (capsuleHit && rayHit && !hit.collider.CompareTag("Blocker")) {
       Controller.DirectMove = true;
       Controller.WorldSpace = false;
       // use our current height + the position of the point of contact
@@ -45,7 +46,8 @@ public class EnterWallSpace : ClassicAbility {
     var direction = Controller.transform.forward;
     var end = start + distance * direction;
     var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, distance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
-    var color = didHit
+    var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    var color = didHit && rayHit
       ? hit.collider.CompareTag("Blocker")
         ? Color.yellow
         : Color.white

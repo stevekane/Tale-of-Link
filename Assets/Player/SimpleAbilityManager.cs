@@ -60,6 +60,13 @@ public class SimpleAbilityManager : MonoBehaviour {
     action.Fire(t);
   }
 
+  void Awake() {
+    AddTag(AbilityTag.CanMove);
+    AddTag(AbilityTag.CanRotate);
+    AddTag(AbilityTag.CanAttack);
+    AddTag(AbilityTag.CanUseItem);
+  }
+
   void OnDestroy() => Abilities.ForEach(a => a.Stop());
 
   void FixedUpdate() {
@@ -88,6 +95,8 @@ public class SimpleAbilityManager : MonoBehaviour {
   }
 
   AbilityTag AbilityOwnerTagsWhere(Predicate<SimpleAbility> predicate, AbilityTag tag = default) {
-    return Abilities.Aggregate(tag, (tags, ability) => tags | (predicate(ability) ? ability.AddedToOwner : default));
+    var addedTags = Abilities.Aggregate(tag, (tags, ability) => tags | (predicate(ability) ? ability.AddedToOwner : default));
+    var removedTags = Abilities.Aggregate(default(AbilityTag), (tags, ability) => tags | (predicate(ability) ? ability.RemovedFromOwner : default));
+    return addedTags & ~removedTags;
   }
 }
