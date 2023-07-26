@@ -125,9 +125,6 @@ public class WallMover : MonoBehaviour {
         RefineToPath(LeftCorners);
       }
     }
-  }
-
-  void LateUpdate() {
     var rightSegmentCount = UpdateSegments(Width/2, RightCorners, RightSegments, right:true);
     var leftSegmentCount = UpdateSegments(Width/2, LeftCorners, LeftSegments, right:false);
     ActivateN(LeftSegments, leftSegmentCount);

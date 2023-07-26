@@ -2,6 +2,7 @@ using UnityEngine;
 
 [DefaultExecutionOrder(ScriptExecutionGroups.Ability)]
 public abstract class SimpleAbility : MonoBehaviour {
+  public string Name;
   public AbilityTag BlockActionsWith;
   public AbilityTag Tags;
   public AbilityTag AddedToOwner;

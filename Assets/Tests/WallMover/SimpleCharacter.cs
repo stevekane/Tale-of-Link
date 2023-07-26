@@ -21,6 +21,9 @@ public class SimpleCharacter : MonoBehaviour {
   }
 
   void FixedUpdate() {
+    // This is evaluation of poetential inputs
+
+    // This is response to inputs
     var wallMerge = Inputs.Player.North.WasPerformedThisFrame();
     if (wallMerge) {
       if (AbilityManager.CanRun(EnterWallSpace.Main)) {
