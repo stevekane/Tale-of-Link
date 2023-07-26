@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd14616e2e9d044db45ba75d05b3ee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Merge
   BlockActionsWith: 0
   Tags: 0
   AddedToOwner: 16
@@ -153,10 +153,11 @@ MonoBehaviour:
     CanRun: 1
     Ability: {fileID: 4027047827161457634}
   WallTransitionDuration:
-    Millis: 1
+    Millis: 250
   WallSpaceAvatar: {fileID: 9208589874680415882}
   WorldSpaceAvatar: {fileID: 3738354857724212523}
-  Controller: {fileID: 8309471275002162877}
+  WorldSpaceController: {fileID: 8309471275002162877}
+  WallSpaceController: {fileID: 564491022243026999}
   WallSpaceCamera: {fileID: 0}
   WorldSpaceCamera: {fileID: 0}
   LayerMask:
@@ -342,13 +343,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72bb0c3319265664a9261873fc5ef3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Wall Move
   BlockActionsWith: 0
   Tags: 0
   AddedToOwner: 0
   RemovedFromOwner: 0
   Speed: 3
-  WallMover: {fileID: 564491022243026999}
+  WallSpaceController: {fileID: 564491022243026999}
   Move:
     Tags: 0
     CancelAbilitiesWithAll: 0
@@ -704,7 +705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8aa1c302c5f3c4e8b36d6bbf0d14d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Teleport
   BlockActionsWith: 0
   Tags: 0
   AddedToOwner: 0
@@ -920,7 +921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976ea5074ea009142abba830f26c5c41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Exit
   BlockActionsWith: 0
   Tags: 0
   AddedToOwner: 16
@@ -937,10 +938,11 @@ MonoBehaviour:
     CanRun: 1
     Ability: {fileID: 7096482464801049942}
   WallTransitionDuration:
-    Millis: 1
+    Millis: 250
   WallSpaceAvatar: {fileID: 9208589874680415882}
   WorldSpaceAvatar: {fileID: 3738354857724212523}
-  Controller: {fileID: 8309471275002162877}
+  WorldSpaceController: {fileID: 8309471275002162877}
+  WallSpaceController: {fileID: 564491022243026999}
   WallSpaceCamera: {fileID: 0}
   WorldSpaceCamera: {fileID: 0}
   LayerMask:
@@ -1379,6 +1381,7 @@ MonoBehaviour:
   - {fileID: 7756885287885573326}
   - {fileID: 7869123210201059520}
   - {fileID: 1778330487443325235}
+  AbilityManager: {fileID: 324376866214748373}
   ShowHits: 1
   ShowCorners: 1
   Height: 1
@@ -1508,12 +1511,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c665edafe37de04bac009bf6301ee87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: World Move
   BlockActionsWith: 0
   Tags: 0
   AddedToOwner: 0
   RemovedFromOwner: 0
-  Controller: {fileID: 8309471275002162877}
+  WorldSpaceController: {fileID: 8309471275002162877}
   Speed: 5
   Move:
     Tags: 0

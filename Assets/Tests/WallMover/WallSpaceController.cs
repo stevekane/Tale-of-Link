@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallMover : MonoBehaviour {
+public class WallSpaceController : MonoBehaviour {
   [SerializeField] LayerMask LayerMask;
   [SerializeField] int MaxSearchCount = 10;
   [SerializeField] float SampleSpacing = .25f;
   [SerializeField] float WallOffset = .05f;
   [SerializeField] WallEntitySegment[] RightSegments;
   [SerializeField] WallEntitySegment[] LeftSegments;
+  [SerializeField] SimpleAbilityManager AbilityManager;
   #if UNITY_EDITOR
   public bool ShowHits;
   public bool ShowCorners;
@@ -55,8 +56,7 @@ public class WallMover : MonoBehaviour {
     var p = newHit.point;
     var n = newHit.normal;
     var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    GetComponent<Controller>().Position = p;
-    GetComponent<Controller>().Forward = n;
+    transform.SetPositionAndRotation(p, rTarget);
   }
 
   void OnEnable() {
@@ -66,6 +66,7 @@ public class WallMover : MonoBehaviour {
     LeftHits.Clear();
     RightCorners.Clear();
     LeftCorners.Clear();
+    AbilityManager.AddTag(AbilityTag.WallSpace);
   }
 
   void OnDisable() {
@@ -75,6 +76,7 @@ public class WallMover : MonoBehaviour {
     LeftHits.Clear();
     RightCorners.Clear();
     LeftCorners.Clear();
+    AbilityManager.RemoveTag(AbilityTag.WallSpace);
   }
 
   void FixedUpdate() {
@@ -125,6 +127,16 @@ public class WallMover : MonoBehaviour {
         RefineToPath(LeftCorners);
       }
     }
+  }
+
+  void LateUpdate() {
+    // NOTE: This isn't correct or good.
+    // The problem with doing this, is that the segments contain physics colliders
+    // as well as decal projectors which should be updated in Fixed update.
+    // When I move this code to fixed update, I see what seems to be some kind of
+    // single frame hitch caused by the camera when you cross corners... it's hard to explain
+    // but easy to reproduce. I don't know what is causing this though I suepect it has something
+    // to do with the order the camera/WallMover are processed
     var rightSegmentCount = UpdateSegments(Width/2, RightCorners, RightSegments, right:true);
     var leftSegmentCount = UpdateSegments(Width/2, LeftCorners, LeftSegments, right:false);
     ActivateN(LeftSegments, leftSegmentCount);

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class WorldSpaceMove : SimpleAbility {
-  [SerializeField] Controller Controller;
+  [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] float Speed = 5;
 
   Vector3 Velocity;
@@ -20,8 +20,8 @@ public class WorldSpaceMove : SimpleAbility {
     var magnitude = Mathf.Min(2 * Speed, dvxz.magnitude);
     var dv = magnitude * dvxz.normalized;
     Velocity = v1;
-    Controller.Velocity += dv;
+    WorldSpaceController.Velocity += dv;
     if (stick.sqrMagnitude > 0)
-      Controller.Forward = stick;
+      WorldSpaceController.Forward = stick;
   }
 }

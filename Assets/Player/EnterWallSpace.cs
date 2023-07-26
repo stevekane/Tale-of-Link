@@ -9,7 +9,8 @@ public class EnterWallSpace : ClassicAbility {
   [SerializeField] Timeval WallTransitionDuration;
   [SerializeField] GameObject WallSpaceAvatar;
   [SerializeField] GameObject WorldSpaceAvatar;
-  [SerializeField] Controller Controller;
+  [SerializeField] WorldSpaceController WorldSpaceController;
+  [SerializeField] WallSpaceController WallSpaceController;
   [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
   [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
   [SerializeField] LayerMask LayerMask;
@@ -18,23 +19,20 @@ public class EnterWallSpace : ClassicAbility {
   [SerializeField] float EnterDistance = 1;
 
   public override async Task MainAction(TaskScope scope) {
-    var start = Controller.transform.position;
-    var direction = Controller.transform.forward;
+    var start = WorldSpaceController.transform.position;
+    var direction = WorldSpaceController.transform.forward;
     var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
     if (capsuleHit && rayHit && !hit.collider.CompareTag("Blocker")) {
-      Controller.DirectMove = true;
-      Controller.WorldSpace = false;
-      // use our current height + the position of the point of contact
-      // we add Vector3.up to it because wallspace positions are at the half-height of the worldspace actor
-      // TODO: possibly change this for wallspace actors?
-      Controller.Position = hit.point.XZ() + Controller.transform.position.y * Vector3.up + Vector3.up;
-      Controller.Forward = hit.normal;
+      WorldSpaceController.enabled = false;
+      WallSpaceController.enabled = true;
+      WallSpaceController.transform.position = hit.point.XZ() + WorldSpaceController.transform.position.y * Vector3.up + Vector3.up;
+      WallSpaceController.transform.forward = hit.normal; //TODO: Is this normal ever suspect? Maybe it is sometimes?
       WorldSpaceAvatar.SetActive(false);
       WallSpaceAvatar.SetActive(true);
-      await scope.Ticks(WallTransitionDuration.Ticks);
       WallSpaceCamera.Priority = 1;
       WorldSpaceCamera.Priority = 0;
+      await scope.Ticks(WallTransitionDuration.Ticks);
     }
   }
 
@@ -42,8 +40,8 @@ public class EnterWallSpace : ClassicAbility {
     if (!AbilityManager || !AbilityManager.CanRun(Main))
       return;
     var distance = EnterDistance;
-    var start = Controller.transform.position + Vector3.up;
-    var direction = Controller.transform.forward;
+    var start = WorldSpaceController.transform.position + Vector3.up;
+    var direction = WorldSpaceController.transform.forward;
     var end = start + distance * direction;
     var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, distance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Teleporter : ClassicAbility {
-  [SerializeField] Controller Controller;
+  [SerializeField] WorldSpaceController Controller;
   [SerializeField] RawImage CameraOverlay;
   [SerializeField] Timeval FadeOutDuration = Timeval.FromSeconds(1);
   [SerializeField] Timeval FadeInDuration = Timeval.FromSeconds(1);

@@ -2,7 +2,7 @@ using Cinemachine;
 using UnityEngine;
 
 public class WallCameraExtension : CinemachineExtension {
-  public WallMover WallMover;
+  public WallSpaceController WallMover;
   public float DistanceFromTarget = 5f;
   public float ZoomSpeed = 5;
   public LayerMask LayerMask;
