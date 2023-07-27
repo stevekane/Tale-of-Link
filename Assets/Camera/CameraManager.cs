@@ -21,6 +21,7 @@ public class CameraManager : LevelManager<CameraManager> {
     player.GetComponent<WorldSpaceController>().OnEnterWorldSpace += OnEnterWorldSpace;
     WorldSpaceCamera.Follow = player.transform;
     WallSpaceCamera.LookAt = player.transform;
+    WallSpaceCamera.GetComponent<WallCameraExtension>().WallMover = player.GetComponent<WallSpaceController>();
   }
 
   void OnPlayerDespawn(Player player) {
@@ -28,6 +29,7 @@ public class CameraManager : LevelManager<CameraManager> {
     player.GetComponent<WorldSpaceController>().OnEnterWorldSpace -= OnEnterWorldSpace;
     WorldSpaceCamera.Follow = null;
     WallSpaceCamera.LookAt = null;
+    WallSpaceCamera.GetComponent<WallCameraExtension>().WallMover = null;
   }
 
   void OnEnterWallSpace() {

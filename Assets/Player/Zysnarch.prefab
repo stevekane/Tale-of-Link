@@ -158,8 +158,6 @@ MonoBehaviour:
   WorldSpaceAvatar: {fileID: 3738354857724212523}
   WorldSpaceController: {fileID: 8309471275002162877}
   WallSpaceController: {fileID: 564491022243026999}
-  WallSpaceCamera: {fileID: 0}
-  WorldSpaceCamera: {fileID: 0}
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -536,6 +534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1268156696476029874}
+  - component: {fileID: 6890628966732989283}
   - component: {fileID: 7660864330761183983}
   - component: {fileID: 2346447025377301930}
   m_Layer: 0
@@ -568,6 +567,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &6890628966732989283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2880601433989100742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9409854349565459febf2e78ed5b4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!223 &7660864330761183983
 Canvas:
   m_ObjectHideFlags: 0
@@ -852,7 +863,6 @@ MonoBehaviour:
     CanRun: 1
     Ability: {fileID: 5079681094745868573}
   Controller: {fileID: 8309471275002162877}
-  CameraOverlay: {fileID: 0}
   FadeOutDuration:
     Millis: 750
   FadeInDuration:
@@ -1074,8 +1084,6 @@ MonoBehaviour:
   WorldSpaceAvatar: {fileID: 3738354857724212523}
   WorldSpaceController: {fileID: 8309471275002162877}
   WallSpaceController: {fileID: 564491022243026999}
-  WallSpaceCamera: {fileID: 0}
-  WorldSpaceCamera: {fileID: 0}
   LayerMask:
     serializedVersion: 2
     m_Bits: 1

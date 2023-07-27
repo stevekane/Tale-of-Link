@@ -341,17 +341,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31db96dc26588974ebdbb97d2532d8d3, type: 3}
---- !u!114 &41313730 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 564491022243026999, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
-  m_PrefabInstance: {fileID: 7056903015988068420}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8932fe57c0a55044889b67a13297751a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &83778093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2739,7 +2728,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1545796864535940041, guid: c79b639e0d0566f4a8eedb3739809c68, type: 3}
       propertyPath: m_Name
-      value: TaskManager
+      value: Task Manager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2957,10 +2946,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1382008809924908941, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
-      propertyPath: WallMover
-      value: 
-      objectReference: {fileID: 41313730}
     - target: {fileID: 2904240148410168248, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -3634,10 +3619,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7660864330761183983, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 812702039}
     - target: {fileID: 8016370706846567013, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
