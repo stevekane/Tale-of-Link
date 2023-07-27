@@ -29,7 +29,7 @@ public class AbilityManager : MonoBehaviour {
   }
 
   public bool CanRun(AbilityAction action) {
-    var predicateSatisfied = action.CanRun;
+    var predicateSatisfied = action.CanRun();
     var ownerTagsAfterCancelations = AbilityOwnerTagsWhere(a => a.IsRunning && !IsCancellable(action, a), SystemTags);
     var ownerAllowed = ownerTagsAfterCancelations.HasAllFlags(action.OwnerActivationRequired);
     var ownerBlocked = ownerTagsAfterCancelations.HasAnyFlags(action.OwnerActivationBlocked);
@@ -38,7 +38,7 @@ public class AbilityManager : MonoBehaviour {
   }
 
   public bool CanRun<T>(AbilityAction<T> action) {
-    var predicateSatisfied = action.CanRun;
+    var predicateSatisfied = action.CanRun();
     var ownerTagsAfterCancelations = AbilityOwnerTagsWhere(a => a.IsRunning && !IsCancellable(action, a), SystemTags);
     var ownerAllowed = ownerTagsAfterCancelations.HasAllFlags(action.OwnerActivationRequired);
     var ownerBlocked = ownerTagsAfterCancelations.HasAnyFlags(action.OwnerActivationBlocked);

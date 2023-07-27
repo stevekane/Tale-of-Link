@@ -13,6 +13,19 @@ public class ExitWallSpace: ClassicAbility {
   [SerializeField] Mesh CapsuleMesh;
   [SerializeField] float ExitDistance = 1f;
 
+  protected override void Awake() {
+    base.Awake();
+    Main.CanRun = CanRun;
+  }
+
+  bool CanRun() {
+    var start = WorldSpaceController.transform.position;
+    var direction = WorldSpaceController.transform.forward;
+    var invalidExit = CapsuleCollider.CapsuleColliderCast(start, direction, ExitDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
+    var rayHit = Physics.Raycast(start, direction, out hit, ExitDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    return !invalidExit && !rayHit;
+  }
+
   public override async Task MainAction(TaskScope scope) {
     var start = WorldSpaceController.transform.position;
     var direction = WorldSpaceController.transform.forward;

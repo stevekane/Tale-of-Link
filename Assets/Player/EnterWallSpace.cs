@@ -13,6 +13,19 @@ public class EnterWallSpace : ClassicAbility {
   [SerializeField] Mesh CapsuleMesh;
   [SerializeField] float EnterDistance = 1;
 
+  protected override void Awake() {
+    base.Awake();
+    Main.CanRun = CanRun;
+  }
+
+  bool CanRun() {
+    var start = WorldSpaceController.transform.position;
+    var direction = WorldSpaceController.transform.forward;
+    var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
+    var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    return capsuleHit && rayHit && !hit.collider.CompareTag("Blocker");
+  }
+
   public override async Task MainAction(TaskScope scope) {
     var start = WorldSpaceController.transform.position;
     var direction = WorldSpaceController.transform.forward;

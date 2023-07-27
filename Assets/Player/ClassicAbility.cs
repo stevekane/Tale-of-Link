@@ -13,8 +13,7 @@ public abstract class ClassicAbility : Ability {
   }
   public AbilityAction Main;
 
-  void Awake() {
-    Main.CanRun = true;
+  protected virtual void Awake() {
     Main.Ability = this;
     Main.Listen(FireMain);
   }
