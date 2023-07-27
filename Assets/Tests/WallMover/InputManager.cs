@@ -12,8 +12,29 @@ public class InputManager : MonoBehaviour {
 
   public UnityAction<string> OnInteractChange;
 
+  AbilityAction WestAction;
+  AbilityAction SouthAction;
+
   Inputs Inputs;
   AbilityAction[] InteractPriority;
+
+  public void BindWest(AbilityAction action) {
+    WestAction = action;
+  }
+
+  public void BindSouth(AbilityAction action) {
+    SouthAction = action;
+  }
+
+  void OnNewItemAbility(IItemAbility ability) {
+    // TODO: UI for this
+    // TODO: Only do it if Current is empty.
+    switch (ability.DefaultButtonAssignment) {
+    case IItemAbility.Buttons.South: BindSouth(ability.Action); break;
+    case IItemAbility.Buttons.West: BindWest(ability.Action); break;
+    default: Debug.Assert(false, "Not impl"); break;
+    }
+  }
 
   void Awake() {
     Inputs = new();
@@ -23,6 +44,7 @@ public class InputManager : MonoBehaviour {
       EnterWallSpace.Main,
       ExitWallSpace.Main,
     };
+    GetComponent<Inventory>().OnNewItemAbility += OnNewItemAbility;
   }
 
   void OnDestroy() {
@@ -47,6 +69,11 @@ public class InputManager : MonoBehaviour {
     } else if (AbilityManager.CanRun(WorldSpaceMove.Move)) {
       AbilityManager.Run(WorldSpaceMove.Move, new(move.x, 0, move.y));
     }
+
+    if (Inputs.Player.South.WasPerformedThisFrame() && AbilityManager.CanRun(SouthAction))  // TODO: charging
+      AbilityManager.Run(SouthAction);
+    if (Inputs.Player.West.WasPerformedThisFrame() && AbilityManager.CanRun(WestAction))
+      AbilityManager.Run(WestAction);
 
     if (Inputs.Player.L1.WasPerformedThisFrame()) {
       GetComponent<Magic>().Consume(25);
