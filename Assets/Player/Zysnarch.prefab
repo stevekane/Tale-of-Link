@@ -1696,6 +1696,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5567718968694952789}
+  - component: {fileID: 4167558231185268689}
   - component: {fileID: 324376866214748373}
   - component: {fileID: 3723501747940011600}
   - component: {fileID: 8687567913969326341}
@@ -1734,6 +1735,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+--- !u!114 &4167558231185268689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244601922c6bb8b47ba5cef998bbf012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &324376866214748373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1932,7 +1945,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AbilityManager: {fileID: 324376866214748373}
   Motor: {fileID: 363960544773001967}
-  Velocity: {x: 0, y: 0, z: 0}
+  MaxMoveSpeed: 0
+  PhysicsAcceleration: {x: 0, y: 0, z: 0}
+  PhysicsVelocity: {x: 0, y: 0, z: 0}
+  ScriptVelocity: {x: 0, y: 0, z: 0}
   DirectMove: 0
 --- !u!114 &5904440407964557133
 MonoBehaviour:

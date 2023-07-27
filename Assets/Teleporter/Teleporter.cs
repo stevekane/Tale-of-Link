@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Teleporter : ClassicAbility {
   [SerializeField] WorldSpaceController Controller;
-  [SerializeField] RawImage CameraOverlay;
   [SerializeField] Timeval FadeOutDuration = Timeval.FromSeconds(1);
   [SerializeField] Timeval FadeInDuration = Timeval.FromSeconds(1);
   [SerializeField] float Speed = 1;
@@ -33,17 +31,13 @@ public class Teleporter : ClassicAbility {
       for (var i = 0; i <= FadeOutDuration.Ticks; i++) {
         Controller.Position = Vector3.MoveTowards(Controller.Position, Source.transform.position, Time.fixedDeltaTime * Speed);
         Controller.Forward = Quaternion.RotateTowards(Controller.transform.rotation, Source.transform.rotation, Time.fixedDeltaTime * TurnSpeed) * Vector3.forward;
-        var color = CameraOverlay.color;
-        color.a = (float)i/FadeOutDuration.Ticks;
-        CameraOverlay.color = color;
+        CameraManager.Instance.ScreenFadeOverlay.alpha = (float)i/FadeOutDuration.Ticks;
         await scope.Tick();
       }
       Controller.Position = Source.Exit.transform.position;
       Controller.Forward = Source.Exit.transform.forward;
       for (var i = 0; i <= FadeInDuration.Ticks; i++) {
-        var color = CameraOverlay.color;
-        color.a = 1f-(float)i/FadeInDuration.Ticks;
-        CameraOverlay.color = color;
+        CameraManager.Instance.ScreenFadeOverlay.alpha = 1f-(float)i/FadeInDuration.Ticks;
         await scope.Tick();
       }
     } catch (System.Exception e) {

@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using UnityEngine;
-using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,8 +10,6 @@ public class EnterWallSpace : ClassicAbility {
   [SerializeField] GameObject WorldSpaceAvatar;
   [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] WallSpaceController WallSpaceController;
-  [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
-  [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
   [SerializeField] LayerMask LayerMask;
   [SerializeField] CapsuleCollider CapsuleCollider;
   [SerializeField] Mesh CapsuleMesh;
@@ -30,8 +27,6 @@ public class EnterWallSpace : ClassicAbility {
       WallSpaceController.transform.forward = hit.normal; //TODO: Is this normal ever suspect? Maybe it is sometimes?
       WorldSpaceAvatar.SetActive(false);
       WallSpaceAvatar.SetActive(true);
-      WallSpaceCamera.Priority = 1;
-      WorldSpaceCamera.Priority = 0;
       await scope.Ticks(WallTransitionDuration.Ticks);
     }
   }

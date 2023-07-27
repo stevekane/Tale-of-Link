@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using KinematicCharacterController;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
@@ -11,6 +12,8 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public Vector3 PhysicsAcceleration;
   public Vector3 PhysicsVelocity;
   public Vector3 ScriptVelocity;
+  public UnityAction OnEnterWorldSpace;
+  public UnityAction OnExitWorldSpace;
 
   public void Unground() {
     Motor.ForceUnground();
@@ -40,11 +43,13 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
 
   void OnEnable() {
     AbilityManager.AddTag(AbilityTag.WorldSpace);
+    OnEnterWorldSpace?.Invoke();
     Motor.enabled = true;
   }
 
   void OnDisable() {
     AbilityManager.RemoveTag(AbilityTag.WorldSpace);
+    OnExitWorldSpace?.Invoke();
     Motor.enabled = false;
   }
 

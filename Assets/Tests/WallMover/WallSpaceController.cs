@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class WallSpaceController : MonoBehaviour {
   [SerializeField] LayerMask LayerMask;
@@ -31,6 +32,8 @@ public class WallSpaceController : MonoBehaviour {
       return normal;
     }
   }
+  public UnityAction OnEnterWallSpace;
+  public UnityAction OnExitWallSpace;
 
   List<RaycastHit> LeftCorners = new();
   List<RaycastHit> RightCorners = new();
@@ -69,6 +72,7 @@ public class WallSpaceController : MonoBehaviour {
     RightCorners.Clear();
     LeftCorners.Clear();
     AbilityManager.AddTag(AbilityTag.WallSpace);
+    OnEnterWallSpace?.Invoke();
   }
 
   void OnDisable() {
@@ -79,6 +83,7 @@ public class WallSpaceController : MonoBehaviour {
     RightCorners.Clear();
     LeftCorners.Clear();
     AbilityManager.RemoveTag(AbilityTag.WallSpace);
+    OnExitWallSpace?.Invoke();
   }
 
   void FixedUpdate() {

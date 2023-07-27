@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using UnityEngine;
-using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,8 +10,6 @@ public class ExitWallSpace: ClassicAbility {
   [SerializeField] GameObject WorldSpaceAvatar;
   [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] WallSpaceController WallSpaceController;
-  [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
-  [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
   [SerializeField] LayerMask LayerMask;
   [SerializeField] CapsuleCollider CapsuleCollider;
   [SerializeField] Mesh CapsuleMesh;
@@ -30,8 +27,6 @@ public class ExitWallSpace: ClassicAbility {
       WorldSpaceController.Forward = direction;
       WallSpaceAvatar.SetActive(false);
       WorldSpaceAvatar.SetActive(true);
-      WorldSpaceCamera.Priority = 1;
-      WallSpaceCamera.Priority = 0;
       await scope.Ticks(WallTransitionDuration.Ticks);
     }
   }
