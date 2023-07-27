@@ -1,19 +1,16 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class JumpPad : MonoBehaviour {
-  public Hurtbox Hurtbox;
   public GameObject Model;
-  public Collider Collider;
-  public LayerMask LayerMask;
   public Vector3 Extents = new Vector3(1, 1, 1);
   public Timeval SquashDuration = Timeval.FromSeconds(1.5f);
   public Vector3 SquashOffset = new Vector3(0, .15f, 0);
+  public List<WorldSpaceController> Controllers = new();
   int TicksRemaining = -1;
 
   private void Awake() {
     GetComponent<Combatant>().OnHurt += OnHurt;
-    Collider.enabled = true;
   }
 
   void OnHurt(HitEvent hit) {
@@ -22,26 +19,32 @@ public class JumpPad : MonoBehaviour {
     Squash();
   }
 
-  void Squash() {
-    TicksRemaining = SquashDuration.Ticks;
-    Model.transform.localPosition -= SquashOffset;
-    Collider.enabled = false;
+  void OnTriggerEnter(Collider c) {
+    if (c.TryGetComponent(out WorldSpaceController controller)) {
+      Controllers.Add(controller);
+    }
   }
 
-  void Popup() {
-    var hits = Physics.OverlapBox(transform.position, Extents, transform.rotation, LayerMask, QueryTriggerInteraction.Collide);
-    hits.ForEach(c => {
-      if (c.TryGetComponent(out Hurtbox hb))
-        hb.Owner.GetComponent<Rigidbody>().AddForce(7f * Vector3.up, ForceMode.VelocityChange);
-    });
-    Model.transform.localPosition += SquashOffset;
-    Collider.enabled = true;
-    // Fling Link
+  void OnTriggerExit(Collider c) {
+    if (c.TryGetComponent(out WorldSpaceController controller)) {
+      Controllers.Remove(controller);
+    }
   }
 
   void FixedUpdate() {
     if (TicksRemaining > 0 && --TicksRemaining <= 0) {
       Popup();
     }
+  }
+
+  void Squash() {
+    TicksRemaining = SquashDuration.Ticks;
+    Model.transform.localPosition -= SquashOffset;
+  }
+
+  void Popup() {
+    foreach (var controller in Controllers)
+      controller.Launch(700f * Vector3.up);
+    Model.transform.localPosition += SquashOffset;
   }
 }

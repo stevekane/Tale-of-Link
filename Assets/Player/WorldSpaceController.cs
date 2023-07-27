@@ -2,11 +2,25 @@ using UnityEngine;
 using KinematicCharacterController;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
+[DefaultExecutionOrder(100)]
 public class WorldSpaceController : MonoBehaviour, ICharacterController {
   [SerializeField] AbilityManager AbilityManager;
   [SerializeField] KinematicCharacterMotor Motor;
 
-  public Vector3 Velocity;
+  public float MaxMoveSpeed;
+  public Vector3 PhysicsAcceleration;
+  public Vector3 PhysicsVelocity;
+  public Vector3 ScriptVelocity;
+
+  public void Unground() {
+    Motor.ForceUnground();
+  }
+
+  public void Launch(Vector3 acceleration) {
+    Unground();
+    PhysicsVelocity.y = 0;
+    PhysicsAcceleration += acceleration;
+  }
 
   public Vector3 Position {
     get => transform.position;
@@ -54,9 +68,20 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
     if (DirectMove) {
       currentVelocity = Vector3.zero;
     } else {
-      Velocity.y = Motor.GroundingStatus.FoundAnyGround ? 0 : Velocity.y + deltaTime * Physics.gravity.y;
-      currentVelocity = Velocity;
+      var steeringVector = (ScriptVelocity - PhysicsVelocity).XZ();
+      var desiredMagnitude = steeringVector.magnitude;
+      var maxSteeringMagnitude = 2f * MaxMoveSpeed;
+      var boundedSteeringVelocity = Mathf.Min(desiredMagnitude, maxSteeringMagnitude) * steeringVector.normalized;
+      var grounded = Motor.GroundingStatus.FoundAnyGround;
+      // TODO: maybe move this out of here to own gravity component?
+      PhysicsAcceleration += grounded ? Vector3.zero : Physics.gravity;
+      PhysicsVelocity += boundedSteeringVelocity;
+      PhysicsVelocity += deltaTime * PhysicsAcceleration;
+      PhysicsVelocity.y = grounded ? 0 : PhysicsVelocity.y;
+      currentVelocity = PhysicsVelocity;
     }
+    PhysicsAcceleration = Vector3.zero;
+    ScriptVelocity = Vector3.zero;
   }
 
   public void AfterCharacterUpdate(float deltaTime) {

@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour {
   AbilityAction SwordAction;
   Inputs Inputs;
   AbilityAction[] InteractPriority;
+  AbilityAction CurrentInteraction;
 
   void OnNewItemAbility((AbilityAction action, bool isSword) arg) {
     // TODO: UI for this
@@ -44,14 +45,16 @@ public class InputManager : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    var interactAbilityAction = InteractPriority.FirstOrDefault(ability => AbilityManager.CanRun(ability));
-    var interactMessage = interactAbilityAction == null ? "" : interactAbilityAction.Ability.Name;
-    // TODO: Only fire this when something changes... kinda overkill
-    OnInteractChange?.Invoke(interactMessage);
+    var currentInteraction = InteractPriority.FirstOrDefault(ability => AbilityManager.CanRun(ability));
+    var interactMessage = currentInteraction == null ? "" : currentInteraction.Ability.Name;
+    if (currentInteraction != CurrentInteraction) {
+      CurrentInteraction = currentInteraction;
+      OnInteractChange?.Invoke(interactMessage);
+    }
 
     var interact = Inputs.Player.Interact.WasPerformedThisFrame();
-    if (interact && interactAbilityAction != null && AbilityManager.CanRun(interactAbilityAction)) {
-      AbilityManager.Run(interactAbilityAction);
+    if (interact && currentInteraction != null && AbilityManager.CanRun(currentInteraction)) {
+      AbilityManager.Run(currentInteraction);
     }
 
     var move = Inputs.Player.Move.ReadValue<Vector2>();
@@ -70,7 +73,7 @@ public class InputManager : MonoBehaviour {
       GetComponent<Magic>().Consume(25);
     }
     if (Inputs.Player.L2.WasPerformedThisFrame()) {
-      GetComponent<Magic>().Restore(101);
+      GetComponent<WorldSpaceController>().Launch(700f * Vector3.up);
     }
   }
 }
