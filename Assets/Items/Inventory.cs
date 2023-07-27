@@ -7,12 +7,12 @@ public class Inventory : MonoBehaviour {
   [SerializeField] ItemDictionary Items = new();
 
   public ItemDictionary Contents => Items;
-  public Action<TmpAbility> OnNewItemAbility;
+  public Action<IItemAbility> OnNewItemAbility;
 
   public int Count(ItemProto item) => Items.GetValueOrDefault(item);
   public void Add(ItemProto item, int count = 1) {
     Items.Increment(item, count);
-    if (item.AddAbilityToCharacter(gameObject) is var ability && ability) {
+    if (item.AddAbilityToCharacter(gameObject) is var ability && ability != null) {
       OnNewItemAbility?.Invoke(ability);
     }
   }

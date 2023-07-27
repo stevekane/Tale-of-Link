@@ -5,6 +5,7 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour {
   Inputs Inputs;
 
+  public AbilityManager AbilityManager;
   public Action<Vector3> OnMove;
   public Action OnSouth;
   public Action OnWest;
@@ -12,24 +13,24 @@ public class InputHandler : MonoBehaviour {
   Action CurrentOnSouth;
   Action CurrentOnWest;
 
-  public void BindWest(Action onWest) {
+  public void BindWest(AbilityAction action) {
     OnWest -= CurrentOnWest;
-    CurrentOnWest = onWest;
-    OnWest += onWest;
+    CurrentOnWest = () => AbilityManager.Run(action);
+    OnWest += CurrentOnWest;
   }
 
-  public void BindSouth(Action onSouth) {
+  public void BindSouth(AbilityAction action) {
     OnSouth -= CurrentOnSouth;
-    CurrentOnSouth = onSouth;
-    OnSouth += onSouth;
+    CurrentOnSouth = () => AbilityManager.Run(action);
+    OnSouth += CurrentOnSouth;
   }
 
-  void OnNewItemAbility(TmpAbility ability) {
+  void OnNewItemAbility(IItemAbility ability) {
     // TODO: UI for this
     // TODO: Only do it if Current is empty.
     switch (ability.DefaultButtonAssignment) {
-    case TmpAbility.Buttons.South: BindSouth(ability.TryStart); break;
-    case TmpAbility.Buttons.West: BindWest(ability.TryStart); break;
+    case IItemAbility.Buttons.South: BindSouth(ability.Action); break;
+    case IItemAbility.Buttons.West: BindWest(ability.Action); break;
     default: Debug.Assert(false, "Not impl"); break;
     }
   }
@@ -48,7 +49,7 @@ public class InputHandler : MonoBehaviour {
   void FixedUpdate() {
     var move = Inputs.Player.Move.ReadValue<Vector2>();
     OnMove?.Invoke(move.XZ());
-    if (Inputs.Player.Sword.WasPerformedThisFrame())  // TODO: charging
+    if (Inputs.Player.South.WasPerformedThisFrame())  // TODO: charging
       OnSouth?.Invoke();
     if (Inputs.Player.West.WasPerformedThisFrame())
       OnWest?.Invoke();
