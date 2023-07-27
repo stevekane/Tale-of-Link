@@ -31,7 +31,7 @@ Transform:
   - {fileID: 2881368156657408841}
   - {fileID: 8972314040155629583}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6676206713153537506
 GameObject:
@@ -109,6 +109,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7402174529813952614}
     m_Modifications:
+    - target: {fileID: 4052448500409341614, guid: 3a9ce9f8741d3ff4f8146fe0224a4fae, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4785654897916124823, guid: 3a9ce9f8741d3ff4f8146fe0224a4fae, type: 3}
       propertyPath: m_Name
       value: Hammer

@@ -24,7 +24,7 @@ public abstract class ClassicAbility : Ability {
   }
 
   void FireMain() {
-    Scope.Run(Runner(MainAction));
+    Scope.Start(Runner(MainAction));
   }
 
   protected TaskFunc Runner(Func<TaskScope, Task> f) => async scope => {

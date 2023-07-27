@@ -115,7 +115,7 @@ Transform:
   - {fileID: 4028548881955465589}
   - {fileID: 8115818989708540826}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2365759498327439963
 MonoBehaviour:
@@ -129,10 +129,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbf010598989be428558d679374c9b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultButtonAssignment: 2
+  Name: 
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Main:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 0
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 0
+    OwnerActivationRequired: 0
+    OwnerActivationBlocked: 0
+    CanRun: 0
+    Ability: {fileID: 0}
   AttachOffsetTODO: {x: 0, y: 1, z: 1}
   Model: {fileID: 8995895546902998598}
   Hitbox: {fileID: 5055285624746455675}
+  <DefaultButtonAssignment>k__BackingField: 2
 --- !u!1 &6676602103095377401
 GameObject:
   m_ObjectHideFlags: 0

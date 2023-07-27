@@ -55,15 +55,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""West"",
-                    ""type"": ""Button"",
-                    ""id"": ""f4d69f7c-c58b-4207-8dec-a77e723343af"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""232b7732-7405-43a8-a756-f9793251eb6f"",
@@ -330,28 +321,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Sword"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ec65dc9b-3881-48a5-a44b-09c35883d82c"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""West"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c35af965-a2b8-4698-9792-bb693d964db5"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""West"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1107,7 +1076,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Sword = m_Player.FindAction("Sword", throwIfNotFound: true);
-        m_Player_West = m_Player.FindAction("West", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Item1 = m_Player.FindAction("Item 1", throwIfNotFound: true);
         m_Player_Item2 = m_Player.FindAction("Item 2", throwIfNotFound: true);
@@ -1193,7 +1161,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Sword;
-    private readonly InputAction m_Player_West;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Item1;
     private readonly InputAction m_Player_Item2;
@@ -1210,7 +1177,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Sword => m_Wrapper.m_Player_Sword;
-        public InputAction @West => m_Wrapper.m_Player_West;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Item1 => m_Wrapper.m_Player_Item1;
         public InputAction @Item2 => m_Wrapper.m_Player_Item2;
@@ -1238,9 +1204,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Sword.started += instance.OnSword;
             @Sword.performed += instance.OnSword;
             @Sword.canceled += instance.OnSword;
-            @West.started += instance.OnWest;
-            @West.performed += instance.OnWest;
-            @West.canceled += instance.OnWest;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1281,9 +1244,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Sword.started -= instance.OnSword;
             @Sword.performed -= instance.OnSword;
             @Sword.canceled -= instance.OnSword;
-            @West.started -= instance.OnWest;
-            @West.performed -= instance.OnWest;
-            @West.canceled -= instance.OnWest;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1496,7 +1456,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnSword(InputAction.CallbackContext context);
-        void OnWest(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnItem1(InputAction.CallbackContext context);
         void OnItem2(InputAction.CallbackContext context);

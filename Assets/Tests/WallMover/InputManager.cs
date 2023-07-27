@@ -12,8 +12,20 @@ public class InputManager : MonoBehaviour {
 
   public UnityAction<string> OnInteractChange;
 
+  AbilityAction ItemAction;
+  AbilityAction SwordAction;
   Inputs Inputs;
   AbilityAction[] InteractPriority;
+
+  void OnNewItemAbility((AbilityAction action, bool isSword) arg) {
+    // TODO: UI for this
+    // TODO: Only do it if Current is empty.
+    if (arg.isSword) {
+      SwordAction = arg.action;
+    } else {
+      ItemAction = arg.action;
+    }
+  }
 
   void Awake() {
     Inputs = new();
@@ -23,6 +35,7 @@ public class InputManager : MonoBehaviour {
       EnterWallSpace.Main,
       ExitWallSpace.Main,
     };
+    GetComponent<Inventory>().OnNewItemAbility += OnNewItemAbility;
   }
 
   void OnDestroy() {
@@ -47,6 +60,11 @@ public class InputManager : MonoBehaviour {
     } else if (AbilityManager.CanRun(WorldSpaceMove.Move)) {
       AbilityManager.Run(WorldSpaceMove.Move, new(move.x, 0, move.y));
     }
+
+    if (SwordAction != null && Inputs.Player.Sword.WasPerformedThisFrame() && AbilityManager.CanRun(SwordAction))  // TODO: charging
+      AbilityManager.Run(SwordAction);
+    if (ItemAction != null && Inputs.Player.Item1.WasPerformedThisFrame() && AbilityManager.CanRun(ItemAction))
+      AbilityManager.Run(ItemAction);
 
     if (Inputs.Player.L1.WasPerformedThisFrame()) {
       GetComponent<Magic>().Consume(25);
