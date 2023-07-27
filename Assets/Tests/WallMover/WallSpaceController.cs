@@ -16,6 +16,8 @@ public class WallSpaceController : MonoBehaviour {
   public float Height = 1;
   public float Width = 1;
   public float MaxDistance => SampleSpacing + WallOffset;
+  // An issue with this approach: the degenerate case when all sum to cancel eachother
+  // out will produce a zero vector
   public Vector3 WeightedNormal {
     get {
       var normal = Vector3.zero;
@@ -85,7 +87,7 @@ public class WallSpaceController : MonoBehaviour {
     var tangent = Vector3.Cross(transform.forward, Vector3.up);
     var rayOrigin = position + WallOffset * normal;
     var rayDirection = -normal;
-    var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance, LayerMask);
+    var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
     RightHits.Clear();
     LeftHits.Clear();
     RightCorners.Clear();
@@ -265,8 +267,8 @@ public class WallSpaceController : MonoBehaviour {
   }
 
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
-    if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask)) {
-      var didHitBackward = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask);
+    if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore)) {
+      var didHitBackward = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
       var didHitBlocker = hit.collider.CompareTag("Blocker");
       return !didHitBackward && !didHitBlocker;
     }
