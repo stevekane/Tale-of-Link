@@ -1,14 +1,11 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Hammer : ClassicAbility, IItemAbility {
+public class Hammer : ClassicAbility {
   public Vector3 AttachOffsetTODO;
   public GameObject Model;
   public Hitbox Hitbox;
   TaskScope Scope = new();
-
-  public AbilityAction Action => Main;
-  [field: SerializeField] public IItemAbility.Buttons DefaultButtonAssignment { get; set; }
 
   void Start() {
     if (AbilityManager) {

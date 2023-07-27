@@ -24,18 +24,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "South",
+                    "name": "Sword",
                     "type": "Button",
                     "id": "23d9bd0b-1d1c-44bc-9d3f-95384bb68d7e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "West",
-                    "type": "Button",
-                    "id": "f4d69f7c-c58b-4207-8dec-a77e723343af",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -292,11 +283,11 @@
                 {
                     "name": "",
                     "id": "d243a2d0-cf57-47b3-b1d6-2d97305168c1",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "South",
+                    "action": "Sword",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -307,36 +298,14 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "South",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ec65dc9b-3881-48a5-a44b-09c35883d82c",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "West",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c35af965-a2b8-4698-9792-bb693d964db5",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "West",
+                    "action": "Sword",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "059502d9-81da-4223-9fd7-f5eacdda3d5e",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

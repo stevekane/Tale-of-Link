@@ -12,27 +12,18 @@ public class InputManager : MonoBehaviour {
 
   public UnityAction<string> OnInteractChange;
 
-  AbilityAction WestAction;
-  AbilityAction SouthAction;
-
+  AbilityAction ItemAction;
+  AbilityAction SwordAction;
   Inputs Inputs;
   AbilityAction[] InteractPriority;
 
-  public void BindWest(AbilityAction action) {
-    WestAction = action;
-  }
-
-  public void BindSouth(AbilityAction action) {
-    SouthAction = action;
-  }
-
-  void OnNewItemAbility(IItemAbility ability) {
+  void OnNewItemAbility((AbilityAction action, bool isSword) arg) {
     // TODO: UI for this
     // TODO: Only do it if Current is empty.
-    switch (ability.DefaultButtonAssignment) {
-    case IItemAbility.Buttons.South: BindSouth(ability.Action); break;
-    case IItemAbility.Buttons.West: BindWest(ability.Action); break;
-    default: Debug.Assert(false, "Not impl"); break;
+    if (arg.isSword) {
+      SwordAction = arg.action;
+    } else {
+      ItemAction = arg.action;
     }
   }
 
@@ -70,10 +61,10 @@ public class InputManager : MonoBehaviour {
       AbilityManager.Run(WorldSpaceMove.Move, new(move.x, 0, move.y));
     }
 
-    if (Inputs.Player.South.WasPerformedThisFrame() && AbilityManager.CanRun(SouthAction))  // TODO: charging
-      AbilityManager.Run(SouthAction);
-    if (Inputs.Player.West.WasPerformedThisFrame() && AbilityManager.CanRun(WestAction))
-      AbilityManager.Run(WestAction);
+    if (SwordAction != null && Inputs.Player.Sword.WasPerformedThisFrame() && AbilityManager.CanRun(SwordAction))  // TODO: charging
+      AbilityManager.Run(SwordAction);
+    if (ItemAction != null && Inputs.Player.Item1.WasPerformedThisFrame() && AbilityManager.CanRun(ItemAction))
+      AbilityManager.Run(ItemAction);
 
     if (Inputs.Player.L1.WasPerformedThisFrame()) {
       GetComponent<Magic>().Consume(25);

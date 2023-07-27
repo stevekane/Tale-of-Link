@@ -46,18 +46,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""South"",
+                    ""name"": ""Sword"",
                     ""type"": ""Button"",
                     ""id"": ""23d9bd0b-1d1c-44bc-9d3f-95384bb68d7e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""West"",
-                    ""type"": ""Button"",
-                    ""id"": ""f4d69f7c-c58b-4207-8dec-a77e723343af"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -314,11 +305,11 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d243a2d0-cf57-47b3-b1d6-2d97305168c1"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""South"",
+                    ""action"": ""Sword"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -329,36 +320,14 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""South"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ec65dc9b-3881-48a5-a44b-09c35883d82c"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""West"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c35af965-a2b8-4698-9792-bb693d964db5"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""West"",
+                    ""action"": ""Sword"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""059502d9-81da-4223-9fd7-f5eacdda3d5e"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -1106,8 +1075,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_South = m_Player.FindAction("South", throwIfNotFound: true);
-        m_Player_West = m_Player.FindAction("West", throwIfNotFound: true);
+        m_Player_Sword = m_Player.FindAction("Sword", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Item1 = m_Player.FindAction("Item 1", throwIfNotFound: true);
         m_Player_Item2 = m_Player.FindAction("Item 2", throwIfNotFound: true);
@@ -1192,8 +1160,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_South;
-    private readonly InputAction m_Player_West;
+    private readonly InputAction m_Player_Sword;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Item1;
     private readonly InputAction m_Player_Item2;
@@ -1209,8 +1176,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public PlayerActions(@Inputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @South => m_Wrapper.m_Player_South;
-        public InputAction @West => m_Wrapper.m_Player_West;
+        public InputAction @Sword => m_Wrapper.m_Player_Sword;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Item1 => m_Wrapper.m_Player_Item1;
         public InputAction @Item2 => m_Wrapper.m_Player_Item2;
@@ -1235,12 +1201,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
-            @South.started += instance.OnSouth;
-            @South.performed += instance.OnSouth;
-            @South.canceled += instance.OnSouth;
-            @West.started += instance.OnWest;
-            @West.performed += instance.OnWest;
-            @West.canceled += instance.OnWest;
+            @Sword.started += instance.OnSword;
+            @Sword.performed += instance.OnSword;
+            @Sword.canceled += instance.OnSword;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1278,12 +1241,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
-            @South.started -= instance.OnSouth;
-            @South.performed -= instance.OnSouth;
-            @South.canceled -= instance.OnSouth;
-            @West.started -= instance.OnWest;
-            @West.performed -= instance.OnWest;
-            @West.canceled -= instance.OnWest;
+            @Sword.started -= instance.OnSword;
+            @Sword.performed -= instance.OnSword;
+            @Sword.canceled -= instance.OnSword;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1495,8 +1455,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnSouth(InputAction.CallbackContext context);
-        void OnWest(InputAction.CallbackContext context);
+        void OnSword(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnItem1(InputAction.CallbackContext context);
         void OnItem2(InputAction.CallbackContext context);
