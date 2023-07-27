@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-public abstract class ClassicAbility : SimpleAbility {
+public abstract class ClassicAbility : Ability {
   int RunningTaskCount;
   TaskScope Scope = new();
   public override bool IsRunning => RunningTaskCount > 0;

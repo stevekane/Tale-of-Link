@@ -13,7 +13,7 @@ public class AbilityAction : IEventSource {
   public AbilityTag OwnerActivationRequired;
   public AbilityTag OwnerActivationBlocked;
   public bool CanRun;
-  public SimpleAbility Ability;
+  public Ability Ability;
   public void Listen(Action handler) => Source.Listen(handler);
   public void Unlisten(Action handler) => Source.Unlisten(handler);
   public void Set(Action handler) => Source.Set(handler);
@@ -39,7 +39,7 @@ public class AbilityAction<T> : IEventSource<T> {
   public AbilityTag OwnerActivationRequired;
   public AbilityTag OwnerActivationBlocked;
   public bool CanRun;
-  public SimpleAbility Ability;
+  public Ability Ability;
   public void Listen(Action<T> handler) => Source.Listen(handler);
   public void Unlisten(Action<T> handler) => Source.Unlisten(handler);
   public void Set(Action<T> handler) => Source.Set(handler);

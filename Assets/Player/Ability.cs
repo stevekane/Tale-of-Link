@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(ScriptExecutionGroups.Ability)]
-public abstract class SimpleAbility : MonoBehaviour {
+public abstract class Ability : MonoBehaviour {
   public string Name;
   public AbilityTag BlockActionsWith;
   public AbilityTag Tags;
@@ -15,15 +15,15 @@ public abstract class SimpleAbility : MonoBehaviour {
     IsRunning = false;
   }
 
-  protected SimpleAbilityManager AbilityManager;
+  protected AbilityManager AbilityManager;
 
   void OnEnable() {
-    AbilityManager = GetComponentInParent<SimpleAbilityManager>();
+    AbilityManager = GetComponentInParent<AbilityManager>();
     AbilityManager.AddAbility(this);
   }
 
   void OnDisable() {
-    AbilityManager = GetComponentInParent<SimpleAbilityManager>();
+    AbilityManager = GetComponentInParent<AbilityManager>();
     if (AbilityManager)
       AbilityManager.RemoveAbility(this);
   }

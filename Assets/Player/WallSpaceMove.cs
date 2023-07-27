@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WallSpaceMove : SimpleAbility {
+public class WallSpaceMove : Ability {
   [SerializeField] float Speed = 3;
   [SerializeField] WallSpaceController WallSpaceController;
 

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [DefaultExecutionOrder(ScriptExecutionGroups.Late)]
-public class SimpleAbilityManager : MonoBehaviour {
+public class AbilityManager : MonoBehaviour {
   AbilityTag NextSystemTags;
   AbilityTag SystemTags;
 
   [HideInInspector, NonSerialized]
-  public List<SimpleAbility> Abilities = new();
+  public List<Ability> Abilities = new();
 
   [field:SerializeField]
   public AbilityTag Tags { get; private set; }
@@ -22,8 +22,8 @@ public class SimpleAbilityManager : MonoBehaviour {
     else        RemoveTag(tag);
   }
 
-  public void AddAbility(SimpleAbility ability) => Abilities.Add(ability);
-  public void RemoveAbility(SimpleAbility ability) {
+  public void AddAbility(Ability ability) => Abilities.Add(ability);
+  public void RemoveAbility(Ability ability) {
     ability.Stop();
     Abilities.Remove(ability);
   }
@@ -74,27 +74,27 @@ public class SimpleAbilityManager : MonoBehaviour {
     Tags = AbilityOwnerTagsWhere(a => a.IsRunning, SystemTags);
   }
 
-  bool IsCancellable(AbilityAction action, SimpleAbility ability) {
+  bool IsCancellable(AbilityAction action, Ability ability) {
     var hasAll = action.CancelAbilitiesWithAll != default && ability.Tags.HasAllFlags(action.CancelAbilitiesWithAll);
     var hasAny = ability.Tags.HasAnyFlags(action.CancelAbilitiesWithAny);
     return hasAll || hasAny;
   }
 
-  bool IsCancellable<T>(AbilityAction<T> action, SimpleAbility ability) {
+  bool IsCancellable<T>(AbilityAction<T> action, Ability ability) {
     var hasAll = action.CancelAbilitiesWithAll != default && ability.Tags.HasAllFlags(action.CancelAbilitiesWithAll);
     var hasAny = ability.Tags.HasAnyFlags(action.CancelAbilitiesWithAny);
     return hasAll || hasAny;
   }
 
-  bool IsBlocked(AbilityAction action, SimpleAbility ability) {
+  bool IsBlocked(AbilityAction action, Ability ability) {
     return ability.BlockActionsWith.HasAnyFlags(action.Tags);
   }
 
-  bool IsBlocked<T>(AbilityAction<T> action, SimpleAbility ability) {
+  bool IsBlocked<T>(AbilityAction<T> action, Ability ability) {
     return ability.BlockActionsWith.HasAnyFlags(action.Tags);
   }
 
-  AbilityTag AbilityOwnerTagsWhere(Predicate<SimpleAbility> predicate, AbilityTag tag = default) {
+  AbilityTag AbilityOwnerTagsWhere(Predicate<Ability> predicate, AbilityTag tag = default) {
     var addedTags = Abilities.Aggregate(tag, (tags, ability) => tags | (predicate(ability) ? ability.AddedToOwner : default));
     var removedTags = Abilities.Aggregate(default(AbilityTag), (tags, ability) => tags | (predicate(ability) ? ability.RemovedFromOwner : default));
     return addedTags & ~removedTags;

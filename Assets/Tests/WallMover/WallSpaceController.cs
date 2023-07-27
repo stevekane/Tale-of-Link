@@ -8,7 +8,7 @@ public class WallSpaceController : MonoBehaviour {
   [SerializeField] float WallOffset = .05f;
   [SerializeField] WallEntitySegment[] RightSegments;
   [SerializeField] WallEntitySegment[] LeftSegments;
-  [SerializeField] SimpleAbilityManager AbilityManager;
+  [SerializeField] AbilityManager AbilityManager;
   #if UNITY_EDITOR
   public bool ShowHits;
   public bool ShowCorners;

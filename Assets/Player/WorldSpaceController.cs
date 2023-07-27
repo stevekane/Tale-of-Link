@@ -3,7 +3,7 @@ using KinematicCharacterController;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
 public class WorldSpaceController : MonoBehaviour, ICharacterController {
-  [SerializeField] SimpleAbilityManager AbilityManager;
+  [SerializeField] AbilityManager AbilityManager;
   [SerializeField] KinematicCharacterMotor Motor;
 
   public Vector3 Velocity;

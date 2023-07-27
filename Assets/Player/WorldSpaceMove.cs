@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WorldSpaceMove : SimpleAbility {
+public class WorldSpaceMove : Ability {
   [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] float Speed = 5;
 

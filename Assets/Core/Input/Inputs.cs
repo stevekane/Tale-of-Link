@@ -73,6 +73,24 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Item 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""149f1e73-a76e-4b60-b39c-05b91bbe6bf9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""59c31822-350b-4910-aa95-cac92d8a5618"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""North"",
                     ""type"": ""Button"",
                     ""id"": ""8fc89dca-01fb-490c-96ef-58a027c74796"",
@@ -296,7 +314,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d243a2d0-cf57-47b3-b1d6-2d97305168c1"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -340,7 +358,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""059502d9-81da-4223-9fd7-f5eacdda3d5e"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -455,6 +473,50 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c049143-cfa9-4910-ba3f-ee76a9b00b0d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Item 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65286ad8-45fc-47b6-ba92-77ea76efcdda"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Item 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ca2bdf1-2230-4c0b-be21-9c0fa4b3e9b0"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Item 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab217ecb-1bc2-4f8a-b88f-81159a887fec"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Item 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1047,6 +1109,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_Sword = m_Player.FindAction("Sword", throwIfNotFound: true);
         m_Player_West = m_Player.FindAction("West", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Item1 = m_Player.FindAction("Item 1", throwIfNotFound: true);
+        m_Player_Item2 = m_Player.FindAction("Item 2", throwIfNotFound: true);
         m_Player_North = m_Player.FindAction("North", throwIfNotFound: true);
         m_Player_L1 = m_Player.FindAction("L1", throwIfNotFound: true);
         m_Player_L2 = m_Player.FindAction("L2", throwIfNotFound: true);
@@ -1131,6 +1195,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sword;
     private readonly InputAction m_Player_West;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Item1;
+    private readonly InputAction m_Player_Item2;
     private readonly InputAction m_Player_North;
     private readonly InputAction m_Player_L1;
     private readonly InputAction m_Player_L2;
@@ -1146,6 +1212,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Sword => m_Wrapper.m_Player_Sword;
         public InputAction @West => m_Wrapper.m_Player_West;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @Item1 => m_Wrapper.m_Player_Item1;
+        public InputAction @Item2 => m_Wrapper.m_Player_Item2;
         public InputAction @North => m_Wrapper.m_Player_North;
         public InputAction @L1 => m_Wrapper.m_Player_L1;
         public InputAction @L2 => m_Wrapper.m_Player_L2;
@@ -1176,6 +1244,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Item1.started += instance.OnItem1;
+            @Item1.performed += instance.OnItem1;
+            @Item1.canceled += instance.OnItem1;
+            @Item2.started += instance.OnItem2;
+            @Item2.performed += instance.OnItem2;
+            @Item2.canceled += instance.OnItem2;
             @North.started += instance.OnNorth;
             @North.performed += instance.OnNorth;
             @North.canceled += instance.OnNorth;
@@ -1213,6 +1287,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Item1.started -= instance.OnItem1;
+            @Item1.performed -= instance.OnItem1;
+            @Item1.canceled -= instance.OnItem1;
+            @Item2.started -= instance.OnItem2;
+            @Item2.performed -= instance.OnItem2;
+            @Item2.canceled -= instance.OnItem2;
             @North.started -= instance.OnNorth;
             @North.performed -= instance.OnNorth;
             @North.canceled -= instance.OnNorth;
@@ -1418,6 +1498,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnSword(InputAction.CallbackContext context);
         void OnWest(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnItem1(InputAction.CallbackContext context);
+        void OnItem2(InputAction.CallbackContext context);
         void OnNorth(InputAction.CallbackContext context);
         void OnL1(InputAction.CallbackContext context);
         void OnL2(InputAction.CallbackContext context);
