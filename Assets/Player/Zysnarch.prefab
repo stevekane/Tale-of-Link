@@ -154,8 +154,6 @@ MonoBehaviour:
     Ability: {fileID: 4027047827161457634}
   WallTransitionDuration:
     Millis: 250
-  WallSpaceAvatar: {fileID: 9208589874680415882}
-  WorldSpaceAvatar: {fileID: 3738354857724212523}
   WorldSpaceController: {fileID: 8309471275002162877}
   WallSpaceController: {fileID: 564491022243026999}
   LayerMask:
@@ -1080,8 +1078,6 @@ MonoBehaviour:
     Ability: {fileID: 7096482464801049942}
   WallTransitionDuration:
     Millis: 250
-  WallSpaceAvatar: {fileID: 9208589874680415882}
-  WorldSpaceAvatar: {fileID: 3738354857724212523}
   WorldSpaceController: {fileID: 8309471275002162877}
   WallSpaceController: {fileID: 564491022243026999}
   LayerMask:
@@ -1704,6 +1700,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5567718968694952789}
+  - component: {fileID: 942104952896553957}
   - component: {fileID: 4167558231185268689}
   - component: {fileID: 324376866214748373}
   - component: {fileID: 3723501747940011600}
@@ -1743,6 +1740,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+--- !u!114 &942104952896553957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34de4e3b0c724e340957741a22824ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WorldSpaceController: {fileID: 8309471275002162877}
+  WallSpaceController: {fileID: 564491022243026999}
+  WorldSpaceAvatar: {fileID: 3738354857724212523}
+  WallSpaceAvatar: {fileID: 9208589874680415882}
+  StartInWorldSpace: 1
 --- !u!114 &4167558231185268689
 MonoBehaviour:
   m_ObjectHideFlags: 0

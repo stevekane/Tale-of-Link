@@ -6,8 +6,6 @@ using UnityEditor;
 
 public class ExitWallSpace: ClassicAbility {
   [SerializeField] Timeval WallTransitionDuration;
-  [SerializeField] GameObject WallSpaceAvatar;
-  [SerializeField] GameObject WorldSpaceAvatar;
   [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] WallSpaceController WallSpaceController;
   [SerializeField] LayerMask LayerMask;
@@ -25,8 +23,6 @@ public class ExitWallSpace: ClassicAbility {
       WorldSpaceController.enabled = true;
       WorldSpaceController.Position = start + Vector3.down + ExitDistance * direction;
       WorldSpaceController.Forward = direction;
-      WallSpaceAvatar.SetActive(false);
-      WorldSpaceAvatar.SetActive(true);
       await scope.Ticks(WallTransitionDuration.Ticks);
     }
   }

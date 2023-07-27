@@ -6,8 +6,6 @@ using UnityEditor;
 
 public class EnterWallSpace : ClassicAbility {
   [SerializeField] Timeval WallTransitionDuration;
-  [SerializeField] GameObject WallSpaceAvatar;
-  [SerializeField] GameObject WorldSpaceAvatar;
   [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] WallSpaceController WallSpaceController;
   [SerializeField] LayerMask LayerMask;
@@ -25,8 +23,6 @@ public class EnterWallSpace : ClassicAbility {
       WallSpaceController.enabled = true;
       WallSpaceController.transform.position = hit.point.XZ() + WorldSpaceController.transform.position.y * Vector3.up + Vector3.up;
       WallSpaceController.transform.forward = hit.normal; //TODO: Is this normal ever suspect? Maybe it is sometimes?
-      WorldSpaceAvatar.SetActive(false);
-      WallSpaceAvatar.SetActive(true);
       await scope.Ticks(WallTransitionDuration.Ticks);
     }
   }
