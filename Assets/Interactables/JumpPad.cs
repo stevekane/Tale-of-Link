@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 public class JumpPad : MonoBehaviour {
-  public Hurtbox Hurtbox;
   public GameObject Model;
   public Collider Collider;
   public float LaunchSpeed = 400f;
@@ -34,8 +33,12 @@ public class JumpPad : MonoBehaviour {
   public void Popup() {
     OnPopup?.Invoke();
     Model.transform.localPosition += SquashOffset;
-    Collider.enabled = true;
+    Invoke("EnableCollider", .5f); // Steve - I'm sorry for using this jank just testing
     TicksRemaining = -1;
+  }
+
+  void EnableCollider() {
+    Collider.enabled = true;
   }
 
   void FixedUpdate() {

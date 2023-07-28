@@ -23,7 +23,7 @@ public class EnterWallSpace : ClassicAbility {
     var direction = WorldSpaceController.transform.forward;
     var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
-    return capsuleHit && rayHit && !hit.collider.CompareTag("Blocker");
+    return capsuleHit && rayHit && !hit.collider.GetComponent<Blocker>();
   }
 
   public override async Task MainAction(TaskScope scope) {
@@ -31,7 +31,7 @@ public class EnterWallSpace : ClassicAbility {
     var direction = WorldSpaceController.transform.forward;
     var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
-    if (capsuleHit && rayHit && !hit.collider.CompareTag("Blocker")) {
+    if (capsuleHit && rayHit && !hit.collider.GetComponent<Blocker>()) {
       WorldSpaceController.enabled = false;
       WallSpaceController.enabled = true;
       WallSpaceController.transform.position = hit.point.XZ() + WorldSpaceController.transform.position.y * Vector3.up + Vector3.up;
@@ -50,7 +50,7 @@ public class EnterWallSpace : ClassicAbility {
     var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, distance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
     var color = didHit && rayHit
-      ? hit.collider.CompareTag("Blocker")
+      ? hit.collider.GetComponent<Blocker>()
         ? Color.yellow
         : Color.white
       : Color.red;
