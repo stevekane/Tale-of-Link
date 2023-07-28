@@ -1,24 +1,24 @@
+using KinematicCharacterController;
 using UnityEngine;
 
-public class PathController : MonoBehaviour {
+public class PathController : MonoBehaviour, IMoverController {
+  public PhysicsMover PhysicsMover;
   public Waypoints Waypoints;
   public float MoveSpeed = 10f;
   public PathTraversal.Modes Mode;
 
   PathTraversal PathTraversal;
 
-  void Awake() {
-    PathTraversal = Waypoints.CreatePathTraversal(Mode);
-    transform.position = Waypoints.Nodes[0].transform.position;
-    transform.rotation = Waypoints.Nodes[0].transform.rotation;
+  public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime) {
+    goalPosition = PhysicsMover.TransientPosition;
+    goalRotation = PhysicsMover.TransientRotation;
+    PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
   }
 
-  void FixedUpdate() {
-    var pos = transform.position;
-    var rotation = transform.rotation;
-    PathTraversal.Advance(ref pos, ref rotation, MoveSpeed);
-    transform.position = pos;
-    transform.rotation = rotation;
+  void Awake() {
+    PathTraversal = Waypoints.CreatePathTraversal(Mode);
+    PhysicsMover.MoverController = this;
+    PhysicsMover.SetPositionAndRotation(Waypoints.Nodes[0].transform.position, Waypoints.Nodes[0].transform.rotation);
   }
 
   void OnDrawGizmosSelected() {
