@@ -1,39 +1,42 @@
 using System.Threading.Tasks;
 using UnityEngine;
-using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 public class EnterWallSpace : ClassicAbility {
   [SerializeField] Timeval WallTransitionDuration;
-  [SerializeField] GameObject WallSpaceAvatar;
-  [SerializeField] GameObject WorldSpaceAvatar;
-  [SerializeField] Controller Controller;
-  [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
-  [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
+  [SerializeField] WorldSpaceController WorldSpaceController;
+  [SerializeField] WallSpaceController WallSpaceController;
   [SerializeField] LayerMask LayerMask;
   [SerializeField] CapsuleCollider CapsuleCollider;
   [SerializeField] Mesh CapsuleMesh;
   [SerializeField] float EnterDistance = 1;
 
+  protected override void Awake() {
+    base.Awake();
+    Main.CanRun = CanRun;
+  }
+
+  bool CanRun() {
+    var start = WorldSpaceController.transform.position;
+    var direction = WorldSpaceController.transform.forward;
+    var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
+    var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    return capsuleHit && rayHit && !hit.collider.GetComponent<Blocker>();
+  }
+
   public override async Task MainAction(TaskScope scope) {
-    var start = Controller.transform.position;
-    var direction = Controller.transform.forward;
-    var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
-    if (didHit && !hit.collider.CompareTag("Blocker")) {
-      Controller.DirectMove = true;
-      Controller.WorldSpace = false;
-      // use our current height + the position of the point of contact
-      // we add Vector3.up to it because wallspace positions are at the half-height of the worldspace actor
-      // TODO: possibly change this for wallspace actors?
-      Controller.Position = hit.point.XZ() + Controller.transform.position.y * Vector3.up + Vector3.up;
-      Controller.Forward = hit.normal;
-      WorldSpaceAvatar.SetActive(false);
-      WallSpaceAvatar.SetActive(true);
+    var start = WorldSpaceController.transform.position;
+    var direction = WorldSpaceController.transform.forward;
+    var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
+    var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    if (capsuleHit && rayHit && !hit.collider.GetComponent<Blocker>()) {
+      WorldSpaceController.enabled = false;
+      WallSpaceController.enabled = true;
+      WallSpaceController.transform.position = hit.point.XZ() + WorldSpaceController.transform.position.y * Vector3.up + Vector3.up;
+      WallSpaceController.transform.forward = hit.normal; //TODO: Is this normal ever suspect? Maybe it is sometimes?
       await scope.Ticks(WallTransitionDuration.Ticks);
-      WallSpaceCamera.Priority = 1;
-      WorldSpaceCamera.Priority = 0;
     }
   }
 
@@ -41,12 +44,13 @@ public class EnterWallSpace : ClassicAbility {
     if (!AbilityManager || !AbilityManager.CanRun(Main))
       return;
     var distance = EnterDistance;
-    var start = Controller.transform.position + Vector3.up;
-    var direction = Controller.transform.forward;
+    var start = WorldSpaceController.transform.position + Vector3.up;
+    var direction = WorldSpaceController.transform.forward;
     var end = start + distance * direction;
     var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, distance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
-    var color = didHit
-      ? hit.collider.CompareTag("Blocker")
+    var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    var color = didHit && rayHit
+      ? hit.collider.GetComponent<Blocker>()
         ? Color.yellow
         : Color.white
       : Color.red;

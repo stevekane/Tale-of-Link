@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-public abstract class ClassicAbility : SimpleAbility {
+public abstract class ClassicAbility : Ability {
   int RunningTaskCount;
   TaskScope Scope = new();
   public override bool IsRunning => RunningTaskCount > 0;
@@ -13,8 +13,7 @@ public abstract class ClassicAbility : SimpleAbility {
   }
   public AbilityAction Main;
 
-  void Awake() {
-    Main.CanRun = true;
+  protected virtual void Awake() {
     Main.Ability = this;
     Main.Listen(FireMain);
   }
@@ -24,7 +23,7 @@ public abstract class ClassicAbility : SimpleAbility {
   }
 
   void FireMain() {
-    Scope.Run(Runner(MainAction));
+    Scope.Start(Runner(MainAction));
   }
 
   protected TaskFunc Runner(Func<TaskScope, Task> f) => async scope => {
