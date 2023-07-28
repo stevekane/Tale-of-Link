@@ -5,8 +5,8 @@ public class JumpPad : MonoBehaviour {
   public Hurtbox Hurtbox;
   public GameObject Model;
   public Collider Collider;
-  public LayerMask LayerMask;
-  public Vector3 Extents = new Vector3(1, 1, 1);
+  public float LaunchSpeed = 400f;
+  public float LaunchAngleDeg = 80f;
   public Timeval SquashDuration = Timeval.FromSeconds(1.5f);
   public Vector3 SquashOffset = new Vector3(0, .15f, 0);
   int TicksRemaining = -1;
