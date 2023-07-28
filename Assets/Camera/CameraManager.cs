@@ -7,8 +7,7 @@ public class CameraManager : LevelManager<CameraManager> {
   public CinemachineVirtualCamera WallSpaceCamera;
   public CanvasGroup ScreenFadeOverlay;
 
-  protected override void Awake() {
-    base.Awake();
+  void Start() {
     PlayerManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
   }
 

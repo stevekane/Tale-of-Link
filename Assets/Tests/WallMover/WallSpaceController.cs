@@ -274,7 +274,7 @@ public class WallSpaceController : MonoBehaviour {
   bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
     if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore)) {
       var didHitBackward = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
-      var didHitBlocker = hit.collider.CompareTag("Blocker");
+      var didHitBlocker = hit.collider.GetComponent<Blocker>();
       return !didHitBackward && !didHitBlocker;
     }
     return false;

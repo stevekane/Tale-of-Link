@@ -102,6 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6430296182697057060}
   - component: {fileID: 4027047827161457634}
+  - component: {fileID: 3909033256718307407}
   m_Layer: 0
   m_Name: Enter WallSpace
   m_TagString: Untagged
@@ -150,7 +151,6 @@ MonoBehaviour:
     RemoveFromOwner: 0
     OwnerActivationRequired: 5
     OwnerActivationBlocked: 16
-    CanRun: 1
     Ability: {fileID: 4027047827161457634}
   WallTransitionDuration:
     Millis: 250
@@ -159,9 +159,32 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
-  CapsuleCollider: {fileID: 8637237054026041523}
+  CapsuleCollider: {fileID: 3909033256718307407}
   CapsuleMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
   EnterDistance: 1.5
+--- !u!136 &3909033256718307407
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831472086706850874}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &894168701840190138
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +379,6 @@ MonoBehaviour:
     RemoveFromOwner: 0
     OwnerActivationRequired: 0
     OwnerActivationBlocked: 0
-    CanRun: 0
     Ability: {fileID: 0}
   Controller: {fileID: 8309471275002162877}
   InstantLaunchDistance: 0.4
@@ -535,7 +557,6 @@ MonoBehaviour:
     RemoveFromOwner: 0
     OwnerActivationRequired: 8
     OwnerActivationBlocked: 16
-    CanRun: 1
     Ability: {fileID: 7079565682474872527}
 --- !u!1 &2584219847227842815
 GameObject:
@@ -975,7 +996,6 @@ MonoBehaviour:
     RemoveFromOwner: 480
     OwnerActivationRequired: 5
     OwnerActivationBlocked: 16
-    CanRun: 1
     Ability: {fileID: 5079681094745868573}
   Controller: {fileID: 8309471275002162877}
   FadeOutDuration:
@@ -1143,6 +1163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7502683568128825232}
   - component: {fileID: 7096482464801049942}
+  - component: {fileID: 7517775672312338205}
   m_Layer: 0
   m_Name: Exit WallSpace
   m_TagString: Untagged
@@ -1191,7 +1212,6 @@ MonoBehaviour:
     RemoveFromOwner: 0
     OwnerActivationRequired: 8
     OwnerActivationBlocked: 16
-    CanRun: 1
     Ability: {fileID: 7096482464801049942}
   WallTransitionDuration:
     Millis: 250
@@ -1200,9 +1220,32 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
-  CapsuleCollider: {fileID: 8637237054026041523}
+  CapsuleCollider: {fileID: 7517775672312338205}
   CapsuleMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
   ExitDistance: 1
+--- !u!136 &7517775672312338205
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275396079446978604}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4784750530854269563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2311,7 +2354,6 @@ MonoBehaviour:
     RemoveFromOwner: 0
     OwnerActivationRequired: 101
     OwnerActivationBlocked: 16
-    CanRun: 1
     Ability: {fileID: 4212478194187356647}
 --- !u!1 &7460705314114962191
 GameObject:

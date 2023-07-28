@@ -26,7 +26,7 @@ public class WallCameraExtension : CinemachineExtension {
         return;
       var didHit = Physics.Raycast(vcam.LookAt.position, weightedNormal, out var hit, DistanceFromTarget, LayerMask);
       var distance = 0f;
-      if (didHit) {
+      if (didHit && !hit.collider.GetComponent<CameraIgnore>()) {
         distance = hit.distance;
       } else {
         distance = DistanceFromTarget;
