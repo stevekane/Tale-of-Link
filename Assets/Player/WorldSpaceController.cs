@@ -35,7 +35,14 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
     set => Motor.SetRotation(Quaternion.LookRotation(value, Vector3.up));
   }
 
+  public Quaternion Rotation {
+    get => transform.rotation;
+    set => Motor.SetRotation(value);
+  }
+
   public bool DirectMove;
+
+  public bool IsGrounded => Motor.GroundingStatus.FoundAnyGround;
 
   void Start() {
     Motor.CharacterController = this;
@@ -73,11 +80,11 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
     if (DirectMove) {
       currentVelocity = Vector3.zero;
     } else {
+      var grounded = Motor.GroundingStatus.FoundAnyGround;
       var steeringVector = (ScriptVelocity - PhysicsVelocity).XZ();
       var desiredMagnitude = steeringVector.magnitude;
-      var maxSteeringMagnitude = 2f * MaxMoveSpeed;
+      var maxSteeringMagnitude = grounded ? 2f * MaxMoveSpeed : 0f;
       var boundedSteeringVelocity = Mathf.Min(desiredMagnitude, maxSteeringMagnitude) * steeringVector.normalized;
-      var grounded = Motor.GroundingStatus.FoundAnyGround;
       // TODO: maybe move this out of here to own gravity component?
       PhysicsAcceleration += grounded ? Vector3.zero : Physics.gravity;
       PhysicsVelocity += boundedSteeringVelocity;
