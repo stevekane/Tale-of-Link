@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PathMover : MonoBehaviour {
   [SerializeField] float RaiseHeight = 2;
+  [SerializeField] float Speed = 1;
 
   Vector3 p0;
   Vector3 p1;
@@ -12,6 +13,6 @@ public class PathMover : MonoBehaviour {
   }
 
   void Update() {
-    transform.position = Vector3.Lerp(p0, p1, Mathf.Abs(Mathf.Sin(Time.time)));
+    transform.position = Vector3.Lerp(p0, p1, Mathf.Abs(Mathf.Sin(Time.time * Speed)));
   }
 }
