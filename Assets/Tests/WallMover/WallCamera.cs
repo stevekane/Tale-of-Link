@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 
+[DefaultExecutionOrder(5)]
 public class WallCameraExtension : CinemachineExtension {
   public WallSpaceController WallMover;
   public float DistanceFromTarget = 5f;

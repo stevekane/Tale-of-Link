@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[DefaultExecutionOrder(3)]
 public class WallSpaceController : MonoBehaviour {
   [SerializeField] LayerMask LayerMask;
   [SerializeField] int MaxSearchCount = 10;
@@ -10,6 +11,7 @@ public class WallSpaceController : MonoBehaviour {
   [SerializeField] WallEntitySegment[] RightSegments;
   [SerializeField] WallEntitySegment[] LeftSegments;
   [SerializeField] AbilityManager AbilityManager;
+  public MovingWall MovingWall;
   #if UNITY_EDITOR
   public bool ShowHits;
   public bool ShowCorners;
@@ -39,7 +41,7 @@ public class WallSpaceController : MonoBehaviour {
   List<RaycastHit> RightCorners = new();
   List<RaycastHit> RightHits = new();
   List<RaycastHit> LeftHits = new();
-  List<RaycastHit> PotentialHits = new();
+  List<(RaycastHit, bool)> PotentialHits = new();
   IEnumerable<WallEntitySegment> ActiveSegments {
     get {
       for (var i = 0; i < RightSegments.Length; i++)
@@ -51,17 +53,15 @@ public class WallSpaceController : MonoBehaviour {
     }
   }
 
-  // TODO: Possibly make this more resilient to being called inappropriately?
-  // Currently, it assumes there exists corner data that is valid.
+  float Velocity;
+
   public void Move(float velocity) {
-    var corners = velocity <= 0 ? LeftCorners : RightCorners;
-    var pathDistance = Distance(corners);
-    var distance = Mathf.Min(Mathf.Abs(velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
-    var newHit = Move(corners, distance);
-    var p = newHit.point;
-    var n = newHit.normal;
-    var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    transform.SetPositionAndRotation(p, rTarget);
+    Velocity = velocity;
+  }
+
+  void Start() {
+    LeftSegments.ForEach(s => s.transform.SetParent(null));
+    RightSegments.ForEach(s => s.transform.SetParent(null));
   }
 
   void OnEnable() {
@@ -87,67 +87,76 @@ public class WallSpaceController : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    var position = transform.position;
-    var normal = transform.forward;
-    var tangent = Vector3.Cross(transform.forward, Vector3.up);
-    var rayOrigin = position + WallOffset * normal;
-    var rayDirection = -normal;
-    var didHit = Physics.Raycast(rayOrigin, rayDirection, out var hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    Debug.Log($"Controller {Timeval.TickCount}");
     RightHits.Clear();
     LeftHits.Clear();
     RightCorners.Clear();
     LeftCorners.Clear();
-    if (didHit) {
-      RightHits.Add(hit);
-      var rightHit = hit;
-      for (var i = 0; i < MaxSearchCount; i++) {
-        var nextHit = FindNext(rightHit);
-        if (nextHit.HasValue) {
-          RightHits.Add(nextHit.Value);
-          rightHit = nextHit.Value;
-        } else {
-          break;
-        }
-      }
-      LeftHits.Add(hit);
-      var leftHit = hit;
-      for (var i = 0; i < MaxSearchCount; i++) {
-        var nextHit = FindNext(leftHit, sign:-1);
-        if (nextHit.HasValue) {
-          LeftHits.Add(nextHit.Value);
-          leftHit = nextHit.Value;
-        } else {
-          break;
-        }
-      }
-
-      if (RightHits.Count > 0) {
-        RightCorners.Add(RightHits[0]);
-        FindCorners(RightCorners, RightHits);
-        RightCorners.Add(RightHits[RightHits.Count - 1]);
-        RefineToPath(RightCorners);
-      }
-      if (LeftHits.Count > 0) {
-        LeftCorners.Add(LeftHits[0]);
-        FindCorners(LeftCorners, LeftHits);
-        LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
-        RefineToPath(LeftCorners);
+    var didHit = Physics.Raycast(transform.position + transform.forward * WallOffset, -transform.forward, out var firstHit, 2*WallOffset, LayerMask, QueryTriggerInteraction.Ignore);
+    if (!didHit)
+      return;
+    var ignoreBackFaces = Physics.Raycast(firstHit.point - WallOffset * firstHit.normal, firstHit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
+    RightHits.Add(firstHit);
+    var rightHit = firstHit;
+    var rightIgnoreBackFaces = ignoreBackFaces;
+    MovingWall = firstHit.collider.GetComponent<MovingWall>();
+    for (var i = 0; i < MaxSearchCount; i++) {
+      var nextHit = FindNext(rightHit, 1, ref rightIgnoreBackFaces);
+      if (nextHit.HasValue) {
+        RightHits.Add(nextHit.Value);
+        rightHit = nextHit.Value;
+      } else {
+        break;
       }
     }
-  }
+    LeftHits.Add(firstHit);
+    var leftHit = firstHit;
+    var leftIgnoreBackFaces = ignoreBackFaces;
+    for (var i = 0; i < MaxSearchCount; i++) {
+      var nextHit = FindNext(leftHit, -1, ref leftIgnoreBackFaces);
+      if (nextHit.HasValue) {
+        LeftHits.Add(nextHit.Value);
+        leftHit = nextHit.Value;
+      } else {
+        break;
+      }
+    }
 
-  void LateUpdate() {
-    // NOTE: This isn't correct or good.
-    // The problem with doing this, is that the segments contain physics colliders
-    // as well as decal projectors which should be updated in Fixed update.
-    // When I move this code to fixed update, I see what seems to be some kind of
-    // single frame hitch caused by the camera when you cross corners... it's hard to explain
-    // but easy to reproduce. I don't know what is causing this though I suepect it has something
-    // to do with the order the camera/WallMover are processed
+    if (RightHits.Count > 0) {
+      RightCorners.Add(RightHits[0]);
+      FindCorners(RightCorners, RightHits);
+      RightCorners.Add(RightHits[RightHits.Count - 1]);
+      RefineToPath(RightCorners);
+    }
+    if (LeftHits.Count > 0) {
+      LeftCorners.Add(LeftHits[0]);
+      FindCorners(LeftCorners, LeftHits);
+      LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
+      RefineToPath(LeftCorners);
+    }
+
     var rightSegmentCount = UpdateSegments(Width/2, RightCorners, RightSegments, right:true);
     var leftSegmentCount = UpdateSegments(Width/2, LeftCorners, LeftSegments, right:false);
     ActivateN(LeftSegments, leftSegmentCount);
     ActivateN(RightSegments, rightSegmentCount);
+
+    var corners = Velocity <= 0 ? LeftCorners : RightCorners;
+
+    if (corners.Count <= 0)
+      return;
+
+    var pathDistance = Distance(corners);
+    var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
+    var newHit = Move(corners, distance);
+    var p = newHit.point;
+    var n = newHit.normal;
+    var rTarget = Quaternion.LookRotation(n, Vector3.up);
+    transform.position += (p - transform.position) + (MovingWall ? MovingWall.MotionDelta : Vector3.zero);
+    transform.rotation = rTarget;
+    Velocity = 0;
+
+    if (MovingWall)
+      Debug.Log(transform.position.x - MovingWall.transform.position.x);
   }
 
   int FindCorners(List<RaycastHit> corners, List<RaycastHit> hits) {
@@ -191,10 +200,11 @@ public class WallSpaceController : MonoBehaviour {
       max = 0.5f - lengthOffset / halfLength / 2;
       min = 0.5f - (lengthOffset + length) / halfLength / 2;
     }
-    segment.Projector.size = new((max-min)*halfLength*2, Height, 2*WallOffset);
+    segment.Projector.size = new((max-min)*halfLength*2, Height, WallOffset);
+    segment.Projector.pivot = new(0, 0, WallOffset);
     segment.Projector.uvBias = new(min, 0);
     segment.Projector.uvScale = new(max-min, 1);
-    segment.Collider.size = new((max-min)*halfLength*2, Height, 2*WallOffset);
+    segment.Collider.size = new((max-min)*halfLength*2, Height, WallOffset);
     segment.Collider.center = new(0,0,WallOffset);
     segment.transform.SetPositionAndRotation(center+WallOffset*normal, Quaternion.LookRotation(-normal, Vector3.up));
   }
@@ -271,16 +281,16 @@ public class WallSpaceController : MonoBehaviour {
     return distance;
   }
 
-  bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit) {
+  bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit, out bool hitBackFace, ref bool ignoreBackFaces) {
     if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore)) {
-      var didHitBackward = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
-      var didHitBlocker = hit.collider.GetComponent<Blocker>();
-      return !didHitBackward && !didHitBlocker;
+      hitBackFace = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
+      return (ignoreBackFaces || !hitBackFace) && !hit.collider.GetComponent<Blocker>();
     }
+    hitBackFace = false;
     return false;
   }
 
-  RaycastHit? FindNext(RaycastHit previousHit, float sign = 1) {
+  RaycastHit? FindNext(RaycastHit previousHit, float sign, ref bool ignoreBackFaces) {
     PotentialHits.Clear();
 
     var normal = previousHit.normal;
@@ -290,37 +300,40 @@ public class WallSpaceController : MonoBehaviour {
     {
       var rayOrigin = position + WallOffset * normal;
       var rayDirection = -normal;
-      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit)) {
-        PotentialHits.Add(hit);
+      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit, out var hitBackFace, ref ignoreBackFaces)) {
+        PotentialHits.Add((hit, hitBackFace));
       }
     }
 
     {
       var rayOrigin = position - WallOffset * normal;
       var rayDirection = Quaternion.Euler(0, -sign * 90, 0) * -normal;
-      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit)) {
-        PotentialHits.Add(hit);
+      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit, out var hitBackFace, ref ignoreBackFaces)) {
+        PotentialHits.Add((hit, hitBackFace));
       }
     }
 
     {
       var rayOrigin = previousHit.point + WallOffset * normal;
       var rayDirection = Quaternion.Euler(0, sign * 90, 0) * -normal;
-      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit)) {
-        PotentialHits.Add(hit);
+      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit, out var hitBackFace, ref ignoreBackFaces)) {
+        PotentialHits.Add((hit, hitBackFace));
       }
     }
 
     if (PotentialHits.Count > 0) {
       var bestScore = float.MinValue;
-      var hit = PotentialHits[0];
+      var hit = PotentialHits[0].Item1;
+      var didHitBackface = false;
       for (var p = 0; p < PotentialHits.Count; p++)  {
-        var score = Vector3.Dot(normal, PotentialHits[p].normal);
+        var score = Vector3.Dot(normal, PotentialHits[p].Item1.normal);
         if (score > bestScore) {
           bestScore = score;
-          hit = PotentialHits[p];
+          hit = PotentialHits[p].Item1;
+          didHitBackface = PotentialHits[p].Item2;
         }
       }
+      ignoreBackFaces = didHitBackface;
       return hit;
     } else {
       return null;
@@ -340,7 +353,7 @@ public class WallSpaceController : MonoBehaviour {
       Gizmos.DrawLine(corners[i].point, corners[i-1].point);
     }
     foreach (var corner in corners) {
-      Gizmos.DrawWireSphere(corner.point, .25f);
+      Gizmos.DrawWireSphere(corner.point, .1f);
     }
   }
 

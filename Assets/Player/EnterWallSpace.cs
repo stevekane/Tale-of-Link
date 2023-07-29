@@ -34,6 +34,7 @@ public class EnterWallSpace : ClassicAbility {
     if (capsuleHit && rayHit && !hit.collider.GetComponent<Blocker>()) {
       WorldSpaceController.enabled = false;
       WallSpaceController.enabled = true;
+      WallSpaceController.MovingWall = hit.collider.GetComponent<MovingWall>();
       WallSpaceController.transform.position = hit.point.XZ() + WorldSpaceController.transform.position.y * Vector3.up + Vector3.up;
       WallSpaceController.transform.forward = hit.normal; //TODO: Is this normal ever suspect? Maybe it is sometimes?
       await scope.Ticks(WallTransitionDuration.Ticks);

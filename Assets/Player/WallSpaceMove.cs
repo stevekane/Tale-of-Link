@@ -12,6 +12,7 @@ public class WallSpaceMove : Ability {
   }
 
   void OnMove(Vector3 v) {
+    Debug.Log($"WallSpaceMove {Timeval.TickCount}");
     WallSpaceController.Move(Speed * v.x);
   }
 }
