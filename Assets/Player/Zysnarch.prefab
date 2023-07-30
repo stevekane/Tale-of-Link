@@ -2028,9 +2028,9 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
-  MaxSearchCount: 64
-  SampleSpacing: 0.125
-  WallOffset: 0.1
+  MaxSearchCount: 24
+  SampleSpacing: 0.1
+  WallOffset: 0.01
   RightSegments:
   - {fileID: 1524352657082647740}
   - {fileID: 8971789569595418927}
@@ -2044,8 +2044,9 @@ MonoBehaviour:
   - {fileID: 7869123210201059520}
   - {fileID: 1778330487443325235}
   AbilityManager: {fileID: 324376866214748373}
+  MovingWall: {fileID: 0}
   ShowHits: 1
-  ShowCorners: 1
+  ShowPath: 1
   Height: 1
   Width: 1
 --- !u!136 &8637237054026041523

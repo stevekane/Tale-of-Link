@@ -45,7 +45,6 @@ public class InputManager : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    Debug.Log($"InputManager {Timeval.TickCount}");
     var currentInteraction = InteractPriority.FirstOrDefault(AbilityManager.CanRun);
     var interactMessage = currentInteraction == null ? "" : currentInteraction.Ability.Name;
     if (currentInteraction != CurrentInteraction) {

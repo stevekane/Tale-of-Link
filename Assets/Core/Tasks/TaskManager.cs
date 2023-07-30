@@ -35,7 +35,6 @@ public class SimpleTaskScheduler : TaskScheduler {
       SynchronizationContext.SetSynchronizationContext(old);
     }
     NextTick = new TaskCompletionSource<bool>(TaskCreationOptions.AttachedToParent);
-    Timeval.TickCount++;
   }
 
   public Task WaitForFixedUpdate() {

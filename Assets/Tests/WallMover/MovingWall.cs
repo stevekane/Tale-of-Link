@@ -10,6 +10,7 @@ public class MovingWall : MonoBehaviour {
 
   // TODO: Handle RotationDelta as well?
   public Vector3 MotionDelta;
+  public Vector3 PreviousMotionDelta;
 
   void Start() {
     p0 = transform.position;
@@ -17,10 +18,10 @@ public class MovingWall : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    Debug.Log($"MovingWall {Timeval.TickCount}");
     var current = transform.position;
     var next = Vector3.Lerp(p0, p1, Mathf.Abs(Mathf.Sin(Time.time * Speed)));
     transform.position = next;
+    PreviousMotionDelta = MotionDelta;
     MotionDelta = next-current;
   }
 

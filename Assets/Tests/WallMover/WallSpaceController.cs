@@ -14,7 +14,7 @@ public class WallSpaceController : MonoBehaviour {
   public MovingWall MovingWall;
   #if UNITY_EDITOR
   public bool ShowHits;
-  public bool ShowCorners;
+  public bool ShowPath;
   #endif
   public float Height = 1;
   public float Width = 1;
@@ -31,14 +31,14 @@ public class WallSpaceController : MonoBehaviour {
         normal += -segment.transform.forward * segment.Projector.uvScale.x;
       normal /= totalWeight;
       normal.Normalize();
-      return normal;
+      return normal == Vector3.zero ? transform.forward : normal;
     }
   }
   public UnityAction OnEnterWallSpace;
   public UnityAction OnExitWallSpace;
 
-  List<RaycastHit> LeftCorners = new();
-  List<RaycastHit> RightCorners = new();
+  List<RaycastHit> LeftPath = new();
+  List<RaycastHit> RightPath = new();
   List<RaycastHit> RightHits = new();
   List<RaycastHit> LeftHits = new();
   List<(RaycastHit, bool)> PotentialHits = new();
@@ -54,9 +54,17 @@ public class WallSpaceController : MonoBehaviour {
   }
 
   float Velocity;
-
   public void Move(float velocity) {
     Velocity = velocity;
+  }
+
+  bool MergeRequested;
+  Vector3 MergePosition;
+  Vector3 MergeForward;
+  public void Merge(Vector3 position, Vector3 forward) {
+    MergeRequested = true;
+    MergePosition = position;
+    MergeForward = forward;
   }
 
   void Start() {
@@ -65,101 +73,83 @@ public class WallSpaceController : MonoBehaviour {
   }
 
   void OnEnable() {
-    ActivateN(LeftSegments, 0);
-    ActivateN(RightSegments, 0);
+    LifeCycleTests.Print("Enabled");
     RightHits.Clear();
     LeftHits.Clear();
-    RightCorners.Clear();
-    LeftCorners.Clear();
+    RightPath.Clear();
+    LeftPath.Clear();
     AbilityManager.AddTag(AbilityTag.WallSpace);
     OnEnterWallSpace?.Invoke();
   }
 
   void OnDisable() {
-    ActivateN(LeftSegments, 0);
-    ActivateN(RightSegments, 0);
     RightHits.Clear();
     LeftHits.Clear();
-    RightCorners.Clear();
-    LeftCorners.Clear();
+    RightPath.Clear();
+    LeftPath.Clear();
     AbilityManager.RemoveTag(AbilityTag.WallSpace);
     OnExitWallSpace?.Invoke();
   }
 
   void FixedUpdate() {
-    Debug.Log($"Controller {Timeval.TickCount}");
-    RightHits.Clear();
-    LeftHits.Clear();
-    RightCorners.Clear();
-    LeftCorners.Clear();
-    var didHit = Physics.Raycast(transform.position + transform.forward * WallOffset, -transform.forward, out var firstHit, 2*WallOffset, LayerMask, QueryTriggerInteraction.Ignore);
-    if (!didHit)
-      return;
-    var ignoreBackFaces = Physics.Raycast(firstHit.point - WallOffset * firstHit.normal, firstHit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
-    RightHits.Add(firstHit);
+    if (MergeRequested) {
+      transform.position = MergePosition + (MovingWall ? MovingWall.PreviousMotionDelta : Vector3.zero);
+      transform.rotation = Quaternion.LookRotation(MergeForward, Vector3.up);
+      MergeRequested = false;
+    }
+
+    var position = transform.position + transform.forward * WallOffset;
+    var direction = -transform.forward;
+    var didHit = Physics.Raycast(position, direction, out var firstHit, 2*WallOffset, LayerMask, QueryTriggerInteraction.Ignore);
+    if (didHit) {
+      var ignoreBackFaces = Physics.Raycast(firstHit.point - WallOffset * firstHit.normal, firstHit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
+      UpdateHits(RightHits, firstHit, 1, ignoreBackFaces);
+      UpdateHits(LeftHits, firstHit, -1, ignoreBackFaces);
+      UpdatePath(RightPath, RightHits);
+      UpdatePath(LeftPath, LeftHits);
+    }
+    UpdateSegments(Width/2, RightPath, RightSegments, right:true);
+    UpdateSegments(Width/2, LeftPath, LeftSegments, right:false);
+
+    var delta = MovingWall ? MovingWall.MotionDelta : Vector3.zero;
+    var path = Velocity <= 0 ? LeftPath : RightPath;
+    if (path.Count > 0) {
+      var pathDistance = Distance(path);
+      var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
+      var newHit = PathMove(path, distance);
+      var p = newHit.point;
+      var n = newHit.normal;
+      var rTarget = Quaternion.LookRotation(n, Vector3.up);
+      delta += p - transform.position;
+      transform.rotation = rTarget;
+    }
+    transform.position += delta;
+    Velocity = 0;
+
+    if (MovingWall) {
+      ActiveSegments.ForEach(s => s.transform.position += MovingWall.MotionDelta);
+    }
+  }
+
+  void UpdateHits(List<RaycastHit> hits, RaycastHit firstHit, float sign, bool ignoreBackFaces) {
+    hits.Clear();
+    hits.Add(firstHit);
     var rightHit = firstHit;
     var rightIgnoreBackFaces = ignoreBackFaces;
-    MovingWall = firstHit.collider.GetComponent<MovingWall>();
     for (var i = 0; i < MaxSearchCount; i++) {
-      var nextHit = FindNext(rightHit, 1, ref rightIgnoreBackFaces);
+      var nextHit = FindNext(rightHit, sign, ref rightIgnoreBackFaces);
       if (nextHit.HasValue) {
-        RightHits.Add(nextHit.Value);
+        hits.Add(nextHit.Value);
         rightHit = nextHit.Value;
       } else {
         break;
       }
     }
-    LeftHits.Add(firstHit);
-    var leftHit = firstHit;
-    var leftIgnoreBackFaces = ignoreBackFaces;
-    for (var i = 0; i < MaxSearchCount; i++) {
-      var nextHit = FindNext(leftHit, -1, ref leftIgnoreBackFaces);
-      if (nextHit.HasValue) {
-        LeftHits.Add(nextHit.Value);
-        leftHit = nextHit.Value;
-      } else {
-        break;
-      }
-    }
-
-    if (RightHits.Count > 0) {
-      RightCorners.Add(RightHits[0]);
-      FindCorners(RightCorners, RightHits);
-      RightCorners.Add(RightHits[RightHits.Count - 1]);
-      RefineToPath(RightCorners);
-    }
-    if (LeftHits.Count > 0) {
-      LeftCorners.Add(LeftHits[0]);
-      FindCorners(LeftCorners, LeftHits);
-      LeftCorners.Add(LeftHits[LeftHits.Count - 1]);
-      RefineToPath(LeftCorners);
-    }
-
-    var rightSegmentCount = UpdateSegments(Width/2, RightCorners, RightSegments, right:true);
-    var leftSegmentCount = UpdateSegments(Width/2, LeftCorners, LeftSegments, right:false);
-    ActivateN(LeftSegments, leftSegmentCount);
-    ActivateN(RightSegments, rightSegmentCount);
-
-    var corners = Velocity <= 0 ? LeftCorners : RightCorners;
-
-    if (corners.Count <= 0)
-      return;
-
-    var pathDistance = Distance(corners);
-    var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
-    var newHit = Move(corners, distance);
-    var p = newHit.point;
-    var n = newHit.normal;
-    var rTarget = Quaternion.LookRotation(n, Vector3.up);
-    transform.position += (p - transform.position) + (MovingWall ? MovingWall.MotionDelta : Vector3.zero);
-    transform.rotation = rTarget;
-    Velocity = 0;
-
-    if (MovingWall)
-      Debug.Log(transform.position.x - MovingWall.transform.position.x);
   }
 
-  int FindCorners(List<RaycastHit> corners, List<RaycastHit> hits) {
+  void UpdatePath(List<RaycastHit> path, List<RaycastHit> hits) {
+    path.Clear();
+    path.Add(hits[0]);
     for (int i = 0; i < hits.Count - 1; i++) {
       Vector3 currentPoint = hits[i].point;
       Vector3 currentNormal = hits[i].normal;
@@ -167,19 +157,16 @@ public class WallSpaceController : MonoBehaviour {
       Vector3 nextPoint = hits[i + 1].point;
       Vector3 nextNormal = hits[i + 1].normal;
       Vector3 nextTangent = Vector3.Cross(nextNormal, Vector3.up);
-      if (LineLineIntersection(out var corner, currentPoint, currentTangent, nextPoint, nextTangent)) {
-        corners.Add(new RaycastHit() { point = corner, normal = currentNormal });
+      if (LineLineIntersection(out var point, currentPoint, currentTangent, nextPoint, nextTangent)) {
+        path.Add(new RaycastHit() { point = point, normal = currentNormal });
       }
     }
-    return corners.Count;
-  }
-
-  void RefineToPath(List<RaycastHit> corners) {
-    for (var i = corners.Count-1; i > 0; i--) {
-      var c0 = corners[i-1];
-      var c1 = corners[i];
-      if (Mathf.Approximately(Vector3.SqrMagnitude(c0.point-c1.point), 0f))
-        corners.RemoveAt(i);
+    path.Add(hits[hits.Count-1]);
+    for (var i = path.Count-1; i > 0; i--) {
+      var p0 = path[i-1];
+      var p1 = path[i];
+      if (Mathf.Approximately(Vector3.SqrMagnitude(p0.point-p1.point), 0f))
+        path.RemoveAt(i);
     }
   }
 
@@ -215,10 +202,10 @@ public class WallSpaceController : MonoBehaviour {
   WallEntitySegment[] segments,
   bool right) {
     var distanceOffset = 0f;
-    var i = 0;
-    while (i < corners.Count-1 && distanceOffset < halfLength) {
-      var c0 = corners[i];
-      var c1 = corners[i+1];
+    var activeCount = 0;
+    while (activeCount < corners.Count-1 && distanceOffset < halfLength) {
+      var c0 = corners[activeCount];
+      var c1 = corners[activeCount+1];
       var delta = c1.point-c0.point;
       var cornerDistance = delta.magnitude;
       var direction = delta / cornerDistance;
@@ -227,17 +214,14 @@ public class WallSpaceController : MonoBehaviour {
       var end = start+distance*direction;
       var center = start+(end-start) / 2;
       var normal = Vector3.Cross(right ? -direction : direction, Vector3.up);
-      UpdateSegment(distance, halfLength, distanceOffset, center, normal, segments[i], right);
+      UpdateSegment(distance, halfLength, distanceOffset, center, normal, segments[activeCount], right);
       distanceOffset += distance;
-      i++;
+      activeCount++;
     }
-    return i;
-  }
-
-  void ActivateN<T>(T[] ts, int count) where T : MonoBehaviour {
-    for (var i = 0; i < ts.Length; i++) {
-      ts[i].gameObject.SetActive(i<count);
+    for (var i = 0; i < segments.Length; i++) {
+      segments[i].gameObject.SetActive(i < activeCount);
     }
+    return activeCount;
   }
 
   bool LineLineIntersection(
@@ -260,7 +244,7 @@ public class WallSpaceController : MonoBehaviour {
     }
   }
 
-  RaycastHit Move(List<RaycastHit> corners, float distance) {
+  RaycastHit PathMove(List<RaycastHit> corners, float distance) {
     for (var i = 1; i < corners.Count; i++) {
       var p0 = corners[i-1].point;
       var p1 = corners[i].point;
@@ -281,7 +265,12 @@ public class WallSpaceController : MonoBehaviour {
     return distance;
   }
 
-  bool RaycastOpenFaces(Vector3 origin, Vector3 direction, out RaycastHit hit, out bool hitBackFace, ref bool ignoreBackFaces) {
+  bool RaycastOpenFaces(
+  Vector3 origin,
+  Vector3 direction,
+  out RaycastHit hit,
+  out bool hitBackFace,
+  ref bool ignoreBackFaces) {
     if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore)) {
       hitBackFace = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
       return (ignoreBackFaces || !hitBackFace) && !hit.collider.GetComponent<Blocker>();
@@ -347,13 +336,13 @@ public class WallSpaceController : MonoBehaviour {
     }
   }
 
-  void RenderCorners(List<RaycastHit> corners) {
+  void RenderPath(List<RaycastHit> path) {
     Gizmos.color = Color.white;
-    for (var i = 1; i < corners.Count; i++) {
-      Gizmos.DrawLine(corners[i].point, corners[i-1].point);
+    for (var i = 1; i < path.Count; i++) {
+      Gizmos.DrawLine(path[i].point, path[i-1].point);
     }
-    foreach (var corner in corners) {
-      Gizmos.DrawWireSphere(corner.point, .1f);
+    foreach (var p in path) {
+      Gizmos.DrawWireSphere(p.point, .1f);
     }
   }
 
@@ -363,9 +352,9 @@ public class WallSpaceController : MonoBehaviour {
       RenderHits(RightHits);
       RenderHits(LeftHits);
     }
-    if (ShowCorners) {
-      RenderCorners(RightCorners);
-      RenderCorners(LeftCorners);
+    if (ShowPath) {
+      RenderPath(RightPath);
+      RenderPath(LeftPath);
     }
   }
   #endif
