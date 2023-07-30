@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [ExecuteAlways]
 public class CameraFade : MonoBehaviour {
   [SerializeField] Transform Target;
+  [SerializeField] Camera Main;
   [SerializeField] Camera CurrentFloor;
   [SerializeField] Camera NextFloor;
   [SerializeField] Material FinalMaterial;
@@ -11,24 +13,37 @@ public class CameraFade : MonoBehaviour {
   [SerializeField] int CameraFloor;
   [SerializeField] float Blend;
 
+  [ContextMenu("flush stack")]
+  void FlushStack() {
+    Main.GetComponent<UniversalAdditionalCameraData>().cameraStack.Clear();
+  }
+
   void LateUpdate() {
     transform.position = Target.position + 6 * Vector3.up;
-    TargetFloor = Mathf.FloorToInt(Target.position.y / FloorHeight) + 1;
-    CameraFloor = Mathf.FloorToInt(transform.position.y / FloorHeight) + 1;
-    CurrentFloor.nearClipPlane = (transform.position.y-TargetFloor*FloorHeight) + .02f;
+    TargetFloor = Mathf.FloorToInt(Target.position.y / FloorHeight);
+    CameraFloor = Mathf.FloorToInt(transform.position.y / FloorHeight);
+    CurrentFloor.nearClipPlane = (transform.position.y-(TargetFloor+1)*FloorHeight) + .02f;
     CurrentFloor.farClipPlane = transform.position.y + .02f;
     NextFloor.nearClipPlane = .02f;
     NextFloor.farClipPlane = CurrentFloor.nearClipPlane;
     var floorBlendMin = FloorHeight-1;
     var floorBlendMax = FloorHeight;
     var floorPosition = Target.position.y % FloorHeight;
-    if (floorPosition <= floorBlendMax && floorPosition >= floorBlendMin) {
-      Blend = Mathf.InverseLerp(floorBlendMin, floorBlendMax, floorPosition);
-    } else if (CameraFloor == TargetFloor) {
-      Blend = 0;
-    } else {
-      Blend = 0;
-    }
+    // when camera and player on same floor disable next floor cam
+    var camData = Main.GetComponent<UniversalAdditionalCameraData>();
+    // if (TargetFloor == CameraFloor) {
+    //   camData.cameraStack.Remove(NextFloor);
+    // } else {
+    //   camData.cameraStack.Add(NextFloor);
+    // }
+
+    // if (floorPosition <= floorBlendMax && floorPosition >= floorBlendMin) {
+    //   Blend = Mathf.InverseLerp(floorBlendMin, floorBlendMax, floorPosition);
+    // } else if (CameraFloor == TargetFloor) {
+    //   Blend = 0;
+    // } else {
+    //   Blend = 1;
+    // }
     FinalMaterial.SetFloat("_Blend", Blend);
   }
 
