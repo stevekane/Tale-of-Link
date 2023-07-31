@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-[DefaultExecutionOrder(-700)]
+[DefaultExecutionOrder(1)]
 public class InputManager : MonoBehaviour {
   [SerializeField] AbilityManager AbilityManager;
   [SerializeField] EnterWallSpace EnterWallSpace;
@@ -45,7 +45,7 @@ public class InputManager : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    var currentInteraction = InteractPriority.FirstOrDefault(ability => AbilityManager.CanRun(ability));
+    var currentInteraction = InteractPriority.FirstOrDefault(AbilityManager.CanRun);
     var interactMessage = currentInteraction == null ? "" : currentInteraction.Ability.Name;
     if (currentInteraction != CurrentInteraction) {
       CurrentInteraction = currentInteraction;

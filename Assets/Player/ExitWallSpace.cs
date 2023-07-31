@@ -32,6 +32,7 @@ public class ExitWallSpace: ClassicAbility {
     var invalidExit = CapsuleCollider.CapsuleColliderCast(start, direction, ExitDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, ExitDistance, LayerMask, QueryTriggerInteraction.Ignore);
     if (!invalidExit && !rayHit) {
+      WallSpaceController.MovingWall = null;
       WallSpaceController.enabled = false;
       WorldSpaceController.enabled = true;
       WorldSpaceController.Position = start + Vector3.down + ExitDistance * direction;
@@ -43,13 +44,12 @@ public class ExitWallSpace: ClassicAbility {
   void OnDrawGizmos() {
     if (!AbilityManager || !AbilityManager.CanRun(Main))
       return;
-    var distance = ExitDistance;
     var start = WorldSpaceController.transform.position;
     var direction = WorldSpaceController.transform.forward;
-    var end = start + distance * direction;
-    var didHit = CapsuleCollider.CapsuleColliderCast(start, direction, distance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
+    var end = start + ExitDistance * direction;
+    var invalidExit = CapsuleCollider.CapsuleColliderCast(start, direction, ExitDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, ExitDistance, LayerMask, QueryTriggerInteraction.Ignore);
-    var color = didHit || rayHit ? Color.red : Color.white;
+    var color = invalidExit || rayHit ? Color.red : Color.white;
     color.a = .2f;
     Gizmos.color = color;
     Gizmos.DrawWireMesh(CapsuleMesh, submeshIndex: -1, end, Quaternion.identity, Vector3.one);

@@ -20,7 +20,7 @@ public class Teleporter : ClassicAbility {
   }
 
   void OnTriggerExit(Collider c) {
-    if (c.TryGetComponent(out TeleporterPad pad) && pad == Source.Exit) {
+    if (c.TryGetComponent(out TeleporterPad pad) && Source && pad == Source.Exit) {
       Source = null;
     }
   }
