@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder(2)]
 public class LifeCycleTests : MonoBehaviour {
   public static void Print(string label) {
     Debug.Log($"{label}   FRAME:{Time.frameCount} | TICK:{Timeval.TickCount}");

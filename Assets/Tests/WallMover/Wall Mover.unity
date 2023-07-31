@@ -416,13 +416,14 @@ GameObject:
   m_Component:
   - component: {fileID: 172026272}
   - component: {fileID: 172026273}
+  - component: {fileID: 172026274}
   m_Layer: 0
   m_Name: LifeCycle Tests
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &172026272
 Transform:
   m_ObjectHideFlags: 0
@@ -445,9 +446,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172026271}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bae04de2c061c6d4cbdc31e1dd209037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &172026274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172026271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24bf79b742f03474f95c005b90694ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &245432043

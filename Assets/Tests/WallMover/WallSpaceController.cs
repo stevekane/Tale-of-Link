@@ -68,8 +68,8 @@ public class WallSpaceController : MonoBehaviour {
   }
 
   void Start() {
-    LeftSegments.ForEach(s => s.transform.SetParent(null));
-    RightSegments.ForEach(s => s.transform.SetParent(null));
+    // LeftSegments.ForEach(s => s.transform.SetParent(null));
+    // RightSegments.ForEach(s => s.transform.SetParent(null));
   }
 
   void OnEnable() {
@@ -91,27 +91,58 @@ public class WallSpaceController : MonoBehaviour {
     OnExitWallSpace?.Invoke();
   }
 
+  /*
+  If we have a merge request, set our position in the world to be the position of the moving wall
+  plus the amount the wall has moved during the frame it was added. This is caused by there being
+  a 1-frame delay between merging and actually merging.
+
+  Another way to handle this might be to ensure that inputs are processed first and result in the
+  controller being registered synchronously as a "child" of the moving wall. The moving wall would then
+  move itself and its children during its own update. If the character also wants to move, it can
+  do so by being updated after the moving wall and its position will have already been updated to reflect
+  the position of the moving wall its a child of.
+
+
+  The tricky bit here comes from the fact that physics world is now out of date by a frame.
+  When we try to move on a given frame, we do so by constructing a path relative to the current position of the
+  objects in the physics world (and ourself).
+
+  This path represents how we may move in space on that frame. The correct way to think about this path
+  is that it is defined in LOCAL space. Thus, if our local space moves, the path must also move if it is
+  to reflect the true positions it should lay everything out. This is like combining local motion
+  and global motion which happen concurrently: the local motion comes from the character moving around its
+  local path and the global motion comes from it being attached to a moving wall.
+
+  Therefore, once properly attached, the following things happen concurrently each frame:
+
+    Wall Moves
+    Character Moves path locally
+    Path Moves with the wall
+    Segments layed out along the path
+  */
   void FixedUpdate() {
     if (MergeRequested) {
       transform.position = MergePosition + (MovingWall ? MovingWall.PreviousMotionDelta : Vector3.zero);
       transform.rotation = Quaternion.LookRotation(MergeForward, Vector3.up);
       MergeRequested = false;
+      LifeCycleTests.Print("Merge acknowledged");
     }
 
     var position = transform.position + transform.forward * WallOffset;
     var direction = -transform.forward;
     var didHit = Physics.Raycast(position, direction, out var firstHit, 2*WallOffset, LayerMask, QueryTriggerInteraction.Ignore);
+    MovingWall = didHit ? firstHit.collider.GetComponent<MovingWall>() : null;
     if (didHit) {
       var ignoreBackFaces = Physics.Raycast(firstHit.point - WallOffset * firstHit.normal, firstHit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
       UpdateHits(RightHits, firstHit, 1, ignoreBackFaces);
       UpdateHits(LeftHits, firstHit, -1, ignoreBackFaces);
       UpdatePath(RightPath, RightHits);
       UpdatePath(LeftPath, LeftHits);
+      MovePath(RightPath, MovingWall);
+      MovePath(LeftPath, MovingWall);
     }
-    UpdateSegments(Width/2, RightPath, RightSegments, right:true);
-    UpdateSegments(Width/2, LeftPath, LeftSegments, right:false);
 
-    var delta = MovingWall ? MovingWall.MotionDelta : Vector3.zero;
+    // Move the character to next position on path
     var path = Velocity <= 0 ? LeftPath : RightPath;
     if (path.Count > 0) {
       var pathDistance = Distance(path);
@@ -120,15 +151,13 @@ public class WallSpaceController : MonoBehaviour {
       var p = newHit.point;
       var n = newHit.normal;
       var rTarget = Quaternion.LookRotation(n, Vector3.up);
-      delta += p - transform.position;
-      transform.rotation = rTarget;
+      transform.SetPositionAndRotation(p, rTarget);
     }
-    transform.position += delta;
     Velocity = 0;
 
-    if (MovingWall) {
-      ActiveSegments.ForEach(s => s.transform.position += MovingWall.MotionDelta);
-    }
+    // Update the segments after adjusting the path positions and owner position
+    UpdateSegments(Width/2, RightPath, RightSegments, right:true);
+    UpdateSegments(Width/2, LeftPath, LeftSegments, right:false);
   }
 
   void UpdateHits(List<RaycastHit> hits, RaycastHit firstHit, float sign, bool ignoreBackFaces) {
@@ -167,6 +196,19 @@ public class WallSpaceController : MonoBehaviour {
       var p1 = path[i];
       if (Mathf.Approximately(Vector3.SqrMagnitude(p0.point-p1.point), 0f))
         path.RemoveAt(i);
+    }
+  }
+
+  void MovePath(List<RaycastHit> path, MovingWall movingWall) {
+    // Paths must move with moving reference frame
+    // Steve : these corners are VALUE types which makes updating them deceptively tricky
+    // If you try to use a ForEach for example you'll end up modifying a copy of the value
+    if (movingWall) {
+      for (var i = 0; i < path.Count; i++) {
+        var p = path[i];
+        p.point += movingWall.MotionDelta;
+        path[i] = p;
+      }
     }
   }
 
