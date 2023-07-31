@@ -15,7 +15,7 @@ public class PathController : MonoBehaviour, IMoverController {
     PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
   }
 
-  void Awake() {
+  void Start() {
     PathTraversal = Waypoints.CreatePathTraversal(Mode);
     PhysicsMover.MoverController = this;
     PhysicsMover.SetPositionAndRotation(Waypoints.Nodes[0].transform.position, Waypoints.Nodes[0].transform.rotation);

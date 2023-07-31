@@ -65,10 +65,26 @@ public class PathTraversal {
         Segments.Add(new SegmentWait { WaitTicks = wait.Duration.Ticks });
     }
     if (mode == Modes.Looping) {
+      // Complete the loop.
       Segments.Add(new SegmentTraverse { Start = nodes[nodes.Count-1].transform, End = nodes[0].transform });
+      if (nodes[0] is Waitpoint wait)
+        Segments.Add(new SegmentWait { WaitTicks = wait.Duration.Ticks });
     } else {
-      var reversed = Segments.Select(s => s.Reversed()).Reverse();
-      Segments.AddRange(reversed);
+      // Add the way back.
+      for (var i = nodes.Count-1; i > 0; i--) {
+        Segments.Add(new SegmentTraverse { Start = nodes[i].transform, End = nodes[i-1].transform });
+        if (nodes[i-1] is Waitpoint wait)
+          Segments.Add(new SegmentWait { WaitTicks = wait.Duration.Ticks });
+      }
+    }
+
+    var idx = 0;
+    foreach (var s in Segments) {
+      if (s is SegmentTraverse t) {
+        Debug.Log($"Seg{idx++} traverse {t.Start} to {t.End}");
+      } else if (s is SegmentWait w) {
+        Debug.Log($"Seg{idx++} wait {w.WaitTicks}");
+      }
     }
   }
 
