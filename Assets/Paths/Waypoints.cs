@@ -4,18 +4,23 @@ using UnityEngine;
 
 // Runtime data for a path traversal over a set of path nodes, featuring different traversal modes.
 public class PathTraversal {
-  public enum Modes { Looping, BackAndForth };
+  public enum Modes { Looping, BackAndForth, OnlyOnce };
 
   List<Segment> Segments = new();
   int CurrentSegment = 0;
+  Modes Mode;
 
   public PathTraversal(List<PathNode> nodes, Modes mode) {
+    Mode = mode;
     BuildSegments(nodes, mode);
     Segments[CurrentSegment].Begin();
   }
   public void Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed) {
-    if (Segments[CurrentSegment].Advance(ref pos, ref rotation, moveSpeed)) {
-      CurrentSegment = (CurrentSegment+1)%Segments.Count;
+    if (CurrentSegment < Segments.Count && Segments[CurrentSegment].Advance(ref pos, ref rotation, moveSpeed)) {
+      CurrentSegment++;
+      if (Mode == Modes.OnlyOnce && CurrentSegment >= Segments.Count)
+        return;
+      CurrentSegment %= Segments.Count;
       Segments[CurrentSegment].Begin();
     }
   }
@@ -69,21 +74,12 @@ public class PathTraversal {
       Segments.Add(new SegmentTraverse { Start = nodes[nodes.Count-1].transform, End = nodes[0].transform });
       if (nodes[0] is Waitpoint wait)
         Segments.Add(new SegmentWait { WaitTicks = wait.Duration.Ticks });
-    } else {
+    } else if (mode == Modes.BackAndForth) {
       // Add the way back.
       for (var i = nodes.Count-1; i > 0; i--) {
         Segments.Add(new SegmentTraverse { Start = nodes[i].transform, End = nodes[i-1].transform });
         if (nodes[i-1] is Waitpoint wait)
           Segments.Add(new SegmentWait { WaitTicks = wait.Duration.Ticks });
-      }
-    }
-
-    var idx = 0;
-    foreach (var s in Segments) {
-      if (s is SegmentTraverse t) {
-        Debug.Log($"Seg{idx++} traverse {t.Start} to {t.End}");
-      } else if (s is SegmentWait w) {
-        Debug.Log($"Seg{idx++} wait {w.WaitTicks}");
       }
     }
   }
