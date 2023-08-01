@@ -5,13 +5,11 @@ public class SwitchBlock : MonoBehaviour {
   [SerializeField] Timeval AnimationDuration = Timeval.FromSeconds(.2f);
   [SerializeField] Collider Collider;
 
-  bool Raised;
   bool TargetColliderEnabled;
   Vector3 TargetScale = Vector3.one;
 
   public void SetSwitchState(bool raised, bool animate) {
-    Raised = raised;
-    if (Raised) {
+    if (raised) {
       TargetScale = Vector3.one;
       TargetColliderEnabled = true;
     } else {
