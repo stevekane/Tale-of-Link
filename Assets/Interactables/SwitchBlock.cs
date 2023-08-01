@@ -3,13 +3,9 @@ using UnityEngine;
 
 public class SwitchBlock : MonoBehaviour {
   public int UpState = 0;
-  public int State = 0;
   public Timeval AnimationDuration = Timeval.FromSeconds(.2f);
+  int State = 0;
   Vector3 TargetScale = Vector3.one;
-
-  void Awake() {
-    ValidateState(false);
-  }
 
   public void SetSwitchState(int state, bool animate) {
     State = state;
