@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour {
   public Renderer Renderer;
-  public Material MaterialZero;
-  public Material MaterialOne;
-  int State = 0;
+  public Material RedMaterial;
+  public Material BlueMaterial;
 
-  public void SetSwitchState(int state, bool animate) {
-    State = state;
-    Renderer.material = State == 1 ? MaterialOne : MaterialZero;
+  public void SetSwitchState(bool redActive, bool animate) {
+    Renderer.material = redActive ? RedMaterial : BlueMaterial;
   }
 }

@@ -1,24 +1,37 @@
 using UnityEngine;
 
 public class SwitchGroup : MonoBehaviour {
-  public int State = 0;
+  [Header("Initial State")]
+  public bool RedRaised;
+  [Header("Parts")]
   public Switch[] Switches;
-  public SwitchBlock[] SwitchBlocks;
+  public SwitchBlock[] RedSwitchBlocks;
+  public SwitchBlock[] BlueSwitchBlocks;
+  [Header("Optional")]
   public bool FindAmongChildren;
+  public GameObject RedSwitchesParent;
+  public GameObject BlueSwitchesParent;
 
   void Awake() {
     if (FindAmongChildren) {
       Switches = GetComponentsInChildren<Switch>();
-      SwitchBlocks = GetComponentsInChildren<SwitchBlock>();
+      RedSwitchBlocks = RedSwitchesParent.GetComponentsInChildren<SwitchBlock>();
+      BlueSwitchBlocks = BlueSwitchesParent.GetComponentsInChildren<SwitchBlock>();
     }
     Switches.ForEach(s => s.GetComponent<Combatant>().OnHurt += OnSwitchHurt);
-    Switches.ForEach(s => s.SetSwitchState(State, false));
-    SwitchBlocks.ForEach(b => b.SetSwitchState(State, false));
+    Switches.ForEach(s => s.SetSwitchState(RedRaised, false));
+    RedSwitchBlocks.ForEach(s => s.SetSwitchState(RedRaised, false));
+    BlueSwitchBlocks.ForEach(b => b.SetSwitchState(!RedRaised, false));
+  }
+
+  void OnDestroy() {
+    Switches.ForEach(s => s.GetComponent<Combatant>().OnHurt -= OnSwitchHurt);
   }
 
   void OnSwitchHurt(HitEvent _) {
-    State = (State+1)%2;
-    Switches.ForEach(s => s.SetSwitchState(State, true));
-    SwitchBlocks.ForEach(b => b.SetSwitchState(State, true));
+    RedRaised = !RedRaised;
+    Switches.ForEach(s => s.SetSwitchState(RedRaised, true));
+    RedSwitchBlocks.ForEach(b => b.SetSwitchState(RedRaised, true));
+    BlueSwitchBlocks.ForEach(b => b.SetSwitchState(!RedRaised, true));
   }
 }
