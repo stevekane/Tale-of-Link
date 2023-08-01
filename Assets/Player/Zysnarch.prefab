@@ -316,6 +316,7 @@ Transform:
   - {fileID: 4459990537358418531}
   - {fileID: 2944171036287581227}
   - {fileID: 2999060423982209114}
+  - {fileID: 5102308499903125049}
   m_Father: {fileID: 5567718968694952789}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1240,12 +1241,75 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4616200131171566731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5102308499903125049}
+  - component: {fileID: 7436216088028355795}
+  m_Layer: 0
+  m_Name: OpenDoor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5102308499903125049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616200131171566731}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 160508514658860043}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7436216088028355795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616200131171566731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7814975e73c77a84f99aa80a412078bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Open
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Main:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 0
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 0
+    OwnerActivationRequired: 0
+    OwnerActivationBlocked: 0
+    Ability: {fileID: 0}
+  InteractDistance: 1
+  DoorMask:
+    serializedVersion: 2
+    m_Bits: 262144
 --- !u!1 &4784750530854269563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,7 +1962,7 @@ Transform:
   - {fileID: 3063855676365370089}
   - {fileID: 2657786341892433614}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &942104952896553957
 MonoBehaviour:
@@ -1959,6 +2023,7 @@ MonoBehaviour:
   ExitWallSpace: {fileID: 7096482464801049942}
   WorldSpaceMove: {fileID: 4212478194187356647}
   WallSpaceMove: {fileID: 7079565682474872527}
+  OpenDoor: {fileID: 7436216088028355795}
 --- !u!114 &8687567913969326341
 MonoBehaviour:
   m_ObjectHideFlags: 0

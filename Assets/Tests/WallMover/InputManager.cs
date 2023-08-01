@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour {
   [SerializeField] ExitWallSpace ExitWallSpace;
   [SerializeField] WorldSpaceMove WorldSpaceMove;
   [SerializeField] WallSpaceMove WallSpaceMove;
+  [SerializeField] OpenDoorAbility OpenDoor;
 
   public UnityAction<string> OnInteractChange;
 
@@ -35,6 +36,7 @@ public class InputManager : MonoBehaviour {
     InteractPriority = new[] {
       EnterWallSpace.Main,
       ExitWallSpace.Main,
+      OpenDoor.Main,
     };
     GetComponent<Inventory>().OnNewItemAbility += OnNewItemAbility;
   }
