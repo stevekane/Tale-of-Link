@@ -1,19 +1,13 @@
 using UnityEngine;
 
 public class Switch : MonoBehaviour {
-  public Hurtbox Hurtbox;
   public Renderer Renderer;
   public Material MaterialZero;
   public Material MaterialOne;
-  public bool State = false;
+  int State = 0;
 
-  private void Awake() {
-    GetComponent<Combatant>().OnHurt += OnHurt;
-    Renderer.material = State ? MaterialOne : MaterialZero;
-  }
-
-  void OnHurt(HitEvent _) {
-    State = !State;
-    Renderer.material = State ? MaterialOne : MaterialZero;
+  public void SetSwitchState(int state, bool animate) {
+    State = state;
+    Renderer.material = State == 1 ? MaterialOne : MaterialZero;
   }
 }

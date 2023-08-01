@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 97941973910344036}
+  - component: {fileID: 7041543694597021036}
   m_Layer: 0
   m_Name: Switch Block
   m_TagString: Untagged
@@ -30,8 +31,22 @@ Transform:
   m_Children:
   - {fileID: 7273635600815143897}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7041543694597021036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195114774797125126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b467266a945144a946214ff5316720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpState: 0
+  State: 0
 --- !u!1 &7487555574292902189
 GameObject:
   m_ObjectHideFlags: 0
