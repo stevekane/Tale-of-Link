@@ -409,9 +409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a83ca811935ba4db0bbd550ad895cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Offset: {x: 0, y: 0, z: 0}
-  Speed: 1
-  pauseDuration: 3
   MotionDelta: {x: 0, y: 0, z: 0}
   PreviousMotionDelta: {x: 0, y: 0, z: 0}
 --- !u!114 &4907075254811590006
@@ -427,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PhysicsMover: {fileID: 7190387521527712359}
+  MovingWall: {fileID: 1289012099691333264}
   Waypoints: {fileID: 0}
   MoveSpeed: 5
   Mode: 1
