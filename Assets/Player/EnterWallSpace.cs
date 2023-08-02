@@ -32,7 +32,6 @@ public class EnterWallSpace : ClassicAbility {
     var capsuleHit = CapsuleCollider.CapsuleColliderCast(start, direction, EnterDistance, out var hit, LayerMask, QueryTriggerInteraction.Ignore);
     var rayHit = Physics.Raycast(start, direction, out hit, EnterDistance, LayerMask, QueryTriggerInteraction.Ignore);
     if (capsuleHit && rayHit && !hit.collider.GetComponent<Blocker>()) {
-      LifeCycleTests.Print("Merge Requested");
       WorldSpaceController.enabled = false;
       WallSpaceController.enabled = true;
       WallSpaceController.MovingWall = hit.collider.GetComponent<MovingWall>();

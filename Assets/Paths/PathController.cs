@@ -19,7 +19,6 @@ public class PathController : MonoBehaviour, IMoverController {
       PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
       var nextPosition = goalPosition;
       if (MovingWall) {
-        LifeCycleTests.Print("PathController");
         MovingWall.PreviousMotionDelta = MovingWall.MotionDelta;
         MovingWall.MotionDelta = nextPosition-previousPosition;
       }
