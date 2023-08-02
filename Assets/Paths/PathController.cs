@@ -1,4 +1,5 @@
 using KinematicCharacterController;
+using System;
 using UnityEngine;
 
 public class PathController : MonoBehaviour, IMoverController {
@@ -10,6 +11,7 @@ public class PathController : MonoBehaviour, IMoverController {
   public bool IsActive = true;
 
   PathTraversal PathTraversal;
+  float StartOffset = 0f;
 
   public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime) {
     goalPosition = PhysicsMover.TransientPosition;
@@ -26,13 +28,26 @@ public class PathController : MonoBehaviour, IMoverController {
   }
 
   void Start() {
-    PathTraversal = Waypoints.CreatePathTraversal(Mode);
     PhysicsMover.MoverController = this;
-    PhysicsMover.SetPositionAndRotation(Waypoints.Nodes[0].transform.position, Waypoints.Nodes[0].transform.rotation);
+    PathTraversal = Waypoints.CreatePathTraversal(Mode);
+    var pos = PhysicsMover.TransientPosition;
+    var rotation = PhysicsMover.TransientRotation;
+    PathTraversal.WarpTo(ref pos, ref rotation, StartOffset);
+    PhysicsMover.SetPositionAndRotation(pos, rotation);
   }
 
-  void OnDrawGizmosSelected() {
+  // Must be called before Start.
+  public void SetStartOffset(float startOffset) => StartOffset = startOffset;
+
+  public void OnDrawGizmosSelected() {
     var path = Waypoints.CreatePathTraversal(Mode);
     path.DrawGizmos();
+
+    var pos = transform.position;
+    var rotation = transform.rotation;
+    path.WarpTo(ref pos, ref rotation, StartOffset);
+    Gizmos.color = Color.green;
+    Gizmos.DrawWireCube(pos, Vector3.one);
   }
+
 }
