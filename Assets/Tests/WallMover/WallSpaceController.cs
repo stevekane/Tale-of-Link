@@ -26,9 +26,9 @@ public class WallSpaceController : MonoBehaviour {
       var normal = Vector3.zero;
       var totalWeight = 0f;
       foreach (var segment in ActiveSegments)
-        totalWeight += segment.Projector.uvScale.x;
+        totalWeight += segment.transform.localScale.x;
       foreach (var segment in ActiveSegments)
-        normal += -segment.transform.forward * segment.Projector.uvScale.x;
+        normal += -segment.transform.forward * segment.transform.localScale.x;
       normal /= totalWeight;
       normal.Normalize();
       return normal == Vector3.zero ? transform.forward : normal;
@@ -91,35 +91,6 @@ public class WallSpaceController : MonoBehaviour {
     OnExitWallSpace?.Invoke();
   }
 
-  /*
-  If we have a merge request, set our position in the world to be the position of the moving wall
-  plus the amount the wall has moved during the frame it was added. This is caused by there being
-  a 1-frame delay between merging and actually merging.
-
-  Another way to handle this might be to ensure that inputs are processed first and result in the
-  controller being registered synchronously as a "child" of the moving wall. The moving wall would then
-  move itself and its children during its own update. If the character also wants to move, it can
-  do so by being updated after the moving wall and its position will have already been updated to reflect
-  the position of the moving wall its a child of.
-
-
-  The tricky bit here comes from the fact that physics world is now out of date by a frame.
-  When we try to move on a given frame, we do so by constructing a path relative to the current position of the
-  objects in the physics world (and ourself).
-
-  This path represents how we may move in space on that frame. The correct way to think about this path
-  is that it is defined in LOCAL space. Thus, if our local space moves, the path must also move if it is
-  to reflect the true positions it should lay everything out. This is like combining local motion
-  and global motion which happen concurrently: the local motion comes from the character moving around its
-  local path and the global motion comes from it being attached to a moving wall.
-
-  Therefore, once properly attached, the following things happen concurrently each frame:
-
-    Wall Moves
-    Character Moves path locally
-    Path Moves with the wall
-    Segments layed out along the path
-  */
   void FixedUpdate() {
     if (MergeRequested) {
       transform.position = MergePosition + (MovingWall ? MovingWall.PreviousMotionDelta : Vector3.zero);
@@ -229,13 +200,9 @@ public class WallSpaceController : MonoBehaviour {
       max = 0.5f - lengthOffset / halfLength / 2;
       min = 0.5f - (lengthOffset + length) / halfLength / 2;
     }
-    segment.Projector.size = new((max-min)*halfLength*2, Height, WallOffset);
-    segment.Projector.pivot = new(0, 0, WallOffset);
-    segment.Projector.uvBias = new(min, 0);
-    segment.Projector.uvScale = new(max-min, 1);
-    segment.Collider.size = new((max-min)*halfLength*2, Height, WallOffset);
-    segment.Collider.center = new(0,0,WallOffset);
-    segment.transform.SetPositionAndRotation(center+WallOffset*normal, Quaternion.LookRotation(-normal, Vector3.up));
+    segment.MeshRenderer.material.SetVector("_BaseMap_ST", new Vector4(max-min, 1, min, 0));
+    segment.transform.localScale = new(Width * (max-min), Height, .01f);
+    segment.transform.SetPositionAndRotation(center+.0001f*normal, Quaternion.LookRotation(-normal, Vector3.up));
   }
 
   int UpdateSegments(
