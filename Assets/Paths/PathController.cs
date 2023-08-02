@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PathController : MonoBehaviour, IMoverController {
   public PhysicsMover PhysicsMover;
+  public MovingWall MovingWall;
   public Waypoints Waypoints;
   public float MoveSpeed = 10f;
   public PathTraversal.Modes Mode;
@@ -13,8 +14,16 @@ public class PathController : MonoBehaviour, IMoverController {
   public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime) {
     goalPosition = PhysicsMover.TransientPosition;
     goalRotation = PhysicsMover.TransientRotation;
-    if (IsActive)
+    if (IsActive) {
+      var previousPosition = PhysicsMover.TransientPosition;
       PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
+      var nextPosition = goalPosition;
+      if (MovingWall) {
+        LifeCycleTests.Print("PathController");
+        MovingWall.PreviousMotionDelta = MovingWall.MotionDelta;
+        MovingWall.MotionDelta = nextPosition-previousPosition;
+      }
+    }
   }
 
   void Start() {

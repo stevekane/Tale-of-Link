@@ -93,10 +93,10 @@ public class WallSpaceController : MonoBehaviour {
 
   void FixedUpdate() {
     if (MergeRequested) {
+      LifeCycleTests.Print("Merge processed");
       transform.position = MergePosition + (MovingWall ? MovingWall.PreviousMotionDelta : Vector3.zero);
       transform.rotation = Quaternion.LookRotation(MergeForward, Vector3.up);
       MergeRequested = false;
-      LifeCycleTests.Print("Merge acknowledged");
     }
 
     var position = transform.position + transform.forward * WallOffset;
@@ -111,6 +111,8 @@ public class WallSpaceController : MonoBehaviour {
       UpdatePath(LeftPath, LeftHits);
       MovePath(RightPath, MovingWall);
       MovePath(LeftPath, MovingWall);
+      if (MovingWall)
+        LifeCycleTests.Print("Update Path");
     }
 
     // Move the character to next position on path
@@ -123,6 +125,8 @@ public class WallSpaceController : MonoBehaviour {
       var n = newHit.normal;
       var rTarget = Quaternion.LookRotation(n, Vector3.up);
       transform.SetPositionAndRotation(p, rTarget);
+      if (MovingWall)
+        LifeCycleTests.Print("Update Player");
     }
     Velocity = 0;
 

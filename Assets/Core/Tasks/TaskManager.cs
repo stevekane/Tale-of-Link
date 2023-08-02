@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[DefaultExecutionOrder(-200)]
 public class TaskManager : SingletonBehavior<TaskManager> {
   public static SimpleTaskScheduler Scheduler => Instance._Scheduler;
   SimpleTaskScheduler _Scheduler = new();
