@@ -31,9 +31,7 @@ public class Hitbox : MonoBehaviour {
 
   void OnTriggerEnter(Collider c) {
     if (c.TryGetComponent(out Hurtbox hurtee)) {
-      var hit = new HitEvent { HitConfig = HitConfig, Attacker = Owner, Victim = hurtee.Owner };
-      hit.Attacker.HandleHit(hit);
-      hit.Victim.HandleHurt(hit);
+      hurtee.ProcessHit(Owner, HitConfig);
     }
   }
 }

@@ -24,11 +24,11 @@ public abstract class ClassicAbility : Ability {
 
   void FireMain() {
     Scope.Start(Runner(MainAction));
+    RunningTaskCount++;
   }
 
   protected TaskFunc Runner(Func<TaskScope, Task> f) => async scope => {
     try {
-      RunningTaskCount++;
       await f(scope);
     } finally {
       RunningTaskCount--;
