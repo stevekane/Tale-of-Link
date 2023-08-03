@@ -9,13 +9,10 @@ public class KeyRing : MonoBehaviour {
 
   RectTransform RectTransform;
   GridLayoutGroup LayoutGroup;
-  Dictionary<ItemProto, List<int>> ItemIndices = new();
 
   void Awake() {
     RectTransform = GetComponent<RectTransform>();
     LayoutGroup = GetComponent<GridLayoutGroup>();
-    for (var i = 0; i < LayoutGroup.transform.childCount; i++)
-      Destroy(LayoutGroup.transform.GetChild(i).gameObject);
     Inventory.OnAddItem += AddItem;
     Inventory.OnRemoveItem += RemoveItem;
   }
@@ -32,23 +29,23 @@ public class KeyRing : MonoBehaviour {
   }
 
   void AddItem(ItemProto itemProto) {
-    if (!itemProto.HUDGameObject)
-      return;
-    if (ItemIndices.TryGetValue(itemProto, out var indices)) {
-      indices.Add(LayoutGroup.transform.childCount);
-    } else {
-      ItemIndices.Add(itemProto, new() { LayoutGroup.transform.childCount });
-    }
-    Instantiate(itemProto.HUDGameObject, LayoutGroup.transform);
+    Repopulate();
   }
 
   void RemoveItem(ItemProto itemProto) {
-    if (!itemProto.HUDGameObject)
-      return;
-    if (ItemIndices.TryGetValue(itemProto, out var indices)) {
-      var lastIndex = indices[^1];
-      indices.RemoveAt(indices.Count-1);
-      Destroy(LayoutGroup.transform.GetChild(lastIndex).gameObject);
+    Repopulate();
+  }
+
+  void Repopulate() {
+    var childCount = LayoutGroup.transform.childCount;
+    for (var i = 0; i < childCount; i++)
+      Destroy(LayoutGroup.transform.GetChild(i).gameObject);
+    foreach (var (itemProto, count) in Inventory.Items) {
+      if (!itemProto.HUDGameObject)
+        continue;
+      for (var j = 0; j < count; j++) {
+        Instantiate(itemProto.HUDGameObject, LayoutGroup.transform);
+      }
     }
   }
 }

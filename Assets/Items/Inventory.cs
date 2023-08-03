@@ -4,8 +4,7 @@ using UnityEngine;
 
 [Serializable] public class ItemDictionary : SerializableDictionary<ItemProto, int> { }
 public class Inventory : MonoBehaviour {
-  [SerializeField] ItemDictionary Items = new();
-
+  public ItemDictionary Items = new();
   public ItemDictionary Contents => Items;
   public Action<(AbilityAction, bool)> OnNewItemAbility;
   public Action<ItemProto> OnAddItem;
@@ -21,8 +20,8 @@ public class Inventory : MonoBehaviour {
   }
   public void Remove(ItemProto item, int count = 1) {
     Debug.Assert(Items[item] >= count);
-    OnRemoveItem?.Invoke(item);
     Items.Decrement(item, count);
+    OnRemoveItem?.Invoke(item);
   }
   public void MoveTo(Inventory other) {
     foreach (var kv in Items)
