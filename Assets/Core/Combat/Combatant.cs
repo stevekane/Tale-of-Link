@@ -9,6 +9,7 @@ public class Combatant : MonoBehaviour {
     OnHit?.Invoke(hit);
   }
   public void HandleHurt(HitEvent hit) {
+    Debug.Log($"ouch {this} hit by {hit.Attacker}");
     OnHurt?.Invoke(hit);
   }
 }

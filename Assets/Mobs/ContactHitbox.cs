@@ -7,9 +7,7 @@ public class ContactHitbox : MonoBehaviour {
 
   void OnTriggerEnter(Collider other) {
     if (other.gameObject.TryGetComponent(out Hurtbox hb)) {
-      var hitEvent = new HitEvent { Attacker = Owner, Victim = hb.Owner, HitConfig = HitConfig };
-      Owner.HandleHit(hitEvent);
-      hb.Owner.HandleHurt(hitEvent);
+      hb.ProcessHit(Owner, HitConfig);
     }
   }
 }

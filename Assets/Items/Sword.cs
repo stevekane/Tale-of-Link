@@ -5,7 +5,6 @@ public class Sword : ClassicAbility {
   public Vector3 AttachOffsetTODO;
   public GameObject Model;
   public Hitbox Hitbox;
-  TaskScope Scope = new();
 
   void Start() {
     if (AbilityManager) {
@@ -13,7 +12,6 @@ public class Sword : ClassicAbility {
       transform.localPosition = AttachOffsetTODO;
     }
   }
-  void OnDestroy() => Scope.Dispose();
 
   public override async Task MainAction(TaskScope scope) {
     try {
