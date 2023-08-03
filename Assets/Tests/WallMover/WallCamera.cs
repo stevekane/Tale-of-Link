@@ -4,6 +4,7 @@ using UnityEngine;
 [DefaultExecutionOrder(5)]
 public class WallCameraExtension : CinemachineExtension {
   public WallSpaceController WallMover;
+  public float MinDistanceFromTarget = 3f;
   public float DistanceFromTarget = 5f;
   public float ZoomSpeed = 5;
   public LayerMask LayerMask;
@@ -28,7 +29,7 @@ public class WallCameraExtension : CinemachineExtension {
       var didHit = Physics.Raycast(vcam.LookAt.position, weightedNormal, out var hit, DistanceFromTarget, LayerMask);
       var distance = 0f;
       if (didHit && !hit.collider.GetComponent<CameraIgnore>()) {
-        distance = hit.distance;
+        distance = Mathf.Max(hit.distance, MinDistanceFromTarget);
       } else {
         distance = DistanceFromTarget;
       }

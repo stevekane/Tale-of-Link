@@ -112,7 +112,6 @@ public class WallSpaceController : MonoBehaviour {
       MovePath(LeftPath, MovingWall);
     }
 
-    // Move the character to next position on path
     var path = Velocity <= 0 ? LeftPath : RightPath;
     if (path.Count > 0) {
       var pathDistance = Distance(path);
@@ -125,7 +124,6 @@ public class WallSpaceController : MonoBehaviour {
     }
     Velocity = 0;
 
-    // Update the segments after adjusting the path positions and owner position
     UpdateSegments(Width/2, RightPath, RightSegments, right:true);
     UpdateSegments(Width/2, LeftPath, LeftSegments, right:false);
   }
@@ -170,9 +168,7 @@ public class WallSpaceController : MonoBehaviour {
   }
 
   void MovePath(List<RaycastHit> path, MovingWall movingWall) {
-    // Paths must move with moving reference frame
     // Steve : these corners are VALUE types which makes updating them deceptively tricky
-    // If you try to use a ForEach for example you'll end up modifying a copy of the value
     if (movingWall) {
       for (var i = 0; i < path.Count; i++) {
         var p = path[i];
