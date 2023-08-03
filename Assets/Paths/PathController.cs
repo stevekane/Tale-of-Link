@@ -9,6 +9,7 @@ public class PathController : MonoBehaviour, IMoverController {
   public float MoveSpeed = 10f;
   public PathTraversal.Modes Mode;
   public bool IsActive = true;
+  public bool IgnoreRotation = false;
 
   PathTraversal PathTraversal;
   float StartOffset = 0f;
@@ -18,7 +19,10 @@ public class PathController : MonoBehaviour, IMoverController {
     goalRotation = PhysicsMover.TransientRotation;
     if (IsActive) {
       var previousPosition = PhysicsMover.TransientPosition;
+      var previousRotation = PhysicsMover.TransientRotation;
       PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
+      if (IgnoreRotation)  // dumb hack to work with PhysicsRotator
+        goalRotation = previousRotation;
       var nextPosition = goalPosition;
       if (MovingWall) {
         MovingWall.PreviousMotionDelta = MovingWall.MotionDelta;
@@ -40,6 +44,7 @@ public class PathController : MonoBehaviour, IMoverController {
   public void SetStartOffset(float startOffset) => StartOffset = startOffset;
 
   public void OnDrawGizmosSelected() {
+    if (!Waypoints) return;
     var path = Waypoints.CreatePathTraversal(Mode);
     path.DrawGizmos();
 

@@ -50,7 +50,7 @@ public class PathTraversal {
     public abstract bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed);
   }
   class SegmentTraverse : Segment {
-    const float STOP_FRACTION = .99f;
+    const float STOP_FRACTION = .999f;
     public Transform Start;
     public Transform End;
     Vector3 Delta, Dir;
