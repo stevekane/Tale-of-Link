@@ -158,8 +158,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WallMover: {fileID: 0}
+  MinDistanceFromTarget: 3
   DistanceFromTarget: 6
   ZoomSpeed: 15
+  RotationSpeed: 180
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
