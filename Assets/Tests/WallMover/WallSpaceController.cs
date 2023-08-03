@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using KinematicCharacterController;
 
 [DefaultExecutionOrder(3)]
 public class WallSpaceController : MonoBehaviour {
@@ -159,7 +160,7 @@ public class WallSpaceController : MonoBehaviour {
         path.Add(new RaycastHit() { point = point, normal = currentNormal });
       }
     }
-    path.Add(hits[hits.Count-1]);
+    path.Add(hits[^1]);
     for (var i = path.Count-1; i > 0; i--) {
       var p0 = path[i-1];
       var p1 = path[i];
@@ -263,7 +264,7 @@ public class WallSpaceController : MonoBehaviour {
         distance -= d;
       }
     }
-    return corners[corners.Count - 1];
+    return corners[^1];
   }
 
   float Distance(List<RaycastHit> hits, float distance = 0) {
@@ -279,8 +280,23 @@ public class WallSpaceController : MonoBehaviour {
   out bool hitBackFace,
   ref bool ignoreBackFaces) {
     if (Physics.Raycast(origin, direction, out hit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore)) {
-      hitBackFace = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
-      return (ignoreBackFaces || !hitBackFace) && !hit.collider.GetComponent<Blocker>();
+      hitBackFace = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, out var backHit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
+      // hit a blocker
+      if (hit.collider.GetComponent<Blocker>()) {
+        return false;
+      // did not hit a backface
+      } else if (hitBackFace) {
+        // we hit a backface but one of the two objects moves
+        if (ignoreBackFaces && (backHit.collider.GetComponent<PhysicsMover>() || hit.collider.GetComponent<PhysicsMover>())) {
+          return true;
+        // hit a bad backface
+        } else {
+          return false;
+        }
+      // valid
+      } else {
+        return true;
+      }
     }
     hitBackFace = false;
     return false;
