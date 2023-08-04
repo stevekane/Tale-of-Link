@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AISkeleton : AI {
+public class AISkeleton : MonoBehaviour {
+  public AbilityManager AbilityManager;
   public DodgeAbility Dodge;
   public ThrowAbility Throw;
   public float PlayerMaxDistance = 3f;
@@ -10,7 +11,22 @@ public class AISkeleton : AI {
 
   int ThrowTicksRemaining = 60*3;
 
-  public override async Task MaybeUseAbility(TaskScope scope) {
+  TaskScope Scope;
+
+  public void Start() {
+    //base.Start();
+    //NavMeshAgent.updatePosition = false;
+    //NavMeshAgent.updateRotation = false;
+    //NavMeshAgent.updateUpAxis = false;
+    Scope = new();
+    Scope.Start(Waiter.Repeat(Behavior));
+  }
+
+  void OnDestroy() {
+    Scope.Dispose();
+  }
+
+  async Task Behavior(TaskScope scope) {
     if (ShouldDodge() && AbilityManager.CanRun(Dodge.Main)) {
       await AbilityManager.RunUntilDone(Dodge.Main)(scope);
       await scope.Until(() => AbilityManager.CanRun(Throw.Main));
