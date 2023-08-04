@@ -37,8 +37,6 @@ public class WallCameraExtension : CinemachineExtension {
         direction = nextRotation * Vector3.forward;
       }
       var didHit = Physics.Raycast(vcam.LookAt.position, -direction, out var hit, DistanceFromTarget, LayerMask);
-      Debug.DrawRay(vcam.LookAt.position, -DistanceFromTarget*direction);
-      Debug.Log(didHit);
       var distance = 0f;
       if (didHit && !hit.collider.GetComponent<CameraIgnore>()) {
         distance = Mathf.Max(hit.distance, MinDistanceFromTarget);
