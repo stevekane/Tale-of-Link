@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -34,67 +35,49 @@ public class AI : MonoBehaviour {
     Scope.Dispose();
   }
 
-  async Task Idle(TaskScope scope) {
-    await scope.Ticks(MoveDuration.Ticks);
+  void Idle() { }
+
+  Vector3 TargetPos;
+  int NextChooseTick = 0;
+  void Wander() {
+    if (--NextChooseTick <= 0) {
+      TargetPos = transform.position + 10 * UnityEngine.Random.onUnitSphere.XZ();
+      NextChooseTick = MoveDuration.Ticks;
+    }
+    var dir = (TargetPos - transform.position).normalized;
+    AbilityManager.Run(Move.Move, dir);
   }
 
-  async Task Wander(TaskScope scope) {
-    var targetPosition = transform.position + 10 * Random.onUnitSphere.XZ();
-    for (var i = 0; i < MoveDuration.Ticks; i++) {
-      if (AbilityManager.CanRun(Move.Move)) {
-        var dir = (targetPosition - transform.position).normalized;
-        AbilityManager.Run(Move.Move, dir);
-      }
+  void Chase() {
+    var player = FindObjectOfType<Player>().transform;
+    var dir = (player.position - transform.position).normalized;
+    AbilityManager.Run(Move.Move, dir);
+  }
+
+  public virtual async Task MaybeMove(TaskScope scope) {
+    Action moveBehavior = MoveStyle switch {
+      MoveStyle.Wander => Wander,
+      MoveStyle.Chase => Chase,
+      _ => Idle,
+    };
+    while (true) {
+      if (AbilityManager.CanRun(Move.Move))
+        moveBehavior();
       await scope.Tick();
     }
   }
 
-  async Task Chase(TaskScope scope) {
-    var player = FindObjectOfType<Player>().transform;
-    for (var i = 0; i < MoveDuration.Ticks; i++) {
-      if (AbilityManager.CanRun(Move.Move)) {
-        var dir = (player.position - transform.position).normalized;
-        AbilityManager.Run(Move.Move, dir);
-      }
-      await scope.Tick();
+  public virtual async Task MaybeUseAbility(TaskScope scope) {
+    if (Ability && AbilityManager.CanRun(Ability.Main)) {
+      AbilityManager.Run(Ability.Main);
+      await scope.Until(() => !Ability.IsRunning);
     }
   }
 
   public virtual async Task Behavior(TaskScope scope) {
-    while (true) {
-      var moveBehavior = MoveStyle switch {
-        MoveStyle.Wander => Wander(scope),
-        MoveStyle.Chase => Chase(scope),
-        _ => Idle(scope),
-      };
-      await moveBehavior;
-      if (Ability && AbilityManager.CanRun(Ability.Main)) {
-        AbilityManager.Run(Ability.Main);
-        await scope.Until(() => !Ability.IsRunning);
-      }
-      await scope.Tick();
-    }
+    await scope.All(
+      Waiter.Repeat(MaybeMove),
+      Waiter.Repeat(MaybeUseAbility)
+    );
   }
-
-  //public override void BeforeCharacterUpdate(float deltaTime) {
-  //  base.BeforeCharacterUpdate(deltaTime);
-  //  NavMeshAgent.nextPosition = transform.position;
-  //}
-
-  //public override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) {
-  //  base.UpdateRotation(ref currentRotation, deltaTime);
-  //  if (Velocity.XZ().sqrMagnitude > 0) {
-  //    currentRotation = Quaternion.LookRotation(Velocity.XZ());
-  //  }
-  //}
-
-  //public override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) {
-  //  base.UpdateVelocity(ref currentVelocity, deltaTime);
-  //  if (ScriptedVelocity.sqrMagnitude > 0) {
-  //    currentVelocity = ScriptedVelocity;
-  //  } else {
-  //    currentVelocity = Velocity;
-  //  }
-  //  ScriptedVelocity = Vector3.zero;
-  //}
 }

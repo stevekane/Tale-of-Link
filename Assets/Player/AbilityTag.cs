@@ -18,4 +18,5 @@ public enum AbilityTag {
   CanRotate = 1 << 6,
   CanAttack = 1 << 7,
   CanUseItem = 1 << 8,
+  IsAttacking = 1 << 9,
 }

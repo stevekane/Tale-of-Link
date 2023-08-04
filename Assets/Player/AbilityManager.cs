@@ -53,6 +53,11 @@ public class AbilityManager : MonoBehaviour {
     action.Fire();
   }
 
+  public TaskFunc RunUntilDone(AbilityAction action) => async (s) => {
+    Run(action);
+    await s.Until(() => !action.Ability.IsRunning);
+  };
+
   public void Run<T>(AbilityAction<T> action, T t) {
     foreach (var ability in Abilities)
       if (ability.IsRunning && IsCancellable(action, ability))
