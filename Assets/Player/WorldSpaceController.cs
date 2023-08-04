@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using KinematicCharacterController;
+using System;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
 [DefaultExecutionOrder(100)]
@@ -14,6 +15,8 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public Vector3 ScriptVelocity;
   public UnityAction OnEnterWorldSpace;
   public UnityAction OnExitWorldSpace;
+
+  public Action<HitStabilityReport> OnCollision;
 
   public void Unground() {
     Motor.ForceUnground();
@@ -110,6 +113,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   }
 
   public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) {
+    OnCollision?.Invoke(hitStabilityReport);
   }
 
   public void PostGroundingUpdate(float deltaTime) {
