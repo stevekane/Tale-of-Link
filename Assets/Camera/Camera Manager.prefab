@@ -86,8 +86,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Config:
-    TIME_DELATION_DECAY_EPSILON: -0.5
-    LOOK_AHEAD_EPSILON: -0.5
     SHAKE_DECAY_EPSILON: -0.5
     MAX_SHAKE_INTENSITY: 20
 --- !u!1 &2107506661378766135
@@ -176,13 +174,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WallMover: {fileID: 0}
-  MinDistanceFromTarget: 3
+  MinDistanceFromTarget: 1
   DistanceFromTarget: 6
   ZoomSpeed: 15
   RotationSpeed: 180
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
+  UseRotationalSpeed: 0
 --- !u!1 &3430099537111706109
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +339,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 1
   m_FrequencyGain: 1
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: 685.9181, y: -343.99402, z: -34.88028}
 --- !u!1 &5326508112421027150
 GameObject:
   m_ObjectHideFlags: 0
