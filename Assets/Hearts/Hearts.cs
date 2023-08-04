@@ -2,11 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Hearts : MonoBehaviour {
-  const int INITIAL_CURRENT = 2;
-  const int INITIAL_TOTAL = 12;
-
-  int Current;
-  int Total;
+  public int Current = 2;
+  public int Total = 12;
 
   public UnityAction<int> OnSetCurrent;
   public UnityAction<int> OnChangeCurrent;
@@ -17,8 +14,8 @@ public class Hearts : MonoBehaviour {
   public bool IsFull => Current >= Total;
 
   void Start() {
-    SetTotal(INITIAL_TOTAL);
-    SetCurrent(INITIAL_CURRENT);
+    SetTotal(Total);
+    SetCurrent(Current);
   }
 
   public void SetCurrent(int current) {
