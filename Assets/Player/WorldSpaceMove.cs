@@ -20,6 +20,7 @@ public class WorldSpaceMove : Ability {
     WorldSpaceController.ScriptVelocity += Speed * stick.XZ();
     if (stick.sqrMagnitude > 0 && AbilityManager.HasTag(AbilityTag.CanRotate))
       WorldSpaceController.Forward = stick;
-    Animator?.SetFloat("Normalized Move Speed", stick.XZ().magnitude);
+    if (Animator)
+      Animator.SetFloat("Normalized Move Speed", stick.XZ().magnitude);
   }
 }
