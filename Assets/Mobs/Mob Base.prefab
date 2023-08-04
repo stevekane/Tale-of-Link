@@ -183,6 +183,8 @@ GameObject:
   - component: {fileID: 363960544773001967}
   - component: {fileID: 8309471275002162877}
   - component: {fileID: 5904440407964557133}
+  - component: {fileID: 4226051191361246500}
+  - component: {fileID: 3360500511646581115}
   m_Layer: 10
   m_Name: Mob Base
   m_TagString: Untagged
@@ -318,6 +320,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4226051191361246500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad868408885401946b404af95e42105f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 5904440407964557133}
+  Hearts: {fileID: 3360500511646581115}
+  SwordDamage: 1
+  HammerDamage: 0
+--- !u!114 &3360500511646581115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03b03ce266756a45a7123156f1a94ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Current: 1
+  Total: 1
 --- !u!1 &7460705314114962191
 GameObject:
   m_ObjectHideFlags: 0

@@ -417,10 +417,10 @@ PrefabInstance:
       addedObject: {fileID: 5775444442245143508}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6515522028597025426, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
-      insertIndex: -1
+      insertIndex: 6
       addedObject: {fileID: 5531353039668681880}
     - targetCorrespondingSourceObject: {fileID: 6515522028597025426, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
-      insertIndex: -1
+      insertIndex: 7
       addedObject: {fileID: 2550766663105874653}
   m_SourcePrefab: {fileID: 100100000, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
 --- !u!1 &184635405470528440 stripped
@@ -484,6 +484,7 @@ MonoBehaviour:
   AbilityManager: {fileID: 7027339533018681442}
   Combatant: {fileID: 3816381068903608314}
   Model: {fileID: 184635405470528440}
+  MobOnHurt: {fileID: 6891554383285380499}
   IsFlipped: 0
   Height: 1
 --- !u!4 &4657898266024058371 stripped
@@ -491,6 +492,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2711842983999925940, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
   m_PrefabInstance: {fileID: 7279588414842138807}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6891554383285380499 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4226051191361246500, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+  m_PrefabInstance: {fileID: 7279588414842138807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570454175643920933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad868408885401946b404af95e42105f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7027339533018681442 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 324376866214748373, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
