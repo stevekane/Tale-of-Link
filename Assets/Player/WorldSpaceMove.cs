@@ -1,16 +1,18 @@
 using UnityEngine;
 
 public class WorldSpaceMove : Ability {
-  [SerializeField] WorldSpaceController WorldSpaceController;
   [SerializeField] float Speed = 5;
-
-  Vector3 Velocity;
 
   public AbilityAction<Vector3> Move;
 
-  void Awake() {
+  Animator Animator;
+  WorldSpaceController WorldSpaceController;
+
+  void Start() {
     Move.Ability = this;
     Move.Listen(OnMove);
+    AbilityManager.InitComponent(out Animator, true);
+    AbilityManager.InitComponent(out WorldSpaceController);
   }
 
   void OnMove(Vector3 stick) {
@@ -18,5 +20,6 @@ public class WorldSpaceMove : Ability {
     WorldSpaceController.ScriptVelocity += Speed * stick.XZ();
     if (stick.sqrMagnitude > 0 && AbilityManager.HasTag(AbilityTag.CanRotate))
       WorldSpaceController.Forward = stick;
+    Animator?.SetFloat("Normalized Move Speed", stick.XZ().magnitude);
   }
 }

@@ -1,27 +1,33 @@
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Sword : ClassicAbility {
-  public Vector3 AttachOffsetTODO;
-  public GameObject Model;
+  public VisualEffect VisualEffect;
   public Hitbox Hitbox;
+  public Vector3 Direction;
+  public Timeval Duration = Timeval.FromMillis(250);
+
+  Animator Animator;
+  WorldSpaceController WorldSpaceController;
+  EquipmentVisibility EquipmentVisibility;
 
   void Start() {
-    if (AbilityManager) {
-      // TODO: Attach to player's hand.
-      transform.localPosition = AttachOffsetTODO;
-    }
+    AbilityManager.InitComponent(out Animator);
+    AbilityManager.InitComponent(out WorldSpaceController);
+    AbilityManager.InitComponent(out EquipmentVisibility);
   }
 
   public override async Task MainAction(TaskScope scope) {
     try {
-      IsRunning = true;
-      Model.SetActive(true);
+      if (Direction.sqrMagnitude > 0)
+        WorldSpaceController.Forward = Direction;
       Hitbox.EnableCollision = true;
-      await scope.Seconds(.5f);
+      Animator.SetTrigger("Attack");
+      VisualEffect.Play();
+      EquipmentVisibility.ClearCurrentObjects();
+      await scope.Ticks(Duration.Ticks);
     } finally {
-      IsRunning = false;
-      Model.SetActive(false);
       Hitbox.EnableCollision = false;
     }
   }

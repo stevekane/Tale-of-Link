@@ -66,8 +66,10 @@ public class InputManager : MonoBehaviour {
       AbilityManager.Run(WorldSpaceMove.Move, new(move.x, 0, move.y));
     }
 
-    if (SwordAction != null && Inputs.Player.Sword.WasPerformedThisFrame() && AbilityManager.CanRun(SwordAction))  // TODO: charging
+    if (SwordAction != null && Inputs.Player.Sword.WasPerformedThisFrame() && AbilityManager.CanRun(SwordAction)) {
+      (SwordAction.Ability as Sword).Direction = new (move.x, 0, move.y);
       AbilityManager.Run(SwordAction);
+    }
     if (ItemAction != null && Inputs.Player.Item1.WasPerformedThisFrame() && AbilityManager.CanRun(ItemAction))
       AbilityManager.Run(ItemAction);
 

@@ -19,4 +19,5 @@ public enum AbilityTag {
   CanAttack = 1 << 7,
   CanUseItem = 1 << 8,
   IsAttacking = 1 << 9,
+  IsUsingItem = 1 << 10,
 }
