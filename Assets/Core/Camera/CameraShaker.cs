@@ -1,22 +1,16 @@
+using System;
 using Cinemachine;
 using UnityEngine;
 
+[Serializable]
 public class CameraConfig {
-  [Tooltip("Rate of time dilation decay")]
-  [Range(-10, 0)]
-  public float TIME_DELATION_DECAY_EPSILON = -0.5f;
-
-  [Tooltip("Rate of interpolation for camera lookahead")]
-  [Range(-10, 0)]
-  public float LOOK_AHEAD_EPSILON = -0.5f;
-
   [Tooltip("Rate of interpolation for camera shake decay")]
   [Range(-10, 0)]
   public float SHAKE_DECAY_EPSILON = -0.5f;
 
   [Tooltip("Max intensity of camera shake")]
   [Range(0, 100)]
-  public float MAX_SHAKE_INTENSITY = 5;
+  public float MAX_SHAKE_INTENSITY = 100;
 }
 
 public class CameraShaker : CinemachineExtension {
