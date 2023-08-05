@@ -1348,10 +1348,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turtle
       objectReference: {fileID: 0}
-    - target: {fileID: 4570454175643920933, guid: 90c318aca7e024247b52e8e3745b6e6a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2117,6 +2113,10 @@ PrefabInstance:
     - target: {fileID: 4570454175643920933, guid: 91b7b14dd8bd4384caaf3ee084b33c5d, type: 3}
       propertyPath: m_Name
       value: WormBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 4570454175643920933, guid: 91b7b14dd8bd4384caaf3ee084b33c5d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12785,7 +12785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1843056783
 Transform:
   m_ObjectHideFlags: 0
@@ -13071,7 +13071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1970517661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15093,7 +15093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4021998544767194130, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_AmplitudeGain
-      value: 9.653971e-35
+      value: 0.6174295
       objectReference: {fileID: 0}
     - target: {fileID: 7140674329983288670, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_Name
