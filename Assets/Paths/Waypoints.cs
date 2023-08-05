@@ -144,7 +144,7 @@ public class Waypoints : MonoBehaviour {
     followers.ForEach((p, i) => p.SetStartOffset((FollowerOffsetFromStart + (float)i / followers.Count) % 1f));
   }
 
-  void OnDrawGizmosSelected() {
+  void OnDrawGizmos() {
     var path = CreatePathTraversal(PathTraversal.Modes.BackAndForth);
     path.DrawGizmos();
 
