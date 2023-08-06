@@ -46,6 +46,11 @@ public class AbilityManager : MonoBehaviour {
     return predicateSatisfied && ownerAllowed && !ownerBlocked && !abilityBlocked;
   }
 
+  public void Stop(Ability ability) {
+    if (ability.IsRunning)
+      ability.Stop();
+  }
+
   public void Run(AbilityAction action) {
     foreach (var ability in Abilities)
       if (ability.IsRunning && IsCancellable(action, ability))

@@ -77,7 +77,7 @@ public class InputManager : MonoBehaviour {
       GetComponent<Magic>().Consume(25);
     }
     if (Inputs.Player.L2.WasPerformedThisFrame()) {
-      GetComponent<WorldSpaceController>().Launch(700f * Vector3.up);
+      GetComponent<Hearts>().ChangeCurrent(-1);
     }
   }
 }

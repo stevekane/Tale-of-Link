@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Hearts : MonoBehaviour {
+  [SerializeField] AbilityManager AbilityManager;
+  [SerializeField] KillPlayer KillPlayer;
+
   public int Current = 2;
   public int Total = 12;
 
   public UnityAction<int> OnSetCurrent;
   public UnityAction<int> OnChangeCurrent;
-  public UnityAction OnDeath;
   public UnityAction<int> OnSetTotal;
   public UnityAction<int> OnChangeTotal;
 
@@ -18,34 +20,39 @@ public class Hearts : MonoBehaviour {
     SetCurrent(Current);
   }
 
+  void CheckForDeath() {
+    if (Current <= 0 && AbilityManager.HasTag(AbilityTag.Alive)) {
+      AbilityManager.Abilities.ForEach(AbilityManager.Stop);
+      AbilityManager.Run(KillPlayer.Main);
+    }
+  }
+
   public void SetCurrent(int current) {
-    Current = current;
+    Current = Mathf.Max(0, current);
     Current = Mathf.Min(Current, Total);
     OnSetCurrent?.Invoke(Current);
-    if (Current <= 0)
-      OnDeath?.Invoke();
+    CheckForDeath();
   }
 
   public void ChangeCurrent(int delta) {
-    Current += delta;
+    Current = Mathf.Max(0, Current+delta);
     Current = Mathf.Min(Current, Total);
     OnChangeCurrent?.Invoke(Current);
-    if (Current <= 0)
-      OnDeath?.Invoke();
+    CheckForDeath();
   }
 
   public void SetTotal(int total) {
     Total = total;
     OnSetTotal?.Invoke(Total);
+    CheckForDeath();
   }
 
   public void ChangeTotal(int delta) {
-    Total += delta;
-    Current += delta;
+    Total = Mathf.Max(0, Total+delta);
+    Current = Mathf.Max(0, Current+delta);
     Current = Mathf.Min(Current, Total);
     OnChangeCurrent?.Invoke(Current);
     OnChangeTotal?.Invoke(Total);
-    if (Current <= 0)
-      OnDeath?.Invoke();
+    CheckForDeath();
   }
 }

@@ -192,6 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3600894637792015318}
   - component: {fileID: 9093946078212350074}
+  - component: {fileID: 6274744977763557941}
   m_Layer: 0
   m_Name: Camera Manager
   m_TagString: Untagged
@@ -230,10 +231,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d562f0b87127dbd498a52293bd48d320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 2887477936452563032}
   WorldSpaceCamera: {fileID: 9140855441633619888}
   WallSpaceCamera: {fileID: 3977400221230463679}
+  Volume: {fileID: 6274744977763557941}
+  Camera: {fileID: 2887477936452563032}
   ScreenFadeOverlay: {fileID: 3299616035849757604}
+--- !u!114 &6274744977763557941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3430099537111706109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 1
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 1bc85ce8f918bf440874bf3824a99862, type: 2}
 --- !u!1 &3535901881483138577
 GameObject:
   m_ObjectHideFlags: 0
