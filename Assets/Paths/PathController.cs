@@ -55,6 +55,11 @@ public class PathController : MonoBehaviour, IMoverController {
     var rotation = transform.rotation;
     path.WarpTo(ref pos, ref rotation, StartOffset);
     Gizmos.color = Color.green;
-    Gizmos.DrawWireCube(pos, GetComponent<BoxCollider>().size);
+    if (TryGetComponent(out BoxCollider boxCollider)) {
+        Gizmos.DrawWireCube(pos, GetComponent<BoxCollider>().size);
+    }
+    else {
+        Gizmos.DrawWireCube(pos, Vector3.one);
+    }
   }
 }
