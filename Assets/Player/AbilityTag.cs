@@ -20,4 +20,9 @@ public enum AbilityTag {
   CanUseItem = 1 << 8,
   IsAttacking = 1 << 9,
   IsUsingItem = 1 << 10,
+  Spawning = 1 << 11,
+  Alive = 1 << 12,
+  Dying = 1 << 13,
+  Dead = 1 << 14,
+  Reviving = 1 << 15
 }

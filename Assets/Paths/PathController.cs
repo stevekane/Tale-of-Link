@@ -20,7 +20,8 @@ public class PathController : MonoBehaviour, IMoverController {
     if (IsActive) {
       var previousPosition = PhysicsMover.TransientPosition;
       var previousRotation = PhysicsMover.TransientRotation;
-      PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
+      if (PathTraversal != null)
+        PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
       if (IgnoreRotation)  // dumb hack to work with PhysicsRotator
         goalRotation = previousRotation;
       var nextPosition = goalPosition;
@@ -33,10 +34,12 @@ public class PathController : MonoBehaviour, IMoverController {
 
   void Start() {
     PhysicsMover.MoverController = this;
-    PathTraversal = Waypoints.CreatePathTraversal(Mode);
     var pos = PhysicsMover.TransientPosition;
     var rotation = PhysicsMover.TransientRotation;
-    PathTraversal.WarpTo(ref pos, ref rotation, StartOffset);
+    if (Waypoints) {
+      PathTraversal = Waypoints.CreatePathTraversal(Mode);
+      PathTraversal.WarpTo(ref pos, ref rotation, StartOffset);
+    }
     PhysicsMover.SetPositionAndRotation(pos, rotation);
   }
 
@@ -52,7 +55,6 @@ public class PathController : MonoBehaviour, IMoverController {
     var rotation = transform.rotation;
     path.WarpTo(ref pos, ref rotation, StartOffset);
     Gizmos.color = Color.green;
-    Gizmos.DrawWireCube(pos, Vector3.one);
+    Gizmos.DrawWireCube(pos, GetComponent<BoxCollider>().size);
   }
-
 }

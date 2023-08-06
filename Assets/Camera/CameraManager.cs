@@ -1,11 +1,27 @@
-using UnityEngine;
 using Cinemachine;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class CameraManager : LevelManager<CameraManager> {
+  [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
+  [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
+  [SerializeField] Volume Volume;
+
   public Camera Camera;
-  public CinemachineVirtualCamera WorldSpaceCamera;
-  public CinemachineVirtualCamera WallSpaceCamera;
   public CanvasGroup ScreenFadeOverlay;
+
+  float FadeSpeed = 100;
+  float TargetSaturation = 0;
+
+  public void FadeOut(float Speed) {
+    FadeSpeed = Speed * 100;
+    TargetSaturation = -100;
+  }
+  public void FadeIn(float Speed) {
+    FadeSpeed = Speed * 100;
+    TargetSaturation = 0;
+  }
 
   void Start() {
     PlayerManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
@@ -13,6 +29,12 @@ public class CameraManager : LevelManager<CameraManager> {
 
   void OnDestroy() {
     PlayerManager.Instance.OnPlayerSpawn -= OnPlayerSpawn;
+  }
+
+  void Update() {
+    if (Volume.profile.TryGet(out ColorAdjustments colorAdjustments)) {
+      colorAdjustments.saturation.value = Mathf.MoveTowards(colorAdjustments.saturation.value, TargetSaturation, Time.deltaTime * FadeSpeed);
+    }
   }
 
   void OnPlayerSpawn(Player player) {
