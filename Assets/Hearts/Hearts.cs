@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(AbilityManager))]
 public class Hearts : MonoBehaviour {
-  [SerializeField] AbilityManager AbilityManager;
-  [SerializeField] KillPlayer KillPlayer;
+  [SerializeField] ClassicAbility Kill;
 
   public int Current = 2;
   public int Total = 12;
@@ -15,7 +15,10 @@ public class Hearts : MonoBehaviour {
 
   public bool IsFull => Current >= Total;
 
+  AbilityManager AbilityManager;
+
   void Start() {
+    this.InitComponent(out AbilityManager);
     SetTotal(Total);
     SetCurrent(Current);
   }
@@ -23,7 +26,7 @@ public class Hearts : MonoBehaviour {
   void CheckForDeath() {
     if (Current <= 0 && AbilityManager.HasTag(AbilityTag.Alive)) {
       AbilityManager.Abilities.ForEach(AbilityManager.Stop);
-      AbilityManager.Run(KillPlayer.Main);
+      AbilityManager.Run(Kill.Main);
     }
   }
 

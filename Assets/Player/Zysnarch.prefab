@@ -245,6 +245,7 @@ MonoBehaviour:
     OwnerActivationBlocked: 0
     Ability: {fileID: 0}
   HasFairy: 1
+  FadeSpeed: 1
   DyingDuration:
     Millis: 2000
 --- !u!1 &894168701840190138
@@ -2269,8 +2270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03b03ce266756a45a7123156f1a94ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityManager: {fileID: 324376866214748373}
-  KillPlayer: {fileID: 2507952871587426680}
+  Kill: {fileID: 2507952871587426680}
   Current: 2
   Total: 12
 --- !u!114 &4174304718104212347

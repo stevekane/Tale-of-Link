@@ -77,7 +77,7 @@ public class InputManager : MonoBehaviour {
       GetComponent<Magic>().Consume(25);
     }
     if (Inputs.Player.L2.WasPerformedThisFrame()) {
-      GetComponent<Hearts>().ChangeCurrent(-1);
+      GetComponent<Hearts>().ChangeCurrent(-4);
     }
   }
 }

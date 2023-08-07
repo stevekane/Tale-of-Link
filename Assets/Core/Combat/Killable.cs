@@ -1,15 +1,17 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(AbilityManager))]
 public class Killable : MonoBehaviour {
-  [SerializeField] AbilityManager AbilityManager;
-
   public Action OnSpawning;
   public Action OnAlive;
   public Action OnDying;
   public Action OnDead;
 
+  AbilityManager AbilityManager;
+
   void Start() {
+    this.InitComponent(out AbilityManager);
     Alive = true;
   }
 
