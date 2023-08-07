@@ -2,18 +2,18 @@ Shader "Custom/StencilWriter"
 {
     SubShader
     {
-        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalPipeline" "Queue"="Geometry-1"}
+        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalPipeline" "Queue"="Transparent-1"}
 
         Pass
         {
             Blend Zero One
-            ZTest Always
+            ZTest LEqual
             ZWrite Off
             Stencil
             {
                 Ref 1
                 Comp Always
-                Pass Replace
+                ZFail Replace
             }
         }
     }

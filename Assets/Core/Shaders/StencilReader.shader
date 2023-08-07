@@ -41,7 +41,7 @@ Shader "Custom/StencilReader"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                return half4(0.15, 0.25, .84, .5); // Render in blue
+                return half4(0.15, 0.25, .84, 1); // Render in blue
             }
             ENDHLSL
         }
