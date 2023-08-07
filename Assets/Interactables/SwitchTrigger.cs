@@ -14,6 +14,7 @@ public class SwitchTrigger : MonoBehaviour {
   }
 
   void OnSwitchHurt(Switch2 s) {
+    if (s.State == 1) return;
     s.SetSwitchState(1, true);
     var numOn = Switches.Count(s => s.State == 1);
     if (numOn == Switches.Length) {
