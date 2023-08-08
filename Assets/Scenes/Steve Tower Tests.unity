@@ -22924,9 +22924,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1692615774493728805, guid: 10fd020ff4801ab49854b22dc6621466, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4785654897916124823, guid: 10fd020ff4801ab49854b22dc6621466, type: 3}
       propertyPath: m_Name
       value: SwordCollectable
+      objectReference: {fileID: 0}
+    - target: {fileID: 4785654897916124823, guid: 10fd020ff4801ab49854b22dc6621466, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7402174529813952614, guid: 10fd020ff4801ab49854b22dc6621466, type: 3}
       propertyPath: m_RootOrder
@@ -36075,6 +36083,18 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 12355
       objectReference: {fileID: 0}
+    - target: {fileID: 6458071400966153151, guid: 18eb5c7922552fb4badabda1671ed503, type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6458071400966153151, guid: 18eb5c7922552fb4badabda1671ed503, type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6458071400966153151, guid: 18eb5c7922552fb4badabda1671ed503, type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8357264413893513475, guid: 18eb5c7922552fb4badabda1671ed503, type: 3}
       propertyPath: m_Name
       value: Floor 2
@@ -36929,6 +36949,10 @@ PrefabInstance:
     - target: {fileID: 4785654897916124823, guid: 3610141408b86924db81cac2e76fd094, type: 3}
       propertyPath: m_Name
       value: HammerCollectable
+      objectReference: {fileID: 0}
+    - target: {fileID: 4785654897916124823, guid: 3610141408b86924db81cac2e76fd094, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7402174529813952614, guid: 3610141408b86924db81cac2e76fd094, type: 3}
       propertyPath: m_RootOrder
@@ -43184,6 +43208,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6274744977763557941, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7140674329983288670, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_Name
       value: ScreenFade Overlay
@@ -43765,6 +43793,30 @@ PrefabInstance:
       propertyPath: m_AspectRatio
       value: NaN
       objectReference: {fileID: 0}
+    - target: {fileID: 5525944024174037860, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.8710003
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525944024174037860, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.98519516
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525944024174037860, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.090797424
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525944024174037860, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5140314
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525944024174037860, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.8577714
+      objectReference: {fileID: 0}
+    - target: {fileID: 5525944024174037860, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 241.865
+      objectReference: {fileID: 0}
     - target: {fileID: 5567718968694952789, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -43952,6 +44004,10 @@ PrefabInstance:
     - target: {fileID: 6194857863812453952, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6242836880304332845, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6282854849548281604, guid: 754450dc5e2a9f4498f9825eee830ae4, type: 3}
       propertyPath: m_AnchorMax.y
