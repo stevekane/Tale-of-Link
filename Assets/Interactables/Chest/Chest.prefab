@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518655672226566700}
   - component: {fileID: 7739951711940138114}
+  - component: {fileID: 1208934763367964684}
   - component: {fileID: 6203003900067875578}
   - component: {fileID: 2224650979875026165}
   - component: {fileID: 3422119601967837418}
@@ -63,6 +64,18 @@ MonoBehaviour:
           m_StringArgument: Open
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1208934763367964684}
+        m_TargetAssemblyTypeName: Reward, Assembly-CSharp
+        m_MethodName: Grant
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnClose:
     m_PersistentCalls:
       m_Calls:
@@ -78,6 +91,19 @@ MonoBehaviour:
           m_StringArgument: Close
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1208934763367964684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213372783864323373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce98374f5ab071b4c8baaa6cb52ade6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Award: {fileID: 0}
 --- !u!114 &6203003900067875578
 MonoBehaviour:
   m_ObjectHideFlags: 0
