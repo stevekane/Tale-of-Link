@@ -20,6 +20,8 @@ public enum AvatarBone {
   RightShoulder,
   LeftHand,
   RightHand,
+  LeftLowerArm,
+  RightLowerArm,
   UpperChest,
   // there are others but who cares
 }
