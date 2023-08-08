@@ -15,6 +15,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public Vector3 ScriptVelocity;
   public UnityAction OnEnterWorldSpace;
   public UnityAction OnExitWorldSpace;
+  public bool HasGravity = true;
 
   public Action<HitStabilityReport> OnCollision;
 
@@ -86,10 +87,10 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
       var grounded = Motor.GroundingStatus.FoundAnyGround;
       var steeringVector = (ScriptVelocity - PhysicsVelocity).XZ();
       var desiredMagnitude = steeringVector.magnitude;
-      var maxSteeringMagnitude = grounded ? 2f * MaxMoveSpeed : 0f;
+      var maxSteeringMagnitude = grounded || !HasGravity ? 2f * MaxMoveSpeed : 0f;
       var boundedSteeringVelocity = Mathf.Min(desiredMagnitude, maxSteeringMagnitude) * steeringVector.normalized;
       // TODO: maybe move this out of here to own gravity component?
-      PhysicsAcceleration += grounded ? Vector3.zero : Physics.gravity;
+      PhysicsAcceleration += grounded || !HasGravity ? Vector3.zero : Physics.gravity;
       PhysicsVelocity += boundedSteeringVelocity;
       PhysicsVelocity += deltaTime * PhysicsAcceleration;
       PhysicsVelocity.y = grounded ? 0 : PhysicsVelocity.y;
