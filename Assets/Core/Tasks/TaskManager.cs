@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
@@ -27,7 +28,11 @@ public class SimpleTaskScheduler : TaskScheduler {
       // (which Unity controls). If it's null, it'll use our current TaskScheduler when awaiting.
       SynchronizationContext.SetSynchronizationContext(null);
       while (Tasks.TryDequeue(out var task)) {
-        TryExecuteTask(task);
+        try {
+          TryExecuteTask(task);
+        } catch (Exception e) {
+          Debug.LogException(e);
+        }
       }
 
       NextTick.TrySetResult(true);
