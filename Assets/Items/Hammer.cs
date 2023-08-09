@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hammer : ClassicAbility {
   public Hitbox Hitbox;
+  public Stunbox Stunbox;
   public Vector3 Direction;
   public Timeval SwingDuration = Timeval.FromMillis(250);
   public Timeval RecoveryDuration = Timeval.FromMillis(250);
@@ -28,6 +29,7 @@ public class Hammer : ClassicAbility {
       EquipmentVisibility.AddCurrentObject(EquipmentVisibility.Hammer);
       await scope.Ticks(SwingDuration.Ticks);
       Hitbox.EnableCollision = true;
+      Stunbox.EnableCollision = true;
       var impactPosition = AbilityManager.transform.position + AbilityManager.transform.forward;
       var impactRotation = AbilityManager.transform.rotation;
       Instantiate(ImpactVFX, impactPosition, impactRotation);
@@ -37,6 +39,7 @@ public class Hammer : ClassicAbility {
       throw e;
     } finally {
       Hitbox.EnableCollision = false;
+      Stunbox.EnableCollision = false;
       EquipmentVisibility.DisplayBaseObjects();
     }
   }

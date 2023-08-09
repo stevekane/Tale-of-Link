@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1417509361598455592, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Model
+      value: 
+      objectReference: {fileID: 7864868683126878920}
     - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Move.OwnerActivationRequired
       value: 4196
@@ -64,6 +68,10 @@ PrefabInstance:
       propertyPath: HasGravity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8562395416351935353, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Animator
+      value: 
+      objectReference: {fileID: 7864868683117379860}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7460705314114962191, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
@@ -219,5 +227,10 @@ Animator:
 --- !u!4 &7864868683126451944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400028, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}
+  m_PrefabInstance: {fileID: 7864868683126846580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7864868683126878920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100028, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}
   m_PrefabInstance: {fileID: 7864868683126846580}
   m_PrefabAsset: {fileID: 0}
