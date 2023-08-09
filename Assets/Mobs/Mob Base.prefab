@@ -29,9 +29,69 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 578145729248043137}
+  - {fileID: 6373488574261311428}
   m_Father: {fileID: 5567718968694952789}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2324830374286829962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6373488574261311428}
+  - component: {fileID: 3476090657533625997}
+  m_Layer: 0
+  m_Name: Knockback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6373488574261311428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324830374286829962}
+  m_LocalRotation: {x: -0, y: 0.00000058114523, z: -0, w: 1}
+  m_LocalPosition: {x: 3.4906812, y: 0, z: -0.8959079}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 160508514658860043}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3476090657533625997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324830374286829962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64934d68eaa430488fd80d3d91dff94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: 
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Main:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 1536
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 480
+    OwnerActivationRequired: 0
+    OwnerActivationBlocked: 0
+    Ability: {fileID: 0}
 --- !u!1 &2399054858351881269
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,6 +162,8 @@ MonoBehaviour:
   HitConfig:
     HitType: 0
     MaybeDamageOrSomething: 1
+    RecoilStrength: 30
+    KnockbackStrength: 30
 --- !u!1 &2584219847227842815
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,6 +369,7 @@ MonoBehaviour:
   PhysicsAcceleration: {x: 0, y: 0, z: 0}
   PhysicsVelocity: {x: 0, y: 0, z: 0}
   ScriptVelocity: {x: 0, y: 0, z: 0}
+  HasGravity: 1
   DirectMove: 0
 --- !u!114 &5904440407964557133
 MonoBehaviour:
@@ -348,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03b03ce266756a45a7123156f1a94ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Kill: {fileID: 0}
   Current: 1
   Total: 1
 --- !u!1 &7460705314114962191
@@ -430,7 +494,6 @@ MonoBehaviour:
   Tags: 0
   AddedToOwner: 0
   RemovedFromOwner: 0
-  WorldSpaceController: {fileID: 8309471275002162877}
   Speed: 7
   Move:
     Tags: 0

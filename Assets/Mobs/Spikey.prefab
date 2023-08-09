@@ -236,6 +236,8 @@ MonoBehaviour:
   HitConfig:
     HitType: 0
     MaybeDamageOrSomething: 1
+    RecoilStrength: 1
+    KnockbackStrength: 1
 --- !u!1 &4225969176646285397
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +599,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 359647486824266831, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5567718968694952789, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}

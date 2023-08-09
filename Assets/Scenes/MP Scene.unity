@@ -1344,13 +1344,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3546219323895138245, guid: 90c318aca7e024247b52e8e3745b6e6a, type: 3}
+      propertyPath: HitConfig.RecoilStrength
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4570454175643920933, guid: 90c318aca7e024247b52e8e3745b6e6a, type: 3}
       propertyPath: m_Name
       value: Turtle
-      objectReference: {fileID: 0}
-    - target: {fileID: 4570454175643920933, guid: 90c318aca7e024247b52e8e3745b6e6a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1456,7 +1456,7 @@ Transform:
   m_GameObject: {fileID: 353468859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -11.26}
-  m_LocalScale: {x: 40, y: 1, z: 1}
+  m_LocalScale: {x: 40, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1891,7 +1891,7 @@ Transform:
   m_GameObject: {fileID: 392500706}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 13.66, y: 0, z: -4.89}
-  m_LocalScale: {x: 40, y: 1, z: 1}
+  m_LocalScale: {x: 40, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -15574,6 +15574,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2887477936452563032, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
+      propertyPath: field of view
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 2904240148410168248, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -15632,11 +15636,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4021998544767194130, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_AmplitudeGain
-      value: 0.000001382968
+      value: 0.02824701
       objectReference: {fileID: 0}
     - target: {fileID: 7140674329983288670, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
       propertyPath: m_Name
       value: ScreenFade Overlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060345696276568460, guid: cd8fa080698539d4e8e233d6eb20456e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
