@@ -23,10 +23,15 @@ public class EquipmentVisibility : MonoBehaviour {
     CurrentObjects.Add(go);
   }
 
-  public void ClearCurrentObjects() {
+  public void DisplayBaseObjects() {
     CurrentObjects.ForEach(Hide);
     CurrentObjects.Clear();
     BaseObjects.ForEach(Show);
+  }
+
+  public void DisplayNothing() {
+    CurrentObjects.ForEach(Hide);
+    BaseObjects.ForEach(Hide);
   }
 
   void Start() {

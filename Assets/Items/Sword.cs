@@ -25,7 +25,7 @@ public class Sword : ClassicAbility {
       Hitbox.EnableCollision = true;
       Animator.SetTrigger("Attack");
       VisualEffect.Play();
-      EquipmentVisibility.ClearCurrentObjects();
+      EquipmentVisibility.DisplayBaseObjects();
       await scope.Ticks(Duration.Ticks);
     } finally {
       Hitbox.EnableCollision = false;

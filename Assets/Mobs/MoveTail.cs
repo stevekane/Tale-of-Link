@@ -7,7 +7,7 @@ public class MoveTail : MonoBehaviour {
 
   void Start() {
     // Detach the tail so it moves separately.
-    TailBones.ForEach(t => t.SetParent(null));
+    TailBones.ForEach(t => t.SetParent(transform.parent));
   }
 
   void OnDestroy() {

@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour {
   [SerializeField] WorldSpaceMove WorldSpaceMove;
   [SerializeField] WallSpaceMove WallSpaceMove;
   [SerializeField] OpenDoorAbility OpenDoor;
+  [SerializeField] OpenAbility Open;
 
   public UnityAction<string> OnInteractChange;
 
@@ -37,6 +38,7 @@ public class InputManager : MonoBehaviour {
       EnterWallSpace.Main,
       ExitWallSpace.Main,
       OpenDoor.Main,
+      Open.Main,
     };
     GetComponent<Inventory>().OnNewItemAbility += OnNewItemAbility;
   }

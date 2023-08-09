@@ -48,6 +48,8 @@ public class TaskScope : IDisposable {
       try {
         await f(scope);
       } catch (OperationCanceledException) {
+      } catch (Exception e) {
+        Debug.LogException(e);
       } finally {
         scope.Dispose();
       }
