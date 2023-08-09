@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class CameraManager : LevelManager<CameraManager> {
+  [SerializeField] CinemachineVirtualCamera CloseupCamera;
   [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
   [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
   [SerializeField] Volume Volume;
@@ -23,6 +24,18 @@ public class CameraManager : LevelManager<CameraManager> {
     TargetSaturation = 0;
   }
 
+  public void Focus() {
+    CloseupCamera.Priority = 1;
+    WorldSpaceCamera.Priority = 0;
+    WallSpaceCamera.Priority = 0;
+  }
+
+  public void UnFocus() {
+    CloseupCamera.Priority = 0;
+    WorldSpaceCamera.Priority = 1;
+    WallSpaceCamera.Priority = 0;
+  }
+
   void Start() {
     PlayerManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
   }
@@ -40,6 +53,7 @@ public class CameraManager : LevelManager<CameraManager> {
   void OnPlayerSpawn(Player player) {
     player.GetComponent<WallSpaceController>().OnEnterWallSpace += OnEnterWallSpace;
     player.GetComponent<WorldSpaceController>().OnEnterWorldSpace += OnEnterWorldSpace;
+    CloseupCamera.Follow = player.transform;
     WorldSpaceCamera.Follow = player.transform;
     WallSpaceCamera.LookAt = player.transform;
     WallSpaceCamera.GetComponent<WallCameraExtension>().WallMover = player.GetComponent<WallSpaceController>();
@@ -48,17 +62,20 @@ public class CameraManager : LevelManager<CameraManager> {
   void OnPlayerDespawn(Player player) {
     player.GetComponent<WallSpaceController>().OnEnterWallSpace -= OnEnterWallSpace;
     player.GetComponent<WorldSpaceController>().OnEnterWorldSpace -= OnEnterWorldSpace;
+    CloseupCamera.Follow = null;
     WorldSpaceCamera.Follow = null;
     WallSpaceCamera.LookAt = null;
     WallSpaceCamera.GetComponent<WallCameraExtension>().WallMover = null;
   }
 
   void OnEnterWallSpace() {
+    CloseupCamera.Priority = 0;
     WorldSpaceCamera.Priority = 0;
     WallSpaceCamera.Priority = 1;
   }
 
   void OnEnterWorldSpace() {
+    CloseupCamera.Priority = 0;
     WorldSpaceCamera.Priority = 1;
     WallSpaceCamera.Priority = 0;
   }

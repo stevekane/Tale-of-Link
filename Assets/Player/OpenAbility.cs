@@ -8,18 +8,6 @@ public class OpenAbility : ClassicAbility {
 
   bool CanRun() => Openable && !Openable.IsOpen;
 
-  /*
-  When you open a chest, you should be handed an Item.
-  This item should be collectable.
-  Collecting the item is done by the "Collect" Ability.
-  Collect ability
-    displays the item over your head
-    displays shiny particles around the item
-    displays UI text explaining what the item is
-    waits for you to push a button to complete the collecting process
-    adds the item to your inventory
-  */
-
   public override Task MainAction(TaskScope scope) {
     Openable.Open(AbilityManager.gameObject);
     return null;

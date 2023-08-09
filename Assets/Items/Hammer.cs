@@ -37,7 +37,7 @@ public class Hammer : ClassicAbility {
       throw e;
     } finally {
       Hitbox.EnableCollision = false;
-      EquipmentVisibility.ClearCurrentObjects();
+      EquipmentVisibility.DisplayBaseObjects();
     }
   }
 }

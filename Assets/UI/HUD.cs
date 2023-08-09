@@ -5,6 +5,14 @@ public class HUD : MonoBehaviour {
   [SerializeField] Killable Killable;
   [SerializeField] CanvasGroup HUDCanvasGroup;
 
+  public void Show() {
+    HUDCanvasGroup.alpha = 1;
+  }
+
+  public void Hide() {
+    HUDCanvasGroup.alpha = 0;
+  }
+
   void Start() {
     GetComponent<Canvas>().worldCamera = CameraManager.Instance.Camera;
     Killable.OnDying += OnDying;
