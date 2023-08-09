@@ -5,7 +5,7 @@ using UnityEngine;
 public class HitConfig {
   public enum Types { Sword, Hammer, OtherThingy };
   public Types HitType;
-  public int MaybeDamageOrSomething;
+  public int Damage = 1;
   public float RecoilStrength = 1f;
   public float KnockbackStrength = 1f;
 }

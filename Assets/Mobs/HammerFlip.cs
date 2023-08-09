@@ -4,13 +4,14 @@ public class HammerFlip : MonoBehaviour {
   public AbilityManager AbilityManager;
   public Combatant Combatant;
   public GameObject Model;
-  public MobOnHurt MobOnHurt;
+  public Hearts Hearts;
   public bool IsFlipped = false;
   public float Height = 1f;
 
   void Awake() {
+    this.InitComponent(out Hearts);
     Combatant.OnHurt += OnHurt;
-    MobOnHurt.SwordDamage = 0;
+    Hearts.IsInvulnerable = true;
   }
 
   void OnHurt(HitEvent hit) {
@@ -21,13 +22,13 @@ public class HammerFlip : MonoBehaviour {
       Model.transform.position += new Vector3(0, Height, 0);
       AbilityManager.SetTag(AbilityTag.CanMove, false);
       AbilityManager.SetTag(AbilityTag.CanRotate, false);
-      MobOnHurt.SwordDamage = 1;  // TODO: better invulnerability
+      Hearts.IsInvulnerable = false;
     } else {
       Model.transform.Rotate(0, 0, 180);
       Model.transform.position -= new Vector3(0, Height, 0);
       AbilityManager.SetTag(AbilityTag.CanMove, true);
       AbilityManager.SetTag(AbilityTag.CanRotate, true);
-      MobOnHurt.SwordDamage = 0;
+      Hearts.IsInvulnerable = true;
     }
   }
 }
