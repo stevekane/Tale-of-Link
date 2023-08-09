@@ -4,6 +4,8 @@ using UnityEngine;
 public class HUD : MonoBehaviour {
   [SerializeField] Killable Killable;
   [SerializeField] CanvasGroup HUDCanvasGroup;
+  [SerializeField] CanvasGroup CollectionInfoCanvasGroup;
+  [SerializeField] CollectionInfo CollectionInfo;
 
   public void Show() {
     HUDCanvasGroup.alpha = 1;
@@ -13,10 +15,20 @@ public class HUD : MonoBehaviour {
     HUDCanvasGroup.alpha = 0;
   }
 
+  public void DisplayCollectionInfo(string text) {
+    CollectionInfo.SetInfo(text);
+    CollectionInfoCanvasGroup.alpha = 1;
+  }
+
+  public void HideCollectionInfo() {
+    CollectionInfoCanvasGroup.alpha = 0;
+  }
+
   void Start() {
     GetComponent<Canvas>().worldCamera = CameraManager.Instance.Camera;
     Killable.OnDying += OnDying;
     Killable.OnSpawning += OnSpawning;
+    HideCollectionInfo();
   }
 
   void OnDestroy() {

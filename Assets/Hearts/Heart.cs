@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Heart : MonoBehaviour {
   [SerializeField] GameObject Model;
+  [SerializeField] string CollectionText;
 
   void OnTriggerEnter(Collider other) {
     if (other.TryGetComponent(out Collectbox collectBox)) {
@@ -9,7 +10,7 @@ public class Heart : MonoBehaviour {
         collectBox.Owner.GetComponent<Hearts>().ChangeCurrent(4);
         Destroy(gameObject);
       }
-      collectBox.Collect(Model, Collect);
+      collectBox.Collect(Model, CollectionText, Collect);
     }
   }
 }

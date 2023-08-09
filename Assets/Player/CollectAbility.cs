@@ -18,6 +18,7 @@ public class CollectAbility : ClassicAbility {
   [SerializeField] Timeval RotationDuration = Timeval.FromSeconds(.5f);
   [SerializeField] Timeval DisplayDuration = Timeval.FromSeconds(2.5f);
 
+  public string DisplayText;
   public GameObject DisplayObject;
   public Action OnCollect;
   public override async Task MainAction(TaskScope scope) {
@@ -34,10 +35,10 @@ public class CollectAbility : ClassicAbility {
         await scope.Tick();
       }
       hud.Hide();
+      hud.DisplayCollectionInfo(DisplayText);
       CameraManager.Instance.Focus();
       equipmentVisibility.DisplayNothing();
       animator.SetBool("Collecting", true);
-      // displays UI text explaining what the item is
       var displayPosition = AbilityManager.transform.position + UpwardOffset*Vector3.up + ForwardOffset*Vector3.forward;
       var displayRotation = CameraManager.Instance.Camera.transform.rotation;
       var displayParticlesPosition = displayPosition - .5f * Vector3.up;
@@ -49,6 +50,7 @@ public class CollectAbility : ClassicAbility {
       throw e;
     } finally {
       hud.Show();
+      hud.HideCollectionInfo();
       Destroy(displayParticles.gameObject);
       CameraManager.Instance.UnFocus();
       equipmentVisibility.DisplayBaseObjects();

@@ -15,8 +15,9 @@ public class Collectbox : MonoBehaviour {
 
   public GameObject Owner;
 
-  public void Collect(GameObject displayObject, Action onCollect, bool playAnimation = false) {
+  public void Collect(GameObject displayObject, string displayText, Action onCollect, bool playAnimation = false) {
     if (playAnimation && AbilityManager.CanRun(CollectAbility.Main)) {
+      CollectAbility.DisplayText = displayText;
       CollectAbility.DisplayObject = displayObject;
       CollectAbility.OnCollect = onCollect;
       AbilityManager.Run(CollectAbility.Main);

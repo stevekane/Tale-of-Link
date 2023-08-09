@@ -5,6 +5,7 @@ public class Coin : MonoBehaviour {
   public int Value;
 
   [SerializeField] GameObject Model;
+  [SerializeField] string CollectionText;
 
   void OnTriggerEnter(Collider other) {
     if (other.TryGetComponent(out Collectbox collectBox)) {
@@ -12,7 +13,7 @@ public class Coin : MonoBehaviour {
         collectBox.Owner.GetComponent<Coins>().ChangeCurrent(Value);
         Destroy(gameObject);
       }
-      collectBox.Collect(Model, Collect, PlayAnimation);
+      collectBox.Collect(Model, CollectionText, Collect, PlayAnimation);
     }
   }
 }
