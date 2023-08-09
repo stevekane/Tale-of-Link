@@ -57,7 +57,8 @@ GameObject:
   - component: {fileID: 765632129400955739}
   - component: {fileID: 1793793421803202449}
   - component: {fileID: 8159379402124320273}
-  - component: {fileID: 4410189315119363144}
+  - component: {fileID: 2715313211957540254}
+  - component: {fileID: 990195104217453939}
   m_Layer: 0
   m_Name: Cutout Platform_1
   m_TagString: Untagged
@@ -614,8 +615,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 916635793178936614}
   m_Mesh: {fileID: 0}
---- !u!64 &4410189315119363144
-MeshCollider:
+--- !u!65 &2715313211957540254
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -632,10 +633,30 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 3, y: 5, z: 6}
+  m_Center: {x: 1.5, y: -0.5, z: 3}
+--- !u!65 &990195104217453939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916635793178936614}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 1, z: 2}
+  m_Center: {x: 1.5, y: -3.5, z: 1}
 --- !u!1 &1758700708880138535
 GameObject:
   m_ObjectHideFlags: 0
