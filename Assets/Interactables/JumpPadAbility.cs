@@ -37,7 +37,7 @@ public class JumpPadAbility : ClassicAbility {
     try {
       var pad = JumpPad;  // cache it because it's cleared as soon as we're off it.
       //Controller.Position = JumpPad.transform.position;
-      Controller.ScriptVelocity = Vector3.zero;
+      Controller.DesiredVelocity = Vector3.zero;
       Controller.PhysicsVelocity = Vector3.zero;
       var v = pad.LaunchSpeed * Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
       Controller.Launch(v);

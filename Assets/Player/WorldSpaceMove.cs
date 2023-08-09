@@ -17,7 +17,7 @@ public class WorldSpaceMove : Ability {
 
   void OnMove(Vector3 stick) {
     WorldSpaceController.MaxMoveSpeed = Speed;
-    WorldSpaceController.ScriptVelocity += Speed * stick.XZ();
+    WorldSpaceController.DesiredVelocity += Speed * stick.XZ();
     if (stick.sqrMagnitude > 0 && AbilityManager.HasTag(AbilityTag.CanRotate))
       WorldSpaceController.Forward = stick;
     if (Animator)
