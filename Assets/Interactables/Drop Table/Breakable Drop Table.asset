@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd276a275df446f4786cf4d4e392812e, type: 3}
+  m_Name: Breakable Drop Table
+  m_EditorClassIdentifier: 
+  Entries:
+  - Weight: 5
+    Prefab: {fileID: 8741157496388623521, guid: b01ab2a06f167794b9d21e23243848a7, type: 3}
+  - Weight: 5
+    Prefab: {fileID: 1761951820240635765, guid: 2ffa2fe9b1bc85449b1abc2e9a6c239b, type: 3}
+  - Weight: 1
+    Prefab: {fileID: 7617815528947255870, guid: 2c3464c010663414c9e9ac285e0db0a4, type: 3}
+  - Weight: 5
+    Prefab: {fileID: 0}

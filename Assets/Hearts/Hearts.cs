@@ -16,6 +16,7 @@ public class Hearts : MonoBehaviour {
 
   public bool IsFull => Current >= Total;
   public bool IsInvulnerable = false;
+  public HitConfig.Types LastHitType;
 
   AbilityManager AbilityManager;
   Combatant Combatant;
@@ -29,8 +30,10 @@ public class Hearts : MonoBehaviour {
   }
 
   void OnHurt(HitEvent hit) {
-    if (!IsInvulnerable)
+    if (!IsInvulnerable) {
+      LastHitType = hit.HitConfig.HitType;
       ChangeCurrent(-hit.HitConfig.Damage);
+    }
   }
 
   void CheckForDeath() {
