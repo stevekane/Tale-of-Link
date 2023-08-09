@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Model: {fileID: 3260184746182896537}
+  CollectionText: 
   Root: {fileID: 4785654897916124823}
   ItemProto: {fileID: 11400000, guid: 44e2f1ad84cbf2645bd3d6e412a68689, type: 2}
   PlayAnimation: 0
@@ -111,13 +112,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7402174529813952614}
     m_Modifications:
-    - target: {fileID: 2365759498327439963, guid: 2d03dcd04421ccf41a39d4dd2ecf77b2, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4785654897916124823, guid: 2d03dcd04421ccf41a39d4dd2ecf77b2, type: 3}
       propertyPath: m_Name
       value: Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055285624746455675, guid: 2d03dcd04421ccf41a39d4dd2ecf77b2, type: 3}
+      propertyPath: HitConfig.Damage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7402174529813952614, guid: 2d03dcd04421ccf41a39d4dd2ecf77b2, type: 3}
       propertyPath: m_RootOrder

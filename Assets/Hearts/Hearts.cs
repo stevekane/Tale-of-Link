@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,13 +15,22 @@ public class Hearts : MonoBehaviour {
   public UnityAction<int> OnChangeTotal;
 
   public bool IsFull => Current >= Total;
+  public bool IsInvulnerable = false;
 
   AbilityManager AbilityManager;
+  Combatant Combatant;
 
   void Start() {
     this.InitComponent(out AbilityManager);
+    this.InitComponent(out Combatant);
+    Combatant.OnHurt += OnHurt;
     SetTotal(Total);
     SetCurrent(Current);
+  }
+
+  void OnHurt(HitEvent hit) {
+    if (!IsInvulnerable)
+      ChangeCurrent(-hit.HitConfig.Damage);
   }
 
   void CheckForDeath() {
