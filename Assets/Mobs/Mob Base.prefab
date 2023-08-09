@@ -30,6 +30,7 @@ Transform:
   m_Children:
   - {fileID: 578145729248043137}
   - {fileID: 6373488574261311428}
+  - {fileID: 5823714702201309837}
   m_Father: {fileID: 5567718968694952789}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -164,6 +165,69 @@ MonoBehaviour:
     MaybeDamageOrSomething: 1
     RecoilStrength: 30
     KnockbackStrength: 30
+--- !u!1 &2545012205116146001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5823714702201309837}
+  - component: {fileID: 1417509361598455592}
+  m_Layer: 0
+  m_Name: Kill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5823714702201309837
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2545012205116146001}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -4.68, y: 0, z: 6.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 160508514658860043}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1417509361598455592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2545012205116146001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36093b87b7105141ac749884e5271e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: 
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Main:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 1536
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 0
+    OwnerActivationRequired: 0
+    OwnerActivationBlocked: 0
+    Ability: {fileID: 0}
+  HasFairy: 0
+  FadeSpeed: 1
+  DyingDuration:
+    Millis: 2000
 --- !u!1 &2584219847227842815
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +311,7 @@ GameObject:
   - component: {fileID: 5904440407964557133}
   - component: {fileID: 4226051191361246500}
   - component: {fileID: 3360500511646581115}
+  - component: {fileID: 3683128475531587940}
   m_Layer: 10
   m_Name: Mob Base
   m_TagString: Untagged
@@ -285,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7b4ea621da97240bc28b18a908a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Tags>k__BackingField: 485
+  <Tags>k__BackingField: 4581
 --- !u!136 &8637237054026041523
 CapsuleCollider:
   m_ObjectHideFlags: 8
@@ -411,9 +476,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03b03ce266756a45a7123156f1a94ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Kill: {fileID: 0}
+  Kill: {fileID: 1417509361598455592}
   Current: 1
   Total: 1
+--- !u!114 &3683128475531587940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c034de6f0c10f4c45bd1e099439a9f2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7460705314114962191
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +579,6 @@ MonoBehaviour:
     AddToAbility: 0
     AddToOwner: 0
     RemoveFromOwner: 0
-    OwnerActivationRequired: 101
+    OwnerActivationRequired: 4197
     OwnerActivationBlocked: 16
     Ability: {fileID: 4833410459722514389}
