@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour {
   [SerializeField] WallSpaceMove WallSpaceMove;
   [SerializeField] OpenDoorAbility OpenDoor;
   [SerializeField] OpenAbility Open;
+  [SerializeField] ShieldAbility ShieldAbility;
 
   public UnityAction<string> OnInteractChange;
 
@@ -68,6 +69,12 @@ public class InputManager : MonoBehaviour {
       AbilityManager.Run(WorldSpaceMove.Move, new(move.x, 0, move.y));
     }
 
+    var shielded = Inputs.Player.Shield.IsPressed();
+    if (shielded && AbilityManager.CanRun(ShieldAbility.Raise)) {
+      AbilityManager.Run(ShieldAbility.Raise);
+    } else if (!shielded && AbilityManager.CanRun(ShieldAbility.Lower)) {
+      AbilityManager.Run(ShieldAbility.Lower);
+    }
     if (SwordAction != null && Inputs.Player.Sword.WasPerformedThisFrame() && AbilityManager.CanRun(SwordAction)) {
       (SwordAction.Ability as Sword).Direction = new (move.x, 0, move.y);
       AbilityManager.Run(SwordAction);

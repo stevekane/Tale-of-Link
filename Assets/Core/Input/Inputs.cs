@@ -114,7 +114,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""id"": ""1a09aaf2-d91b-4705-9d49-3d417ebe1dc9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=1.401298E-45,pressPoint=0.5)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -394,7 +394,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""b2d8dfc5-5fd7-4b7d-9580-cdc5a4b27d78"",
                     ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=1.401298E-45)"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Shield"",

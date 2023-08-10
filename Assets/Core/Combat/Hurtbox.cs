@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class Hurtbox : MonoBehaviour {
+  public ShieldAbility ShieldAbility;
   public Combatant Owner;
 
   void Awake() {
@@ -9,6 +10,10 @@ public class Hurtbox : MonoBehaviour {
 
   public void ProcessHit(Combatant attacker, HitConfig hitConfig) {
     var hit = new HitEvent { HitConfig = hitConfig, Attacker = attacker, Victim = Owner };
+    if (ShieldAbility && ShieldAbility.Blocks(attacker.transform)) {
+      hit.HitConfig.Damage = 0;
+      hit.Blocked = true;
+    }
     hit.Attacker.HandleHit(hit);
     hit.Victim.HandleHurt(hit);
   }

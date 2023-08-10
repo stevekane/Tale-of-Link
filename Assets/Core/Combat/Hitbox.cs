@@ -2,18 +2,19 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class HitConfig {
+public struct HitConfig {
   public enum Types { Sword, Hammer, OtherThingy };
   public Types HitType;
-  public int Damage = 1;
-  public float RecoilStrength = 1f;
-  public float KnockbackStrength = 1f;
+  public int Damage;
+  public float RecoilStrength;
+  public float KnockbackStrength;
 }
 
 public class HitEvent {
   public HitConfig HitConfig;
   public Combatant Attacker;
   public Combatant Victim;
+  public bool Blocked;
 }
 
 public class Hitbox : MonoBehaviour {
