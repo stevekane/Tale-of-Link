@@ -12,6 +12,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public float MaxMoveSpeed;
   public Vector3 PhysicsAcceleration;
   public Vector3 PhysicsVelocity;
+  public Vector3 DesiredVelocity;
   public Vector3 ScriptVelocity;
   public UnityAction OnEnterWorldSpace;
   public UnityAction OnExitWorldSpace;
@@ -82,21 +83,23 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) {
     if (DirectMove) {
-      currentVelocity = Vector3.zero;
+      currentVelocity = ScriptVelocity;
     } else {
       var grounded = Motor.GroundingStatus.FoundAnyGround;
-      var steeringVector = (ScriptVelocity - PhysicsVelocity).XZ();
+      var steeringVector = (DesiredVelocity - PhysicsVelocity).XZ();
       var desiredMagnitude = steeringVector.magnitude;
       var maxSteeringMagnitude = (grounded || !HasGravity) ? 2f * MaxMoveSpeed : 0f;
       var boundedSteeringVelocity = Mathf.Min(desiredMagnitude, maxSteeringMagnitude) * steeringVector.normalized;
       // TODO: maybe move this out of here to own gravity component?
       PhysicsAcceleration += grounded || !HasGravity ? Vector3.zero : Physics.gravity;
       PhysicsVelocity += boundedSteeringVelocity;
+      PhysicsVelocity += ScriptVelocity;
       PhysicsVelocity += deltaTime * PhysicsAcceleration;
       PhysicsVelocity.y = grounded ? 0 : PhysicsVelocity.y;
       currentVelocity = PhysicsVelocity;
     }
     PhysicsAcceleration = Vector3.zero;
+    DesiredVelocity = Vector3.zero;
     ScriptVelocity = Vector3.zero;
   }
 

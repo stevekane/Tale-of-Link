@@ -36,8 +36,7 @@ public class Knockback : ClassicAbility {
       Controller.DirectMove = true;
       while (true) {
         if (Velocity.sqrMagnitude < MIN_VELOCITY.Sqr()) break;
-        //Controller.PhysicsVelocity += Velocity;
-        Controller.Position += Time.fixedDeltaTime * Velocity;
+        Controller.ScriptVelocity += Velocity;
         Velocity = Velocity * Mathf.Exp(-Time.fixedDeltaTime * DRAG);
         await scope.Tick();
       }

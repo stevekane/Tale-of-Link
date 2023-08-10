@@ -226,8 +226,8 @@ MonoBehaviour:
   HitConfig:
     HitType: 0
     Damage: 1
-    RecoilStrength: 30
-    KnockbackStrength: 30
+    RecoilStrength: 20
+    KnockbackStrength: 20
 --- !u!1 &2545012205116146001
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +495,7 @@ MonoBehaviour:
   MaxMoveSpeed: 0
   PhysicsAcceleration: {x: 0, y: 0, z: 0}
   PhysicsVelocity: {x: 0, y: 0, z: 0}
+  DesiredVelocity: {x: 0, y: 0, z: 0}
   ScriptVelocity: {x: 0, y: 0, z: 0}
   HasGravity: 1
   DirectMove: 0
