@@ -59,7 +59,7 @@ MonoBehaviour:
     OwnerActivationRequired: 0
     OwnerActivationBlocked: 0
     Ability: {fileID: 0}
-  Animator: {fileID: 0}
+  StunVFX: {fileID: 4809064425854683650}
   StunDuration:
     Millis: 2000
 --- !u!1 &1258552873383855788
@@ -287,10 +287,10 @@ MonoBehaviour:
     OwnerActivationRequired: 0
     OwnerActivationBlocked: 0
     Ability: {fileID: 0}
-  HasFairy: 0
   DyingDuration:
-    Millis: 2000
+    Millis: 500
   Model: {fileID: 7460705314114962191}
+  DeathVFX: {fileID: 8194992990867289333, guid: f5fe9bb53e8d1694e863bf8cec21dd09, type: 3}
 --- !u!1 &2584219847227842815
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96926c4cd88357e4eac9a89a9e291cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShieldAbility: {fileID: 0}
   Owner: {fileID: 5904440407964557133}
 --- !u!65 &2145693114919793832
 BoxCollider:
@@ -374,6 +375,7 @@ GameObject:
   - component: {fileID: 5904440407964557133}
   - component: {fileID: 3360500511646581115}
   - component: {fileID: 3683128475531587940}
+  - component: {fileID: 1439053274889059310}
   m_Layer: 10
   m_Name: Mob Base
   m_TagString: Untagged
@@ -393,6 +395,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8475102123844075380}
   - {fileID: 160508514658860043}
   - {fileID: 2711842983999925940}
   - {fileID: 2168688175887632700}
@@ -540,6 +543,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c034de6f0c10f4c45bd1e099439a9f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1439053274889059310
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7460705314114962191
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,3 +655,74 @@ MonoBehaviour:
     OwnerActivationRequired: 4197
     OwnerActivationBlocked: 16
     Ability: {fileID: 4833410459722514389}
+--- !u!1001 &6943624967939024719
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5567718968694952789}
+    m_Modifications:
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.2140894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.4128146
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.8436041
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9110393570330676306, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+      propertyPath: m_Name
+      value: Stunned VFX
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+--- !u!198 &4809064425854683650 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2513444562232454477, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+  m_PrefabInstance: {fileID: 6943624967939024719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8475102123844075380 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1567580754646112315, guid: dabd8e625297b8c47aa1d5e7bd11f166, type: 3}
+  m_PrefabInstance: {fileID: 6943624967939024719}
+  m_PrefabAsset: {fileID: 0}

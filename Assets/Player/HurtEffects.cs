@@ -6,8 +6,6 @@ public class HurtEffects : MonoBehaviour {
   [SerializeField] AudioSource DamageSound;
   [SerializeField] GameObject VFX;
   [SerializeField] Animator Animator;
-  [SerializeField] string BlockTriggerName = "Block";
-  [SerializeField] string FlinchTriggerName = "Flinch";
 
   void Start() {
     Combatant.OnHurt += OnHurt;
@@ -23,11 +21,11 @@ public class HurtEffects : MonoBehaviour {
     if (!hitEvent.Blocked && DamageSound)
       DamageSound?.PlayOneShot(DamageSound.clip);
     if (VFX)
-      Destroy(Instantiate(VFX, transform.position, transform.rotation));
+      Destroy(Instantiate(VFX, transform.position + .5f * Vector3.up, transform.rotation));
     if (Animator)
       if (hitEvent.Blocked)
-        Animator.SetTrigger(BlockTriggerName);
+        Animator.SetTrigger("Block");
       else
-        Animator.SetTrigger(FlinchTriggerName);
+        Animator.SetTrigger("Flinch");
   }
 }
