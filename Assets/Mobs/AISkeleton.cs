@@ -5,11 +5,18 @@ public class AISkeleton : MonoBehaviour {
   public AbilityManager AbilityManager;
   public DodgeAbility Dodge;
   public ThrowAbility Throw;
-  public float PlayerMaxDistance = 3f;
+  public float WanderSpeed = 1f;
+  public float AggroSpeed = 3f;
+  public float PlayerAggroMinDistance = 6f;
+  public float PlayerAggroMaxDistance = 10f;
+  public float PlayerDodgeDistance = 3f;
   public float PlayerFacingThreshold = 0f;
   public Timeval ThrowCooldown = Timeval.FromSeconds(5);
 
   int ThrowTicksRemaining = 60*3;
+
+  AIWander AIWander;
+  AIChasePlayer AIChasePlayer;
 
   TaskScope Scope;
 
@@ -18,6 +25,11 @@ public class AISkeleton : MonoBehaviour {
     //NavMeshAgent.updatePosition = false;
     //NavMeshAgent.updateRotation = false;
     //NavMeshAgent.updateUpAxis = false;
+    this.InitComponent(out AIWander);
+    this.InitComponent(out AIChasePlayer);
+    AIWander.enabled = true;
+    AIChasePlayer.enabled = false;
+    AIWander.Move.Speed = WanderSpeed;
     Scope = new();
     Scope.Start(Waiter.Repeat(Behavior));
   }
@@ -38,17 +50,36 @@ public class AISkeleton : MonoBehaviour {
   }
 
   bool ShouldThrow() {
-    return --ThrowTicksRemaining <= 0;
+    return IsAggro && --ThrowTicksRemaining <= 0;
   }
 
   bool ShouldDodge() {
-    var player = PlayerManager.Instance.Player.GetComponent<AbilityManager>();
-    var sword = player.GetComponentInChildren<Sword>();
-    return (sword && sword.IsRunning && IsInRange(player.transform));
+    var target = PlayerManager.Instance.MobTarget;
+    if (!target) return false;
+    var sword = target.GetComponentInChildren<Sword>();
+    return (sword && sword.IsRunning && IsInDodgeRange(target.transform));
   }
 
-  bool IsInRange(Transform player) {
+  bool IsInDodgeRange(Transform player) {
     var delta = transform.position - player.position;
-    return delta.sqrMagnitude < PlayerMaxDistance.Sqr() && Vector3.Dot(delta, player.forward) > PlayerFacingThreshold;
+    return delta.sqrMagnitude < PlayerDodgeDistance.Sqr() && Vector3.Dot(delta, player.forward) > PlayerFacingThreshold;
+  }
+
+  bool IsAggro = false;
+  void FixedUpdate() {
+    var target = PlayerManager.Instance.MobTarget;
+    if (target) {
+      if (!IsAggro && (transform.position - target.transform.position).sqrMagnitude < PlayerAggroMinDistance.Sqr()) {
+        IsAggro = true;
+        AIWander.enabled = false;
+        AIChasePlayer.enabled = true;
+        AIWander.Move.Speed = AggroSpeed;
+      } else if (IsAggro && (transform.position - target.transform.position).sqrMagnitude > PlayerAggroMaxDistance.Sqr()) {
+        IsAggro = false;
+        AIWander.enabled = true;
+        AIChasePlayer.enabled = false;
+        AIWander.Move.Speed = WanderSpeed;
+      }
+    }
   }
 }

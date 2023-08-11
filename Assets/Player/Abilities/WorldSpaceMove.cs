@@ -1,8 +1,8 @@
 using UnityEngine;
 
 public class WorldSpaceMove : Ability {
-  [SerializeField] float Speed = 5;
-  [SerializeField] bool StopAtLedges = false;
+  public float Speed = 5;
+  public bool StopAtLedges = false;
 
   public AbilityAction<Vector3> Move;
 
