@@ -9,6 +9,9 @@ public class SwitchTrigger : MonoBehaviour {
   void OnValidate() {
     Switches = GetComponentsInChildren<Switch2>();
   }
+  void Reset() {
+    Switches = GetComponentsInChildren<Switch2>();
+  }
   void Start() {
     Switches.ForEach(s => s.GetComponent<Combatant>().OnHurt += (hit) => OnSwitchHurt(s));
   }
