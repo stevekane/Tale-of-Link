@@ -2718,6 +2718,8 @@ MonoBehaviour:
   MaxSearchCount: 24
   SampleSpacing: 0.1
   WallOffset: 0.01
+  SegmentDepth: 0.02
+  SegmentOffset: 0.01
   RightSegments:
   - {fileID: 1524352657082647740}
   - {fileID: 8971789569595418927}
@@ -2822,6 +2824,8 @@ MonoBehaviour:
   ScriptVelocity: {x: 0, y: 0, z: 0}
   HasGravity: 1
   DirectMove: 0
+  IsOnLedge: 0
+  LedgeDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &5904440407964557133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3197,6 +3201,7 @@ MonoBehaviour:
   AddedToOwner: 0
   RemovedFromOwner: 0
   Speed: 6
+  StopAtLedges: 0
   Move:
     Tags: 0
     CancelAbilitiesWithAll: 0
