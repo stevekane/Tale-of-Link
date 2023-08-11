@@ -7,6 +7,7 @@ public class Breakable : MonoBehaviour {
   [SerializeField] Timeval PersistenceDuration = Timeval.FromSeconds(1);
   [SerializeField] float ExplosionForce = 10;
   [SerializeField] DropTable DropTable;
+  [SerializeField] Collider HurtBox;
 
   void Start() {
     GetComponent<Combatant>().OnHurt += Shatter;
@@ -19,6 +20,7 @@ public class Breakable : MonoBehaviour {
   void Shatter(HitEvent hitEvent) {
     var delta = transform.position - hitEvent.Attacker.transform.position;
     var direction = delta.normalized;
+    HurtBox.enabled = false;
     StartCoroutine(ShatterRoutine(direction));
   }
 
