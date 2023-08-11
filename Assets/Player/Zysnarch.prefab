@@ -2508,6 +2508,7 @@ GameObject:
   - component: {fileID: 4167558231185268689}
   - component: {fileID: 324376866214748373}
   - component: {fileID: 3723501747940011600}
+  - component: {fileID: 7170923408012008633}
   - component: {fileID: 3915220787338241021}
   - component: {fileID: 8687567913969326341}
   - component: {fileID: 4174304718104212347}
@@ -2523,6 +2524,7 @@ GameObject:
   - component: {fileID: 4089075527452244107}
   - component: {fileID: 1375761461912038405}
   - component: {fileID: 3092488692762375205}
+  - component: {fileID: 3922908438088901910}
   m_Layer: 10
   m_Name: Zysnarch
   m_TagString: Untagged
@@ -2611,6 +2613,22 @@ MonoBehaviour:
   OpenDoor: {fileID: 7436216088028355795}
   Open: {fileID: 1137419430100572715}
   ShieldAbility: {fileID: 7896954814179021215}
+--- !u!114 &7170923408012008633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89228809c256d484cbd2e6343fa20068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwordRecoilScale: 1
+  HammerRecoilScale: 1
+  SwordKnockbackScale: 1
+  HammerKnockbackScale: 1
 --- !u!114 &3915220787338241021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,9 +2913,28 @@ MonoBehaviour:
   Combatant: {fileID: 5904440407964557133}
   BlockSound: {fileID: 0}
   DamageSound: {fileID: 0}
-  VFX: {fileID: 0}
+  BlockVFX: {fileID: 0}
+  DamageVFX: {fileID: 0}
   Animator: {fileID: 4089075527452244107}
-  AnimatorTriggerName: Flinch
+--- !u!114 &3922908438088901910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24a8e0f49e9f89448ea784ed5268c02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 5904440407964557133}
+  BlockSound: {fileID: 0}
+  DamageSound: {fileID: 0}
+  BlockVFX: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
+  DamageVFX: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
+  BlockCameraShakeIntensity: 1
+  DamageCameraShakeIntensity: 1
 --- !u!1 &6592911875725009129
 GameObject:
   m_ObjectHideFlags: 0

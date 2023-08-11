@@ -17,17 +17,14 @@ public class Knockback : ClassicAbility {
   }
 
   void OnHurt(HitEvent hit) {
-    if (!hit.Attacker.GetComponent<AbilityManager>()) return;
     var delta = hit.Attacker.transform.position - hit.Victim.transform.position;
-    Velocity = -hit.HitConfig.KnockbackStrength * delta.XZ().normalized;
+    Velocity = -hit.KnockbackStrength * delta.XZ().normalized;
     AbilityManager.Run(Main);
   }
 
   void OnHit(HitEvent hit) {
-    // Hack so that recoil doesn't happen for switches.
-    if (!hit.Victim.GetComponent<AbilityManager>()) return;
     var delta = hit.Attacker.transform.position - hit.Victim.transform.position;
-    Velocity = hit.HitConfig.RecoilStrength * delta.XZ().normalized;
+    Velocity = hit.RecoilStrength * delta.XZ().normalized;
     AbilityManager.Run(Main);
   }
 

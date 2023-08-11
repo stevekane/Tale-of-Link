@@ -4,7 +4,8 @@ public class HurtEffects : MonoBehaviour {
   [SerializeField] Combatant Combatant;
   [SerializeField] AudioSource BlockSound;
   [SerializeField] AudioSource DamageSound;
-  [SerializeField] GameObject VFX;
+  [SerializeField] GameObject BlockVFX;
+  [SerializeField] GameObject DamageVFX;
   [SerializeField] Animator Animator;
 
   void Start() {
@@ -16,16 +17,19 @@ public class HurtEffects : MonoBehaviour {
   }
 
   void OnHurt(HitEvent hitEvent) {
-    if (hitEvent.Blocked && BlockSound)
-      BlockSound.PlayOneShot(BlockSound.clip);
-    if (!hitEvent.Blocked && DamageSound)
-      DamageSound?.PlayOneShot(DamageSound.clip);
-    if (VFX)
-      Destroy(Instantiate(VFX, transform.position + .5f * Vector3.up, transform.rotation));
-    if (Animator)
-      if (hitEvent.Blocked)
+    if (hitEvent.NoDamage)
+      if (BlockSound)
+        BlockSound?.PlayOneShot(BlockSound.clip);
+      if (DamageVFX)
+        Destroy(Instantiate(BlockVFX, transform.position + .5f * Vector3.up, transform.rotation), 2);
+      if (Animator)
         Animator.SetTrigger("Block");
-      else
+    else
+      if (DamageSound)
+        DamageSound.PlayOneShot(DamageSound.clip);
+      if (BlockVFX)
+        Destroy(Instantiate(DamageVFX, transform.position + .5f * Vector3.up, transform.rotation), 2);
+      if (Animator)
         Animator.SetTrigger("Flinch");
   }
 }

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96926c4cd88357e4eac9a89a9e291cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShieldAbility: {fileID: 0}
   Owner: {fileID: 2084404239984958961}
 --- !u!135 &4051273738060577710
 SphereCollider:
@@ -78,6 +79,7 @@ GameObject:
   - component: {fileID: 5518655672226566700}
   - component: {fileID: 2084404239984958961}
   - component: {fileID: 4112629675135180847}
+  - component: {fileID: -8320316252003655232}
   m_Layer: 0
   m_Name: Pot Wide
   m_TagString: Untagged
@@ -93,7 +95,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2213372783864323373}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.51, y: 1.5, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -140,6 +142,22 @@ MonoBehaviour:
     Millis: 1000
   ExplosionForce: 5
   DropTable: {fileID: 11400000, guid: 99e1debbcd5601e4b968e889575ce620, type: 2}
+--- !u!114 &-8320316252003655232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213372783864323373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89228809c256d484cbd2e6343fa20068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwordRecoilScale: 0
+  HammerRecoilScale: 0
+  SwordKnockbackScale: 0
+  HammerKnockbackScale: 0
 --- !u!1 &7588535173513880780
 GameObject:
   m_ObjectHideFlags: 0
