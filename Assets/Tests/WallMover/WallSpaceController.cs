@@ -9,6 +9,8 @@ public class WallSpaceController : MonoBehaviour {
   [SerializeField] int MaxSearchCount = 10;
   [SerializeField] float SampleSpacing = .25f;
   [SerializeField] float WallOffset = .05f;
+  [SerializeField] float SegmentDepth = .02f;
+  [SerializeField] float SegmentOffset = .01f;
   [SerializeField] WallEntitySegment[] RightSegments;
   [SerializeField] WallEntitySegment[] LeftSegments;
   [SerializeField] AbilityManager AbilityManager;
@@ -66,11 +68,6 @@ public class WallSpaceController : MonoBehaviour {
     MergeRequested = true;
     MergePosition = position;
     MergeForward = forward;
-  }
-
-  void Start() {
-    // LeftSegments.ForEach(s => s.transform.SetParent(null));
-    // RightSegments.ForEach(s => s.transform.SetParent(null));
   }
 
   void OnEnable() {
@@ -196,8 +193,8 @@ public class WallSpaceController : MonoBehaviour {
       min = 0.5f - (lengthOffset + length) / halfLength / 2;
     }
     segment.MeshRenderer.material.SetVector("_BaseMap_ST", new Vector4(max-min, 1, min, 0));
-    segment.transform.localScale = new(Width * (max-min), Height, .01f);
-    segment.transform.SetPositionAndRotation(center+.0001f*normal, Quaternion.LookRotation(-normal, Vector3.up));
+    segment.transform.localScale = new(Width * (max-min), Height, SegmentDepth);
+    segment.transform.SetPositionAndRotation(center+SegmentOffset*normal, Quaternion.LookRotation(-normal, Vector3.up));
   }
 
   int UpdateSegments(
