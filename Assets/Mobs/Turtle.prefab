@@ -100,6 +100,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 680194053788002104, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: HammerRecoilScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 680194053788002104, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: HammerKnockbackScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1417509361598455592, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Model
       value: 
@@ -294,7 +302,7 @@ MonoBehaviour:
     OwnerActivationRequired: 0
     OwnerActivationBlocked: 0
     Ability: {fileID: 0}
-  Animator: {fileID: 0}
+  StunVFX: {fileID: 0}
   StunDuration:
     Millis: 5000
   Model: {fileID: 6455306818094092565}

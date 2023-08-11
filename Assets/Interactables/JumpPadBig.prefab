@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96926c4cd88357e4eac9a89a9e291cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShieldAbility: {fileID: 0}
   Owner: {fileID: 0}
 --- !u!135 &4051273738060577710
 SphereCollider:
@@ -113,6 +114,7 @@ GameObject:
   - component: {fileID: 2084404239984958961}
   - component: {fileID: 6666421955672632511}
   - component: {fileID: 6338069119898598962}
+  - component: {fileID: 8391045443516803664}
   m_Layer: 9
   m_Name: JumpPadBig
   m_TagString: Untagged
@@ -192,6 +194,22 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &8391045443516803664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213372783864323373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89228809c256d484cbd2e6343fa20068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwordRecoilScale: 1
+  HammerRecoilScale: 0
+  SwordKnockbackScale: 0
+  HammerKnockbackScale: 0
 --- !u!1 &2430728825405964698
 GameObject:
   m_ObjectHideFlags: 0

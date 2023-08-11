@@ -5,10 +5,12 @@ public class AIChasePlayer : MonoBehaviour {
   public WorldSpaceMove Move;
 
   void FixedUpdate() {
-    var player = PlayerManager.Instance.Player;
+    var player = PlayerManager.Instance.MobTarget;
     if (player && AbilityManager.CanRun(Move.Move)) {
-      var dir = (player.transform.position - transform.position).normalized;
+      var dir = (player.transform.position - transform.position).XZ().normalized;
       AbilityManager.Run(Move.Move, dir);
+    } else {
+      AbilityManager.Run(Move.Move, Vector3.zero);
     }
   }
 }

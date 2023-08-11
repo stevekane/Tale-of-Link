@@ -254,7 +254,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 96
+  m_fontSize: 71.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -510,7 +510,7 @@ MonoBehaviour:
     RemoveFromOwner: 0
     OwnerActivationRequired: 4096
     OwnerActivationBlocked: 0
-    Ability: {fileID: 0}
+    Ability: {fileID: 2507952871587426680}
   HasFairy: 1
   FadeSpeed: 1
   DyingDuration:
@@ -614,6 +614,79 @@ MonoBehaviour:
   AbilityManager: {fileID: 324376866214748373}
   CollectAbility: {fileID: 5464172735573135275}
   Owner: {fileID: 6515522028597025426}
+--- !u!1 &1174112991833518453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4114317649483954682}
+  - component: {fileID: 7896954814179021215}
+  m_Layer: 0
+  m_Name: Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4114317649483954682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174112991833518453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 160508514658860043}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7896954814179021215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174112991833518453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567725a8bfde17a43b63f7fd6d370485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Shield
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Animator: {fileID: 4089075527452244107}
+  ShieldAnimatorLayer: 1
+  TransitionDuration: 0.1
+  Raise:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 0
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 384
+    OwnerActivationRequired: 4357
+    OwnerActivationBlocked: 0
+    Ability: {fileID: 7896954814179021215}
+  Lower:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 0
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 0
+    OwnerActivationRequired: 4101
+    OwnerActivationBlocked: 0
+    Ability: {fileID: 7896954814179021215}
+  <Raised>k__BackingField: 0
 --- !u!1 &1258552873383855788
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +726,7 @@ Transform:
   - {fileID: 4840656275629356806}
   - {fileID: 560172248091981982}
   - {fileID: 5841303656195849753}
+  - {fileID: 4114317649483954682}
   m_Father: {fileID: 5567718968694952789}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1033,6 +1107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96926c4cd88357e4eac9a89a9e291cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShieldAbility: {fileID: 7896954814179021215}
   Owner: {fileID: 5904440407964557133}
 --- !u!65 &2145693114919793832
 BoxCollider:
@@ -1861,7 +1936,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 120
+  m_fontSize: 74.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2286,7 +2361,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 98.95
   m_fontSizeBase: 96
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2433,6 +2508,7 @@ GameObject:
   - component: {fileID: 4167558231185268689}
   - component: {fileID: 324376866214748373}
   - component: {fileID: 3723501747940011600}
+  - component: {fileID: 7170923408012008633}
   - component: {fileID: 3915220787338241021}
   - component: {fileID: 8687567913969326341}
   - component: {fileID: 4174304718104212347}
@@ -2447,6 +2523,8 @@ GameObject:
   - component: {fileID: 8211943088199820811}
   - component: {fileID: 4089075527452244107}
   - component: {fileID: 1375761461912038405}
+  - component: {fileID: 3092488692762375205}
+  - component: {fileID: 3922908438088901910}
   m_Layer: 10
   m_Name: Zysnarch
   m_TagString: Untagged
@@ -2471,7 +2549,7 @@ Transform:
   - {fileID: 3063855676365370089}
   - {fileID: 2657786341892433614}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &942104952896553957
 MonoBehaviour:
@@ -2534,6 +2612,23 @@ MonoBehaviour:
   WallSpaceMove: {fileID: 7079565682474872527}
   OpenDoor: {fileID: 7436216088028355795}
   Open: {fileID: 1137419430100572715}
+  ShieldAbility: {fileID: 7896954814179021215}
+--- !u!114 &7170923408012008633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89228809c256d484cbd2e6343fa20068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwordRecoilScale: 1
+  HammerRecoilScale: 1
+  SwordKnockbackScale: 1
+  HammerKnockbackScale: 1
 --- !u!114 &3915220787338241021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,6 +2656,8 @@ MonoBehaviour:
   Kill: {fileID: 2507952871587426680}
   Current: 2
   Total: 12
+  IsInvulnerable: 0
+  LastHitType: 0
 --- !u!114 &4174304718104212347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2700,7 +2797,7 @@ MonoBehaviour:
   HasPlanarConstraint: 0
   PlanarConstraintAxis: {x: 0, y: 0, z: 1}
   MaxMovementIterations: 5
-  MaxDecollisionIterations: 1
+  MaxDecollisionIterations: 5
   CheckMovementInitialOverlaps: 1
   KillVelocityWhenExceedMaxMovementIterations: 1
   KillRemainingMovementWhenExceedMaxMovementIterations: 1
@@ -2721,6 +2818,7 @@ MonoBehaviour:
   MaxMoveSpeed: 0
   PhysicsAcceleration: {x: 0, y: 0, z: 0}
   PhysicsVelocity: {x: 0, y: 0, z: 0}
+  DesiredVelocity: {x: 0, y: 0, z: 0}
   ScriptVelocity: {x: 0, y: 0, z: 0}
   HasGravity: 1
   DirectMove: 0
@@ -2800,6 +2898,43 @@ MonoBehaviour:
   Hammer: {fileID: 2161560442485122145}
   Sword: {fileID: 3677538057709519823}
   Shield: {fileID: 2189530681802030179}
+--- !u!114 &3092488692762375205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea57f130c25f814e963f89229d08622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 5904440407964557133}
+  BlockSound: {fileID: 0}
+  DamageSound: {fileID: 0}
+  BlockVFX: {fileID: 0}
+  DamageVFX: {fileID: 0}
+  Animator: {fileID: 4089075527452244107}
+--- !u!114 &3922908438088901910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f24a8e0f49e9f89448ea784ed5268c02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 5904440407964557133}
+  BlockSound: {fileID: 0}
+  DamageSound: {fileID: 0}
+  BlockVFX: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
+  DamageVFX: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
+  BlockCameraShakeIntensity: 1
+  DamageCameraShakeIntensity: 1
 --- !u!1 &6592911875725009129
 GameObject:
   m_ObjectHideFlags: 0
@@ -3130,7 +3265,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 207.35999, y: 207.35999}
+  m_CellSize: {x: 92.15999, y: 92.15999}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 5
@@ -3574,7 +3709,7 @@ MonoBehaviour:
   m_ChildAlignment: 6
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 136.3968, y: 136.3968}
+  m_CellSize: {x: 56.831993, y: 56.831993}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 10

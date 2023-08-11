@@ -10,6 +10,7 @@ public class AIWander : MonoBehaviour {
 
   void Start() {
     Controller.OnCollision += OnCollision;
+    Controller.OnLedge += OnCollision;
   }
 
   Vector3 TargetDir;
