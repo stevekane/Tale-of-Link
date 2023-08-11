@@ -6,7 +6,7 @@ public class PlayerManager : LevelManager<PlayerManager> {
   public UnityAction<Player> OnPlayerDespawn;
   public Player MobTarget {
     get {
-      if (Player && Player.GetComponent<AbilityManager>().HasTag(AbilityTag.WorldSpace | AbilityTag.WorldSpace))
+      if (Player && Player.GetComponent<AbilityManager>().HasTags(AbilityTag.Alive | AbilityTag.WorldSpace))
         return Player;
       return null;
     }

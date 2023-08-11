@@ -24,7 +24,7 @@ public class WorldSpaceMove : Ability {
     }
     WorldSpaceController.MaxMoveSpeed = Speed;
     WorldSpaceController.DesiredVelocity += Speed * dir;
-    if (stick.sqrMagnitude > 0 && AbilityManager.HasTag(AbilityTag.CanRotate))
+    if (stick.sqrMagnitude > 0 && AbilityManager.HasTags(AbilityTag.CanRotate))
       WorldSpaceController.Forward = stick;
     if (Animator)
       Animator.SetFloat("Normalized Move Speed", stick.XZ().magnitude);

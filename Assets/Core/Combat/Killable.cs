@@ -16,7 +16,7 @@ public class Killable : MonoBehaviour {
   }
 
   public bool Spawning {
-    get => AbilityManager.HasTag(AbilityTag.Spawning);
+    get => AbilityManager.HasTags(AbilityTag.Spawning);
     set {
       if (value) {
         Set(AbilityTag.Spawning);
@@ -26,7 +26,7 @@ public class Killable : MonoBehaviour {
   }
 
   public bool Alive {
-    get => AbilityManager.HasTag(AbilityTag.Alive);
+    get => AbilityManager.HasTags(AbilityTag.Alive);
     set {
       if (value) {
         Set(AbilityTag.Alive);
@@ -36,7 +36,7 @@ public class Killable : MonoBehaviour {
   }
 
   public bool Dying {
-    get => AbilityManager.HasTag(AbilityTag.Dying);
+    get => AbilityManager.HasTags(AbilityTag.Dying);
     set {
       if (value) {
         Set(AbilityTag.Dying);
@@ -46,7 +46,7 @@ public class Killable : MonoBehaviour {
   }
 
   public bool Dead {
-    get => AbilityManager.HasTag(AbilityTag.Dead);
+    get => AbilityManager.HasTags(AbilityTag.Dead);
     set {
       if (value) {
         Set(AbilityTag.Dead);

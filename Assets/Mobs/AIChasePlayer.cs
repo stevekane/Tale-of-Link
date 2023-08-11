@@ -9,6 +9,8 @@ public class AIChasePlayer : MonoBehaviour {
     if (player && AbilityManager.CanRun(Move.Move)) {
       var dir = (player.transform.position - transform.position).XZ().normalized;
       AbilityManager.Run(Move.Move, dir);
+    } else {
+      AbilityManager.Run(Move.Move, Vector3.zero);
     }
   }
 }
