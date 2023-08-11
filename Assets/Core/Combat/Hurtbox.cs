@@ -3,8 +3,15 @@ using UnityEngine;
 public class Hurtbox : MonoBehaviour {
   public ShieldAbility ShieldAbility;
   public Combatant Owner;
+  Collider Collider;
+
+  public bool EnableCollision {
+    get => Collider.enabled;
+    set => Collider.enabled = value;
+  }
 
   void Awake() {
+    Collider = GetComponent<Collider>();
     Owner = Owner ?? GetComponentInParent<Combatant>();
   }
 

@@ -14,7 +14,7 @@ public class AbilityManager : MonoBehaviour {
   [field:SerializeField]
   public AbilityTag Tags { get; private set; }
 
-  public bool HasTag(AbilityTag tag) => (NextSystemTags & tag) != 0;
+  public bool HasTags(AbilityTag tags) => (Tags & tags) == tags;
   public void AddTag(AbilityTag tag) => NextSystemTags |= tag;
   public void RemoveTag(AbilityTag tag) => NextSystemTags.ClearFlags(tag);
   public void SetTag(AbilityTag tag, bool active) {

@@ -37,7 +37,7 @@ public class Hearts : MonoBehaviour {
   }
 
   void CheckForDeath() {
-    if (Current <= 0 && AbilityManager.HasTag(AbilityTag.Alive)) {
+    if (Current <= 0 && AbilityManager.HasTags(AbilityTag.Alive)) {
       AbilityManager.Abilities.ForEach(AbilityManager.Stop);
       AbilityManager.Run(Kill.Main);
     }

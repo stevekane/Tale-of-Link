@@ -19,6 +19,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public bool HasGravity = true;
 
   public Action<HitStabilityReport> OnCollision;
+  public Action<HitStabilityReport> OnLedge;
 
   public void Unground() {
     Motor.ForceUnground();
@@ -123,6 +124,12 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public void PostGroundingUpdate(float deltaTime) {
   }
 
+  public bool IsOnLedge = false;
+  public Vector3 LedgeDirection;
   public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport) {
+    IsOnLedge = hitStabilityReport.LedgeDetected;
+    LedgeDirection = hitStabilityReport.LedgeFacingDirection;
+    if (IsOnLedge)
+      OnLedge?.Invoke(hitStabilityReport);
   }
 }

@@ -20,8 +20,7 @@ public class AIRaven : MonoBehaviour {
   }
 
   async Task Behavior(TaskScope scope) {
-    var player = PlayerManager.Instance.Player;
-    await scope.Until(() => PlayerManager.Instance.Player && CanSee(PlayerManager.Instance.Player.transform));
+    await scope.Until(() => PlayerManager.Instance.MobTarget && CanSee(PlayerManager.Instance.MobTarget.transform));
     Animator.SetTrigger("Awake");
     GetComponent<WorldSpaceController>().Unground();
     await scope.Delay(WindupDuration);

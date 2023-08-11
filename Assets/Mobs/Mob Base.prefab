@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 3360500511646581115}
   - component: {fileID: 3683128475531587940}
   - component: {fileID: 1439053274889059310}
+  m_Layer: 11
   - component: {fileID: 680194053788002104}
   m_Layer: 10
   m_Name: Mob Base
@@ -469,7 +470,7 @@ MonoBehaviour:
   MinRequiredStepDepth: 0.1
   LedgeAndDenivelationHandling: 1
   MaxStableDistanceFromLedge: 0.5
-  MaxVelocityForLedgeSnap: 0
+  MaxVelocityForLedgeSnap: 100
   MaxStableDenivelationAngle: 180
   InteractiveRigidbodyHandling: 1
   RigidbodyInteractionType: 0
@@ -503,6 +504,8 @@ MonoBehaviour:
   ScriptVelocity: {x: 0, y: 0, z: 0}
   HasGravity: 1
   DirectMove: 0
+  IsOnLedge: 0
+  LedgeDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &5904440407964557133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,6 +665,7 @@ MonoBehaviour:
   AddedToOwner: 0
   RemovedFromOwner: 0
   Speed: 7
+  StopAtLedges: 1
   Move:
     Tags: 0
     CancelAbilitiesWithAll: 0
