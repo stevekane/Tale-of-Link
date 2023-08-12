@@ -254,7 +254,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 71.75
+  m_fontSize: 96
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -369,7 +369,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6430296182697057060}
   - component: {fileID: 4027047827161457634}
-  - component: {fileID: 3909033256718307407}
   m_Layer: 0
   m_Name: Enter WallSpace
   m_TagString: Untagged
@@ -426,32 +425,9 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 1
-  CapsuleCollider: {fileID: 3909033256718307407}
+  CapsuleCollider: {fileID: 8637237054026041523}
   CapsuleMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
   EnterDistance: 1.5
---- !u!136 &3909033256718307407
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 831472086706850874}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.4
-  m_Height: 1.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!1 &839351428019594152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,7 +1911,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 74.2
+  m_fontSize: 111.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2360,7 +2336,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 98.95
+  m_fontSize: 100
   m_fontSizeBase: 96
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3450,7 +3426,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 92.15999, y: 92.15999}
+  m_CellSize: {x: 138.23999, y: 138.23999}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 5
@@ -3894,7 +3870,7 @@ MonoBehaviour:
   m_ChildAlignment: 6
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 56.831993, y: 56.831993}
+  m_CellSize: {x: 90.9312, y: 90.9312}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 10
