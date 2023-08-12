@@ -4,7 +4,8 @@ using UnityEngine;
 public class JumpPad : MonoBehaviour {
   public GameObject Model;
   public Collider Collider;
-  public float LaunchSpeed = 400f;
+  public float LaunchHeight = 2;
+  public float LaunchSpeed => Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * Mathf.Abs(LaunchHeight));
   public float LaunchAngleDeg = 80f;
   public Timeval SquashDuration = Timeval.FromSeconds(1.5f);
   public Vector3 SquashOffset = new Vector3(0, .15f, 0);
@@ -45,5 +46,10 @@ public class JumpPad : MonoBehaviour {
     if (IsSquashed && --TicksRemaining <= 0) {
       Popup();
     }
+  }
+
+  void OnDrawGizmos() {
+    Gizmos.color = Color.magenta;
+    Gizmos.DrawRay(transform.position, LaunchHeight * Vector3.up);
   }
 }

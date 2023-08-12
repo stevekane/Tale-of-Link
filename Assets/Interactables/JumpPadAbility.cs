@@ -1,11 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class JumpPadAbility : ClassicAbility {
   public WorldSpaceController Controller;
   public float InstantLaunchDistance = .2f;
-  public float LaunchSpeed = 10f;
   public float TurnSpeed = 180f;
 
   JumpPad JumpPad;
@@ -39,8 +37,11 @@ public class JumpPadAbility : ClassicAbility {
       //Controller.Position = JumpPad.transform.position;
       Controller.DesiredVelocity = Vector3.zero;
       Controller.PhysicsVelocity = Vector3.zero;
-      var v = pad.LaunchSpeed * Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
-      Controller.Launch(v);
+      Debug.Log(pad.LaunchSpeed);
+      var direction = Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
+      var velocity = pad.LaunchSpeed * direction;
+      var acceleration = velocity / Time.fixedDeltaTime;
+      Controller.Launch(acceleration);
       await scope.Until(() => !Controller.IsGrounded);
       while (!Controller.IsGrounded) {
         Controller.Rotation = Quaternion.RotateTowards(Controller.transform.rotation, pad.transform.rotation, Time.fixedDeltaTime * TurnSpeed);
