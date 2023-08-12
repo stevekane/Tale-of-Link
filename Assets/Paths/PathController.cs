@@ -14,10 +14,10 @@ public class PathController : MonoBehaviour, IMoverController {
   PathTraversal PathTraversal;
   float StartOffset = 0f;
 
-    public void Activate() => IsActive = true;
-    public void Deactivate() => IsActive = false;
+  public void Activate() => IsActive = true;
+  public void Deactivate() => IsActive = false;
 
-    public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime) {
+  public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime) {
     goalPosition = PhysicsMover.TransientPosition;
     goalRotation = PhysicsMover.TransientRotation;
     if (IsActive) {
