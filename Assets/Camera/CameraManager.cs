@@ -36,6 +36,10 @@ public class CameraManager : LevelManager<CameraManager> {
     WallSpaceCamera.Priority = 0;
   }
 
+  public void ChangeConfine(Collider c) {
+    WorldSpaceCamera.GetComponent<CinemachineConfiner>().m_BoundingVolume = c;
+  }
+
   void Start() {
     PlayerManager.Instance.OnPlayerSpawn += OnPlayerSpawn;
   }

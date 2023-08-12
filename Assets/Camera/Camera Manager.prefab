@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1251013271318133013}
   - component: {fileID: 9140855441633619888}
   - component: {fileID: 1644277233913329836}
+  - component: {fileID: 1339633594518568215}
   m_Layer: 0
   m_Name: WorldSpace Camera
   m_TagString: Untagged
@@ -88,6 +89,23 @@ MonoBehaviour:
   Config:
     SHAKE_DECAY_EPSILON: -0.5
     MAX_SHAKE_INTENSITY: 20
+--- !u!114 &1339633594518568215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096054287030944367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2fba25a5cd15594e8f050a11e386c80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ConfineMode: 1
+  m_BoundingVolume: {fileID: 0}
+  m_BoundingShape2D: {fileID: 0}
+  m_ConfineScreenEdges: 1
+  m_Damping: 1
 --- !u!1 &2107506661378766135
 GameObject:
   m_ObjectHideFlags: 0
