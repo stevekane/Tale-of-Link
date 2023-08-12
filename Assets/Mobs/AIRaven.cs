@@ -38,7 +38,6 @@ public class AIRaven : MonoBehaviour {
       async s => {
         var player = PlayerManager.Instance.Player;
         var dir = (player.transform.position - transform.position).normalized;
-        Debug.Log($"Charging: {dir}");
         while (true) {
           AbilityManager.Run(Move.Move, dir);
           await scope.Tick();
