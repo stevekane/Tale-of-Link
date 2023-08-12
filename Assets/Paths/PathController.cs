@@ -14,7 +14,7 @@ public class PathController : MonoBehaviour, IMoverController {
   PathTraversal PathTraversal;
   float StartOffset = 0f;
 
-    public void Activate() => IsActive = true; 
+    public void Activate() => IsActive = true;
     public void Deactivate() => IsActive = false;
 
     public void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime) {
@@ -51,18 +51,12 @@ public class PathController : MonoBehaviour, IMoverController {
 
   public void OnDrawGizmosSelected() {
     if (!Waypoints) return;
-    var path = Waypoints.CreatePathTraversal(Mode);
-    path.DrawGizmos();
-
-    var pos = transform.position;
-    var rotation = transform.rotation;
-    path.WarpTo(ref pos, ref rotation, StartOffset);
     Gizmos.color = Color.green;
-    if (TryGetComponent(out BoxCollider boxCollider)) {
-        Gizmos.DrawWireCube(pos, GetComponent<BoxCollider>().size);
-    }
-    else {
-        Gizmos.DrawWireCube(pos, Vector3.one);
+    var boxCollider = GetComponent<BoxCollider>();
+    var size = boxCollider ? boxCollider.size : Vector3.one;
+    var center = boxCollider ? boxCollider.center : Vector3.zero;
+    foreach (var waypoint in Waypoints.Nodes) {
+      Gizmos.DrawWireCube(waypoint.transform.TransformPoint(center), size);
     }
   }
 }

@@ -147,8 +147,5 @@ public class Waypoints : MonoBehaviour {
   void OnDrawGizmos() {
     var path = CreatePathTraversal(PathTraversal.Modes.BackAndForth);
     path.DrawGizmos();
-
-    var followers = FindObjectsOfType<PathController>().Where(p => p.Waypoints == this).ToList();
-    followers.ForEach(f => f.OnDrawGizmosSelected());
   }
 }
