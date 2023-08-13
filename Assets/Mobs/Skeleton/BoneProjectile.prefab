@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 7350646430978296686}
   - component: {fileID: 1900319106904727660}
   - component: {fileID: 8056624825998485573}
+  - component: {fileID: 219769474520994142}
   m_Layer: 19
   m_Name: BoneProjectile
   m_TagString: Untagged
@@ -214,7 +215,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitConfig:
     HitType: 0
-    MaybeDamageOrSomething: 1
+    Damage: 1
+    RecoilStrength: 0
+    KnockbackStrength: 20
   InitialSpeed: 5
   Attacker: {fileID: 0}
 --- !u!114 &1900319106904727660
@@ -253,3 +256,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.1, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &219769474520994142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5031126315998337463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89228809c256d484cbd2e6343fa20068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwordRecoilScale: 0
+  HammerRecoilScale: 0
+  SwordKnockbackScale: 1
+  HammerKnockbackScale: 0

@@ -9,6 +9,7 @@ public class ThrowAbility : ClassicAbility {
   public Timeval Recovery;
 
   public override async Task MainAction(TaskScope scope) {
+    AbilityManager.GetComponent<Animator>().SetTrigger("Throw");
     await scope.Delay(Windup);
     var target = FindObjectOfType<Player>();
     var dir = (target.transform.position - transform.position).normalized;

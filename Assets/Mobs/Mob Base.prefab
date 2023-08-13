@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 3360500511646581115}
   - component: {fileID: 3683128475531587940}
   - component: {fileID: 1439053274889059310}
+  - component: {fileID: 4621253892295909007}
   - component: {fileID: 680194053788002104}
   m_Layer: 11
   m_Name: Mob Base
@@ -567,6 +568,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4621253892295909007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea57f130c25f814e963f89229d08622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 5904440407964557133}
+  BlockSound: {fileID: 0}
+  DamageSound: {fileID: 0}
+  BlockVFX: {fileID: 0}
+  DamageVFX: {fileID: 0}
+  Animator: {fileID: 1439053274889059310}
 --- !u!114 &680194053788002104
 MonoBehaviour:
   m_ObjectHideFlags: 0
