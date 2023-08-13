@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: Model
       value: 
       objectReference: {fileID: 7864868683126878920}
+    - target: {fileID: 1439053274889059310, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}
+    - target: {fileID: 1439053274889059310, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0e26772dbfdd4524eafd8f66c90bb774, type: 2}
     - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Move.OwnerActivationRequired
       value: 4196
@@ -68,10 +76,6 @@ PrefabInstance:
       propertyPath: HasGravity
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8562395416351935353, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
-      propertyPath: Animator
-      value: 
-      objectReference: {fileID: 7864868683117379860}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7460705314114962191, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
@@ -126,7 +130,7 @@ MonoBehaviour:
     Millis: 1500
   ChargeDuration:
     Millis: 2000
-  Animator: {fileID: 7864868683117379860}
+  Animator: {fileID: 8574502173598616409}
 --- !u!114 &7027339533018681442 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 324376866214748373, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
@@ -138,6 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7b4ea621da97240bc28b18a908a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8574502173598616409 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1439053274889059310, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+  m_PrefabInstance: {fileID: 7279588414842138807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7864868683126846580
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,16 +223,12 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 02169a29bc93499d91fdd5dd16ead51a, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9500000, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}
---- !u!95 &7864868683117379860 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9500000, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}
-  m_PrefabInstance: {fileID: 7864868683126846580}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7864868683126451944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400028, guid: 4103c29849f2490dac70eb3d4b71f445, type: 3}

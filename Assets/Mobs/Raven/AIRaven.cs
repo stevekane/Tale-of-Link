@@ -8,15 +8,27 @@ public class AIRaven : MonoBehaviour {
   public Timeval WindupDuration;
   public Timeval ChargeDuration;
   public Animator Animator;
+  public float TerritoryRadius;
+  public float TurnSpeed;
+
+  Vector3 ChargeDirection;
+  Vector3 TerritoryCenter;
 
   TaskScope Scope = new();
+  bool CanSee(Transform target) => target.IsVisibleFrom(transform.position, SeeMask);
+  bool InTerritory(Transform target) => (target.position-transform.position).sqrMagnitude <= TerritoryRadius*TerritoryRadius;
 
   public void Start() {
+    TerritoryCenter = transform.position;
     Scope.Start(Waiter.Repeat(Behavior));
   }
 
   void OnDestroy() {
     Scope.Dispose();
+  }
+
+  async Task ReturnHome(TaskScope scope) {
+
   }
 
   async Task Behavior(TaskScope scope) {
@@ -25,10 +37,6 @@ public class AIRaven : MonoBehaviour {
     GetComponent<WorldSpaceController>().Unground();
     await scope.Delay(WindupDuration);
     await scope.Repeat(ChargeAtPlayer);
-  }
-
-  bool CanSee(Transform target) {
-    return target.IsVisibleFrom(transform.position, SeeMask);
   }
 
   async Task ChargeAtPlayer(TaskScope scope) {
