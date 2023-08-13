@@ -24,7 +24,7 @@ public class AIRaven : MonoBehaviour {
   Transform Target => PlayerManager.Instance.MobTarget ? PlayerManager.Instance.MobTarget.transform : null;
   bool TargetInTerritory => Target && (Target.position - HomePosition).sqrMagnitude <= TerritoryRadius*TerritoryRadius;
   bool CanSeeTarget => Target && Target.IsVisibleFrom(transform.position, SeeMask);
-
+  bool AtHome() => (HomePosition-transform.position).sqrMagnitude <= .5f;
   bool ShouldAggro() => CanSeeTarget && TargetInTerritory;
   void MoveForward() {
     WorldSpaceController.MaxMoveSpeed = FlyingSpeed;
@@ -77,7 +77,10 @@ public class AIRaven : MonoBehaviour {
 
   async Task ReturnHome(TaskScope scope) {
     await scope.Repeat(WindupDuration.Ticks, TurnTowardsHome);
-    await scope.Repeat(FlyHomeDuration.Ticks, MoveForward);
+    await scope.Any(
+      Waiter.Until(AtHome),
+      Waiter.Repeat(FlyHomeDuration.Ticks, MoveForward)
+    );
     WorldSpaceController.Position = HomePosition;
     WorldSpaceController.Forward = HomeForward;
     Run(Sleep);
