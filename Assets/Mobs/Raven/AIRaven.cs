@@ -39,13 +39,17 @@ public class AIRaven : MonoBehaviour {
     WorldSpaceController.Rotation = nextRotation;
   }
   void TurnTowardsHome() {
+    if (TowardsHome.sqrMagnitude <= 0)
+      return;
     var currentRotation = transform.rotation;
     var targetRotation = Quaternion.LookRotation(TowardsHome, Vector3.up);
     var nextRotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.fixedDeltaTime * TurnSpeed);
     WorldSpaceController.Rotation = nextRotation;
   }
 
-  public void Start() {
+  // TODO: There is an important detail here... these tasks run even when the owning object
+  // is not active. This just... isn't right but the solution is somewhat tricky to determine
+  void Start() {
     this.InitComponent(out Animator);
     this.InitComponent(out AbilityManager);
     this.InitComponent(out WorldSpaceController);
