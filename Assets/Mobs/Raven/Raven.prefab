@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8647864481986349754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2554341819017815232}
+  - component: {fileID: 6578523105136217495}
+  m_Layer: 0
+  m_Name: DiveBomb
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2554341819017815232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8647864481986349754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7438951238329978044}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6578523105136217495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8647864481986349754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe30d2a210cd924aac6fa1375cac334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: 
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Main:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 0
+    AddToAbility: 512
+    AddToOwner: 512
+    RemoveFromOwner: 0
+    OwnerActivationRequired: 4096
+    OwnerActivationBlocked: 512
+    Ability: {fileID: 0}
+  ChargeHeight: 2
+  ChargeSpeed: 15
+  ChargeDuration:
+    Millis: 1000
 --- !u!1001 &7279588414842138807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20,6 +83,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0e26772dbfdd4524eafd8f66c90bb774, type: 2}
+    - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Speed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: StopAtLedges
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Move.OwnerActivationRequired
       value: 4196
@@ -83,22 +154,14 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5567718968694952789, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7864868683126451944}
+    - targetCorrespondingSourceObject: {fileID: 160508514658860043, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2554341819017815232}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6515522028597025426, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4616539698124590127}
   m_SourcePrefab: {fileID: 100100000, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
---- !u!114 &2744365819967049570 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
-  m_PrefabInstance: {fileID: 7279588414842138807}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c665edafe37de04bac009bf6301ee87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2901103207100097506 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5567718968694952789, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
@@ -121,30 +184,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83518e0d5472b3d449bc7086ddede0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityManager: {fileID: 7027339533018681442}
-  Move: {fileID: 2744365819967049570}
+  DiveBombAbility: {fileID: 6578523105136217495}
   SeeMask:
     serializedVersion: 2
     m_Bits: 1025
   WindupDuration:
     Millis: 1500
-  ChargeDuration:
-    Millis: 2000
-  Animator: {fileID: 8574502173598616409}
---- !u!114 &7027339533018681442 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 324376866214748373, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
-  m_PrefabInstance: {fileID: 7279588414842138807}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4570454175643920933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e7b4ea621da97240bc28b18a908a39e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!95 &8574502173598616409 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 1439053274889059310, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+  FlyHomeDuration:
+    Millis: 1000
+  TerritoryRadius: 20
+  TurnSpeed: 180
+  FlyingSpeed: 10
+  ChargeHeight: 2
+--- !u!4 &7438951238329978044 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 160508514658860043, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
   m_PrefabInstance: {fileID: 7279588414842138807}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7864868683126846580

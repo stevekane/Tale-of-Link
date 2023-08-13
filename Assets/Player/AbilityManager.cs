@@ -28,6 +28,22 @@ public class AbilityManager : MonoBehaviour {
     Abilities.Remove(ability);
   }
 
+  public bool TryRun(AbilityAction action) {
+    if (CanRun(action)) {
+      Run(action);
+      return true;
+    }
+    return false;
+  }
+
+  public bool TryRun<T>(AbilityAction<T> action, T t) {
+    if (CanRun(action)) {
+      Run(action, t);
+      return true;
+    }
+    return false;
+  }
+
   public bool CanRun(AbilityAction action) {
     var predicateSatisfied = action.CanRun();
     var ownerTagsAfterCancelations = AbilityOwnerTagsWhere(a => a.IsRunning && !IsCancellable(action, a), SystemTags);
