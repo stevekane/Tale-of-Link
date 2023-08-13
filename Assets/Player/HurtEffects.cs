@@ -17,19 +17,20 @@ public class HurtEffects : MonoBehaviour {
   }
 
   void OnHurt(HitEvent hitEvent) {
-    if (hitEvent.NoDamage)
+    if (hitEvent.NoDamage) {
       if (BlockSound)
         BlockSound?.PlayOneShot(BlockSound.clip);
       if (DamageVFX)
         Destroy(Instantiate(BlockVFX, transform.position + .5f * Vector3.up, transform.rotation), 2);
       if (Animator)
         Animator.SetTrigger("Block");
-    else
+    } else {
       if (DamageSound)
         DamageSound.PlayOneShot(DamageSound.clip);
       if (BlockVFX)
         Destroy(Instantiate(DamageVFX, transform.position + .5f * Vector3.up, transform.rotation), 2);
       if (Animator)
         Animator.SetTrigger("Flinch");
+    }
   }
 }
