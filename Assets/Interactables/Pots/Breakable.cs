@@ -29,13 +29,10 @@ public class Breakable : MonoBehaviour {
       ShatterDirection.FromAttacker => (transform.position-hitEvent.Attacker.transform.position).normalized,
       ShatterDirection.Up => Vector3.up
     };
-    StartCoroutine(ShatterRoutine(direction));
-  }
-
-  IEnumerator ShatterRoutine(Vector3 direction) {
     HurtBox.enabled = false;
     UnbrokenCollider.enabled = false;
     foreach (var piece in Pieces) {
+      piece.transform.SetParent(null, worldPositionStays: true);
       piece.GetComponent<Collider>().enabled = true;
       piece.useGravity = true;
       piece.isKinematic = false;
@@ -44,7 +41,7 @@ public class Breakable : MonoBehaviour {
     if (DropTable && DropTable.TryGet(out var drop)) {
       Instantiate(drop, transform.position, Quaternion.LookRotation(Vector3.forward, Vector3.up));
     }
-    yield return new WaitForSeconds(PersistenceDuration.Seconds);
-    Destroy(gameObject);
+    Pieces.ForEach(piece => Destroy(piece.gameObject, PersistenceDuration.Seconds));
+    Destroy(gameObject, PersistenceDuration.Seconds);
   }
 }
