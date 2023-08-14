@@ -41,7 +41,7 @@ public class TaskScope : IDisposable {
     ThrowIfCancelled();
     return task;
   }
-  public void Start(TaskFunc f) {
+  public void Start(TaskFunc f, TaskScheduler scheduler = null) {
     ThrowIfCancelled();
     TaskScope scope = new(this);
     var task = new Task(async () => {
@@ -54,7 +54,7 @@ public class TaskScope : IDisposable {
         scope.Dispose();
       }
     });
-    task.Start(TaskManager.Scheduler);
+    task.Start(scheduler ?? TaskManager.Scheduler);
   }
   // Fiber adapter.
   public async Task RunFiber(IEnumerator routine) {

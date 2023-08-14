@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AISkeleton : MonoBehaviour {
+public class AISkeleton : TaskRunnerComponent {
   public AbilityManager AbilityManager;
   public DodgeAbility Dodge;
   public ThrowAbility Throw;
@@ -18,8 +18,6 @@ public class AISkeleton : MonoBehaviour {
   AIWander AIWander;
   AIChasePlayer AIChasePlayer;
 
-  TaskScope Scope;
-
   public void Start() {
     //base.Start();
     //NavMeshAgent.updatePosition = false;
@@ -30,12 +28,7 @@ public class AISkeleton : MonoBehaviour {
     AIWander.enabled = true;
     AIChasePlayer.enabled = false;
     AIWander.Move.Speed = WanderSpeed;
-    Scope = new();
-    Scope.Start(Waiter.Repeat(Behavior));
-  }
-
-  void OnDestroy() {
-    Scope.Dispose();
+    StartTask(Waiter.Repeat(Behavior));
   }
 
   async Task Behavior(TaskScope scope) {
@@ -66,7 +59,8 @@ public class AISkeleton : MonoBehaviour {
   }
 
   bool IsAggro = false;
-  void FixedUpdate() {
+  protected override void FixedUpdate() {
+    base.FixedUpdate();
     var target = PlayerManager.Instance.MobTarget;
     if (target) {
       if (!IsAggro && (transform.position - target.transform.position).sqrMagnitude < PlayerAggroMinDistance.Sqr()) {
