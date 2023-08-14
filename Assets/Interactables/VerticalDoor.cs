@@ -4,9 +4,19 @@ using UnityEngine;
 public class VerticalDoor : MonoBehaviour {
   public GameObject Hinge;
   public Timeval AnimationDuration = Timeval.FromSeconds(.5f);
+  [field:SerializeField]  
   public bool IsOpen { get; private set; } = false;
 
-  [ContextMenu("Open")]
+    private void Start()
+    {
+        if (IsOpen)
+            Open();
+        else
+            Close();
+    }
+
+
+    [ContextMenu("Open")]
   public void Open() {
     Debug.Assert(!IsOpen);
     IsOpen = true;
