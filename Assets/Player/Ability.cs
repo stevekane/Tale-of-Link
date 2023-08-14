@@ -17,12 +17,13 @@ public abstract class Ability : MonoBehaviour {
 
   protected AbilityManager AbilityManager;
 
-  void OnEnable() {
+  protected virtual void Awake() {
     AbilityManager = GetComponentInParent<AbilityManager>();
-    AbilityManager.AddAbility(this);
+    if (AbilityManager)  // Ability may be detached, e.g. part of an item
+      AbilityManager.AddAbility(this);
   }
 
-  void OnDisable() {
+  protected virtual void OnDestroy() {
     AbilityManager = GetComponentInParent<AbilityManager>();
     if (AbilityManager)
       AbilityManager.RemoveAbility(this);

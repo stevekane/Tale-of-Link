@@ -1,29 +1,33 @@
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public abstract class ClassicAbility : Ability {
   int RunningTaskCount;
-  TaskScope Scope = new();
+  TaskRunner TaskRunner = new();
   public override bool IsRunning => RunningTaskCount > 0;
   public override void Stop() {
     Tags = default;
     AddedToOwner = default;
-    Scope.Dispose();
-    Scope = new();
+    TaskRunner.StopAllTasks();
   }
   public AbilityAction Main;
 
-  protected virtual void Awake() {
+  protected override void Awake() {
+    base.Awake();
     Main.Ability = this;
     Main.Listen(FireMain);
   }
-
-  void OnDestroy() {
-    Scope?.Dispose();
+  protected override void OnDestroy() {
+    base.OnDestroy();
+    TaskRunner?.Dispose();
+  }
+  protected virtual void FixedUpdate() {
+    TaskRunner.FixedUpdate();
   }
 
   void FireMain() {
-    Scope.Start(Runner(MainAction));
+    TaskRunner.StartTask(Runner(MainAction));
     RunningTaskCount++;
   }
 
