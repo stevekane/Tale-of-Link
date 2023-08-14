@@ -13,7 +13,8 @@ public class OpenAbility : ClassicAbility {
     return null;
   }
 
-  void FixedUpdate() {
+  protected override void FixedUpdate() {
+    base.FixedUpdate();
     var origin = transform.position + Vector3.up;
     var direction = transform.forward;
     var rayHit = Physics.Raycast(origin, direction, out var hit, InteractDistance, OpenableMask, QueryTriggerInteraction.Collide);
