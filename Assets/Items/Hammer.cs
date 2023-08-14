@@ -34,7 +34,7 @@ public class Hammer : ClassicAbility {
       var impactRotation = AbilityManager.transform.rotation;
       Instantiate(ImpactVFX, impactPosition, impactRotation);
       CameraShaker.Instance.Shake(CameraShakeIntensity);
-      await scope.Ticks(SwingDuration.Ticks);
+      await scope.Ticks(RecoveryDuration.Ticks);
     } catch (Exception e) {
       throw e;
     } finally {
