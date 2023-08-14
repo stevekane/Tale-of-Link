@@ -14,6 +14,8 @@ before passing it along to attacker and victim.
 public class Hurtbox : MonoBehaviour {
   public Combatant Owner;
   public ShieldAbility ShieldAbility;
+  public bool CanBeHitBySword = true;
+  public bool CanBeHitByHammer = true;
   public bool InstantDeathFromHammer;
   Collider Collider;
 
@@ -29,6 +31,12 @@ public class Hurtbox : MonoBehaviour {
 
   public void ProcessHit(Combatant attacker, HitConfig hitConfig) {
     var hit = new HitEvent { HitConfig = hitConfig, Attacker = attacker, Victim = Owner };
+
+    if (!CanBeHitBySword && hitConfig.HitType == HitConfig.Types.Sword)
+      return;
+    if (!CanBeHitByHammer && hitConfig.HitType == HitConfig.Types.Hammer)
+      return;
+
     if (InstantDeathFromHammer && hitConfig.HitType == HitConfig.Types.Hammer) {
       hit.HitConfig.Damage = 1000;
     }
