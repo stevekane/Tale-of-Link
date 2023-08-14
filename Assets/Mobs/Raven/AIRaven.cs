@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AbilityManager))]
 [RequireComponent(typeof(WorldSpaceController))]
-public class AIRaven : MonoBehaviour {
+public class AIRaven : TaskRunnerComponent {
   public DiveBombAbility DiveBombAbility;
   public LayerMask SeeMask;
   public Timeval WindupDuration = Timeval.FromSeconds(1);
@@ -13,7 +13,6 @@ public class AIRaven : MonoBehaviour {
   public float TurnSpeed = 180;
   public float FlyingSpeed = 10;
 
-  TaskScope Scope;
   Animator Animator;
   AbilityManager AbilityManager;
   WorldSpaceController WorldSpaceController;
@@ -47,8 +46,6 @@ public class AIRaven : MonoBehaviour {
     WorldSpaceController.Rotation = nextRotation;
   }
 
-  // TODO: There is an important detail here... these tasks run even when the owning object
-  // is not active. This just... isn't right but the solution is somewhat tricky to determine
   void Start() {
     this.InitComponent(out Animator);
     this.InitComponent(out AbilityManager);
@@ -58,17 +55,12 @@ public class AIRaven : MonoBehaviour {
     Run(Sleep);
   }
 
-  void OnDestroy() {
-    Scope.Dispose();
-  }
-
   // Use this to change Tasks while avoiding true mutual recursion which blows the stack
   // This gives behavior very similar to a BehaviorTree
   void Run(TaskFunc f) {
     Debug.Log($"{gameObject.name} Running {f.Method.Name}");
-    Scope?.Dispose();
-    Scope = new();
-    Scope.Start(f);
+    //StopAllTasks();
+    StartTask(f);
   }
 
   async Task Sleep(TaskScope scope) {

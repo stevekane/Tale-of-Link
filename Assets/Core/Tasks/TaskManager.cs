@@ -7,18 +7,23 @@ using UnityEngine;
 
 [DefaultExecutionOrder(-200)]
 public class TaskManager : SingletonBehavior<TaskManager> {
-  public static SimpleTaskScheduler Scheduler => Instance._Scheduler;
-  SimpleTaskScheduler _Scheduler = new();
+  public static TaskRunner Scheduler => Instance._Scheduler;
+  TaskRunner _Scheduler = new();
 
   void FixedUpdate() {
     Scheduler.FixedUpdate();
   }
 }
 
-public class SimpleTaskScheduler : TaskScheduler {
+public class TaskRunner : TaskScheduler, IDisposable {
   ConcurrentQueue<Task> Tasks = new ConcurrentQueue<Task>();
   TaskCompletionSource<bool> NextTick = new TaskCompletionSource<bool>(TaskCreationOptions.AttachedToParent);
   bool ProcessingItems;
+  TaskScope MainScope = new();
+
+  public void Dispose() {
+    MainScope.Dispose();
+  }
 
   public void FixedUpdate() {
     var old = SynchronizationContext.Current;
@@ -45,6 +50,14 @@ public class SimpleTaskScheduler : TaskScheduler {
 
   public Task WaitForFixedUpdate() {
     return NextTick.Task;
+  }
+
+  public void StartTask(TaskFunc f) {
+    MainScope.Start(f, this);
+  }
+  public void StopAllTasks() {
+    MainScope?.Dispose();
+    MainScope = new();
   }
 
   protected override void QueueTask(Task task) {
