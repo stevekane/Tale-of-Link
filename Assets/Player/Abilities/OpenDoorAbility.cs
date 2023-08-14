@@ -15,7 +15,8 @@ public class OpenDoorAbility : ClassicAbility {
     return null;
   }
 
-  void FixedUpdate() {
+  protected override void FixedUpdate() {
+    base.FixedUpdate();
     var rayHit = Physics.Raycast(transform.position + Vector3.up, transform.forward, out var hit, InteractDistance, DoorMask, QueryTriggerInteraction.Collide);
     if (rayHit && hit.collider.TryGetComponent(out Door door) && !door.IsOpen) {
       Door = door;
