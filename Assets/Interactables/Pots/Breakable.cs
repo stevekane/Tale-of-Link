@@ -4,6 +4,7 @@ public enum ShatterDirection {
   FromAttacker,
   Up,
   Forward,
+  Back
 }
 
 [RequireComponent(typeof(Combatant))]
@@ -34,7 +35,8 @@ public class Breakable : MonoBehaviour {
     var direction = ShatterDirection switch {
       ShatterDirection.FromAttacker => (transform.position-hitEvent.Attacker.transform.position).normalized,
       ShatterDirection.Up => Vector3.up,
-      ShatterDirection.Forward => transform.forward
+      ShatterDirection.Forward => transform.forward,
+      ShatterDirection.Back => -transform.forward
     };
     HurtBox.enabled = false;
     UnbrokenCollider.enabled = false;

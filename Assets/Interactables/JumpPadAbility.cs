@@ -37,7 +37,6 @@ public class JumpPadAbility : ClassicAbility {
       //Controller.Position = JumpPad.transform.position;
       Controller.DesiredVelocity = Vector3.zero;
       Controller.PhysicsVelocity = Vector3.zero;
-      Debug.Log(pad.LaunchSpeed);
       var direction = Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
       var velocity = pad.LaunchSpeed * direction;
       var acceleration = velocity / Time.fixedDeltaTime;
