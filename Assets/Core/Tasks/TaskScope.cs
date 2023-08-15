@@ -75,7 +75,7 @@ public class TaskScope : IDisposable {
   }
   public async Task Tick() {
     ThrowIfCancelled();
-    await TaskManager.Scheduler.WaitForFixedUpdate();
+    await ((TaskRunner)TaskScheduler.Current).WaitForFixedUpdate();
     ThrowIfCancelled();
   }
   public async Task Ticks(int ticks) {
