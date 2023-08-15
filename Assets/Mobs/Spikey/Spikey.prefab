@@ -217,6 +217,7 @@ MonoBehaviour:
     Damage: 0
     RecoilStrength: 1
     KnockbackStrength: 1
+  IsActive: 1
 --- !u!1 &1405011266969664216
 GameObject:
   m_ObjectHideFlags: 0
@@ -919,6 +920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aedf8c76684b7e4d9416c5770999193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalTime: {fileID: 8338628134201293054}
   UseLocal: 1
   Axis: {x: 0, y: 1, z: 0}
   DegreesPerSecond: 360
@@ -940,7 +942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5567718968694952789, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5567718968694952789, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1103,3 +1105,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Rigidbody: {fileID: 7430702485440079801}
   MoveWithPhysics: 1
+--- !u!114 &8338628134201293054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1638897962611607625, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+  m_PrefabInstance: {fileID: 7279588414842138807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570454175643920933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce684be052cea34b8b1001304812b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

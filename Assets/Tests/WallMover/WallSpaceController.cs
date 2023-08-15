@@ -4,6 +4,8 @@ using UnityEngine.Events;
 using KinematicCharacterController;
 
 [DefaultExecutionOrder(3)]
+[RequireComponent(typeof(LocalTime))]
+[RequireComponent(typeof(AbilityManager))]
 public class WallSpaceController : MonoBehaviour {
   [SerializeField] LayerMask LayerMask;
   [SerializeField] int MaxSearchCount = 10;
@@ -13,7 +15,6 @@ public class WallSpaceController : MonoBehaviour {
   [SerializeField] float SegmentOffset = .01f;
   [SerializeField] WallEntitySegment[] RightSegments;
   [SerializeField] WallEntitySegment[] LeftSegments;
-  [SerializeField] AbilityManager AbilityManager;
   public MovingWall MovingWall;
   #if UNITY_EDITOR
   public bool ShowHits;
@@ -40,6 +41,8 @@ public class WallSpaceController : MonoBehaviour {
   public UnityAction OnEnterWallSpace;
   public UnityAction OnExitWallSpace;
 
+  LocalTime LocalTime;
+  AbilityManager AbilityManager;
   List<RaycastHit> LeftPath = new();
   List<RaycastHit> RightPath = new();
   List<RaycastHit> RightHits = new();
@@ -68,6 +71,11 @@ public class WallSpaceController : MonoBehaviour {
     MergeRequested = true;
     MergePosition = position;
     MergeForward = forward;
+  }
+
+  void Awake() {
+    this.InitComponent(out AbilityManager);
+    this.InitComponent(out LocalTime);
   }
 
   void OnEnable() {

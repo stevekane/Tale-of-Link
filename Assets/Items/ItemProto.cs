@@ -2,7 +2,6 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Items/ItemProto")]
 public class ItemProto : ScriptableObject {
-  // This is the item object that is added to the owning character's hierarchy, and will hold the Ability script for using the item.
   [SerializeField] ClassicAbility ItemAbility;
   [SerializeField] public bool SwordSlot = false;
   [SerializeField] public GameObject DisplayGameObject;

@@ -1,7 +1,7 @@
 using KinematicCharacterController;
-using System;
 using UnityEngine;
 
+[RequireComponent(typeof(LocalTime))]
 public class PathController : MonoBehaviour, IMoverController {
   public PhysicsMover PhysicsMover;
   public MovingWall MovingWall;
@@ -11,6 +11,7 @@ public class PathController : MonoBehaviour, IMoverController {
   public bool IsActive = true;
   public bool IgnoreRotation = false;
 
+  LocalTime LocalTime;
   PathTraversal PathTraversal;
   float StartOffset = 0f;
 
@@ -24,7 +25,7 @@ public class PathController : MonoBehaviour, IMoverController {
       var previousPosition = PhysicsMover.TransientPosition;
       var previousRotation = PhysicsMover.TransientRotation;
       if (PathTraversal != null)
-        PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed);
+        PathTraversal.Advance(ref goalPosition, ref goalRotation, MoveSpeed, LocalTime.TimeScale * deltaTime);
       if (IgnoreRotation)  // dumb hack to work with PhysicsRotator
         goalRotation = previousRotation;
       var nextPosition = goalPosition;
@@ -33,6 +34,10 @@ public class PathController : MonoBehaviour, IMoverController {
         MovingWall.MotionDelta = nextPosition-previousPosition;
       }
     }
+  }
+
+  void Awake() {
+    this.InitComponent(out LocalTime);
   }
 
   void Start() {

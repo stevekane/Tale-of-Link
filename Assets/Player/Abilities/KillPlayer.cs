@@ -15,12 +15,19 @@ public class KillPlayer : ClassicAbility {
       killable.Dying = true;
       animator.SetTrigger("Dying");
       CameraManager.Instance.FadeOut(FadeSpeed);
+      TimeManager.Instance.IgnoreFreeze.Add(LocalTime);
+      TimeManager.Instance.Frozen = true;
+      Debug.Log(LocalTime.TimeScale);
+      Debug.Log("Predying");
       await scope.Ticks(DyingDuration.Ticks);
+      Debug.Log("Postdying");
       if (HasFairy) {
         animator.SetTrigger("Reviving");
         killable.Spawning = true;
         hearts.ChangeCurrent(hearts.Total-hearts.Current);
+        Debug.Log("Previving");
         await scope.Ticks(DyingDuration.Ticks);
+        Debug.Log("Postviving");
         killable.Alive = true;
         CameraManager.Instance.FadeIn(FadeSpeed);
       } else {
@@ -28,6 +35,8 @@ public class KillPlayer : ClassicAbility {
       }
     } catch (Exception e){
       throw e;
+    } finally {
+      TimeManager.Instance.IgnoreFreeze.Remove(LocalTime);
     }
   }
 }

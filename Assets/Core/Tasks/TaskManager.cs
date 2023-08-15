@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [DefaultExecutionOrder(-200)]
+[RequireComponent(typeof(LocalTime))]
 public class TaskManager : SingletonBehavior<TaskManager> {
   public static TaskRunner Scheduler => Instance._Scheduler;
-  TaskRunner _Scheduler = new();
+
+  LocalTime LocalTime;
+  TaskRunner _Scheduler;
+
+  protected override void AwakeSingleton() {
+    this.InitComponent(out LocalTime);
+    _Scheduler = new(LocalTime);
+  }
 
   void FixedUpdate() {
     Scheduler.FixedUpdate();
@@ -21,11 +29,22 @@ public class TaskRunner : TaskScheduler, IDisposable {
   bool ProcessingItems;
   TaskScope MainScope = new();
 
+  LocalTime LocalTime;
+
+  public TaskRunner() {}
+
+  public TaskRunner(LocalTime localTime) {
+    LocalTime = localTime;
+  }
+
   public void Dispose() {
     MainScope.Dispose();
   }
 
   public void FixedUpdate() {
+    if (LocalTime && LocalTime.TimeScale <= 0) {
+      return;
+    }
     var old = SynchronizationContext.Current;
     ProcessingItems = true;
     try {

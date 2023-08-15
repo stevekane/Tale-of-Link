@@ -82,10 +82,11 @@ public class TaskScope : IDisposable {
     for (int i = 0; i < ticks; i++)
       await Tick();
   }
-  public Task Seconds(float seconds) => Task.Delay((int)(seconds * 1000), Source.Token);
-  public Task Millis(int ms) => Task.Delay(ms, Source.Token);
+  public Task Seconds(float seconds) => Ticks((int)(seconds * TimeManager.FIXED_FPS));
+  public Task Millis(int ms) => Ticks((int)(1000 * ms * TimeManager.FIXED_FPS));
+  public Task Delay(Timeval t) => Ticks(t.Ticks);
+  // N.B. This uses raw Task.Delay because this only and ever stands for "wait indefinetly"
   public Task Forever() => Task.Delay(-1, Source.Token);
-  public Task Delay(Timeval t) => Millis((int)t.Millis);
 
   // Conditional control flow.
   public async Task While(Func<bool> pred) {

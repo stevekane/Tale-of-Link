@@ -254,7 +254,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 71.75
+  m_fontSize: 96
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1916,7 +1916,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 74.2
+  m_fontSize: 111.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2457,7 +2457,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 98.95
+  m_fontSize: 100
   m_fontSizeBase: 96
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2705,6 +2705,8 @@ GameObject:
   - component: {fileID: 3092488692762375205}
   - component: {fileID: 3922908438088901910}
   - component: {fileID: 832872550070423514}
+  - component: {fileID: 6061815284226433176}
+  - component: {fileID: 5880797880428980254}
   m_Layer: 10
   m_Name: Zysnarch
   m_TagString: Untagged
@@ -3133,6 +3135,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ea00dba71c4bf48bf31441545aef54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6061815284226433176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce684be052cea34b8b1001304812b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5880797880428980254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d390984f4b08c2a44beeaafb8f7df3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateMode: 0
 --- !u!1 &6592911875725009129
 GameObject:
   m_ObjectHideFlags: 0
@@ -3547,7 +3574,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 92.15999, y: 92.15999}
+  m_CellSize: {x: 138.23999, y: 138.23999}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 5
@@ -3991,7 +4018,7 @@ MonoBehaviour:
   m_ChildAlignment: 6
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 56.831993, y: 56.831993}
+  m_CellSize: {x: 85.24799, y: 85.24799}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 10

@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-[DefaultExecutionOrder(1)]
+[DefaultExecutionOrder(-1)]
 public class InputManager : MonoBehaviour {
   [SerializeField] AbilityManager AbilityManager;
   [SerializeField] EnterWallSpace EnterWallSpace;

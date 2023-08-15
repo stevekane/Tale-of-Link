@@ -39,7 +39,7 @@ public class JumpPadAbility : ClassicAbility {
       Controller.PhysicsVelocity = Vector3.zero;
       var direction = Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
       var velocity = pad.LaunchSpeed * direction;
-      var acceleration = velocity / Time.fixedDeltaTime;
+      var acceleration = velocity / LocalTime.FixedDeltaTime;
       Controller.Launch(acceleration);
       await scope.Until(() => !Controller.IsGrounded);
       while (!Controller.IsGrounded) {

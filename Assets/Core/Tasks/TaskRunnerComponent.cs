@@ -2,8 +2,15 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 // Ehh not sure if I like this.
+[RequireComponent(typeof(LocalTime))]
 public class TaskRunnerComponent : MonoBehaviour {
-  TaskRunner Scheduler = new();
+  protected LocalTime LocalTime;
+  TaskRunner Scheduler;
+
+  protected virtual void Awake() {
+    this.InitComponent(out LocalTime);
+    Scheduler = new(LocalTime);
+  }
 
   protected virtual void OnDestroy() {
     Scheduler.Dispose();

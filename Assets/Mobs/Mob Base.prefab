@@ -228,6 +228,7 @@ MonoBehaviour:
     Damage: 1
     RecoilStrength: 20
     KnockbackStrength: 20
+  IsActive: 1
 --- !u!1 &2545012205116146001
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,8 +337,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96926c4cd88357e4eac9a89a9e291cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldAbility: {fileID: 0}
   Owner: {fileID: 5904440407964557133}
+  ShieldAbility: {fileID: 0}
+  CanBeHitBySword: 1
+  CanBeHitByHammer: 1
+  InstantDeathFromHammer: 0
 --- !u!65 &2145693114919793832
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -378,6 +382,8 @@ GameObject:
   - component: {fileID: 1439053274889059310}
   - component: {fileID: 4621253892295909007}
   - component: {fileID: 680194053788002104}
+  - component: {fileID: 1638897962611607625}
+  - component: {fileID: 2162520588537917638}
   m_Layer: 11
   m_Name: Mob Base
   m_TagString: Untagged
@@ -602,6 +608,32 @@ MonoBehaviour:
   HammerRecoilScale: 0
   SwordKnockbackScale: 1
   HammerKnockbackScale: 0
+--- !u!114 &1638897962611607625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce684be052cea34b8b1001304812b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeScale: 1
+--- !u!114 &2162520588537917638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d390984f4b08c2a44beeaafb8f7df3a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateMode: 0
 --- !u!1 &7460705314114962191
 GameObject:
   m_ObjectHideFlags: 0

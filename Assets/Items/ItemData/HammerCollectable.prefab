@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Model: {fileID: 4436807323364953449}
+  CollectionText: 
   Root: {fileID: 4785654897916124823}
   ItemProto: {fileID: 11400000, guid: ff0d1a79e411abc428bd6ba4afd31b31, type: 2}
   PlayAnimation: 0
@@ -118,6 +119,10 @@ PrefabInstance:
     - target: {fileID: 4785654897916124823, guid: 3a9ce9f8741d3ff4f8146fe0224a4fae, type: 3}
       propertyPath: m_Name
       value: Hammer
+      objectReference: {fileID: 0}
+    - target: {fileID: 4785654897916124823, guid: 3a9ce9f8741d3ff4f8146fe0224a4fae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7402174529813952614, guid: 3a9ce9f8741d3ff4f8146fe0224a4fae, type: 3}
       propertyPath: m_RootOrder

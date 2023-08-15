@@ -1,8 +1,7 @@
 using KinematicCharacterController;
-using System;
 using UnityEngine;
 
-public class AIWander : MonoBehaviour {
+public class AIWander : TaskRunnerComponent {
   public WorldSpaceController Controller;
   public AbilityManager AbilityManager;
   public WorldSpaceMove Move;
@@ -13,11 +12,18 @@ public class AIWander : MonoBehaviour {
     Controller.OnLedge += OnCollision;
   }
 
+  void OnDestroy() {
+    Controller.OnCollision -= OnCollision;
+    Controller.OnLedge -= OnCollision;
+  }
+
   Vector3 TargetDir;
   int ChooseTicksRemaining = 0;
-  void FixedUpdate() {
-    if (--ChooseTicksRemaining < 0) {
-      TargetDir = UnityEngine.Random.onUnitSphere.XZ().normalized;
+  protected override void FixedUpdate() {
+    base.FixedUpdate();
+    ChooseTicksRemaining -= (int)LocalTime.TimeScale;
+    if (ChooseTicksRemaining < 0) {
+      TargetDir = Random.onUnitSphere.XZ().normalized;
       ChooseTicksRemaining = ChooseTargetCooldown.Ticks;
     }
     if (AbilityManager.CanRun(Move.Move)) {

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class ClassicAbility : Ability {
   int RunningTaskCount;
-  TaskRunner TaskRunner = new();
+  TaskRunner TaskRunner;
+  protected LocalTime LocalTime;
   public override bool IsRunning => RunningTaskCount > 0;
   public override void Stop() {
     Tags = default;
@@ -15,6 +16,8 @@ public abstract class ClassicAbility : Ability {
 
   protected override void Awake() {
     base.Awake();
+    AbilityManager.InitComponent(out LocalTime);
+    TaskRunner = new(LocalTime);
     Main.Ability = this;
     Main.Listen(FireMain);
   }

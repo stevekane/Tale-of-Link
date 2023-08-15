@@ -150,6 +150,8 @@ GameObject:
   - component: {fileID: 1900319106904727660}
   - component: {fileID: 8056624825998485573}
   - component: {fileID: 219769474520994142}
+  - component: {fileID: 6480461289855409105}
+  - component: {fileID: 5689405277257697812}
   m_Layer: 19
   m_Name: BoneProjectile
   m_TagString: Untagged
@@ -232,7 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aedf8c76684b7e4d9416c5770999193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseLocal: 0
+  LocalTime: {fileID: 6480461289855409105}
+  UseLocal: 1
   Axis: {x: 0, y: 1, z: 0}
   DegreesPerSecond: 1080
 --- !u!65 &8056624825998485573
@@ -272,3 +275,27 @@ MonoBehaviour:
   HammerRecoilScale: 0
   SwordKnockbackScale: 1
   HammerKnockbackScale: 0
+--- !u!114 &6480461289855409105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5031126315998337463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ce684be052cea34b8b1001304812b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5689405277257697812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5031126315998337463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3f27c91bc03bf749a6aec165b28d68c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

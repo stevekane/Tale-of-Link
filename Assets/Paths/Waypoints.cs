@@ -31,8 +31,8 @@ public class PathTraversal {
     }
     Debug.Assert(false, $"Failed to find path segment corresponding to {fraction}");
   }
-  public void Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed) {
-    if (CurrentSegment < Segments.Count && Segments[CurrentSegment].Advance(ref pos, ref rotation, moveSpeed)) {
+  public void Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed, float deltaTime) {
+    if (CurrentSegment < Segments.Count && Segments[CurrentSegment].Advance(ref pos, ref rotation, moveSpeed, deltaTime)) {
       CurrentSegment++;
       if (Mode == Modes.OnlyOnce && CurrentSegment >= Segments.Count)
         return;
@@ -47,7 +47,7 @@ public class PathTraversal {
     // Jumps to a fractional completion of this segment, range [0, 1].
     public abstract void WarpTo(ref Vector3 pos, ref Quaternion rotation, float doneFraction);
     // Returns true when we're done on this segment.
-    public abstract bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed);
+    public abstract bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed, float deltaTime);
   }
   class SegmentTraverse : Segment {
     const float STOP_FRACTION = .999f;
@@ -67,8 +67,8 @@ public class PathTraversal {
       pos = Vector3.Lerp(Start.position, End.position, doneFraction);
       rotation = Quaternion.Lerp(Start.rotation, End.rotation, doneFraction);
     }
-    public override bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed) {
-      pos += moveSpeed * Time.fixedDeltaTime * Dir;
+    public override bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed, float deltaTime) {
+      pos += moveSpeed * deltaTime * Dir;
       var distTraveled = (pos - Start.position).magnitude;
       var doneFraction = distTraveled / TotalDistance;
       rotation = Quaternion.Lerp(Start.rotation, End.rotation, doneFraction);
@@ -88,7 +88,7 @@ public class PathTraversal {
     public override void WarpTo(ref Vector3 pos, ref Quaternion rotation, float doneFraction) {
       Ticks = Mathf.RoundToInt(doneFraction * WaitTicks);
     }
-    public override bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed) {
+    public override bool Advance(ref Vector3 pos, ref Quaternion rotation, float moveSpeed, float deltaTime) {
       return (++Ticks >= WaitTicks);
     }
   }

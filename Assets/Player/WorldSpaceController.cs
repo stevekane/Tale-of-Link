@@ -4,11 +4,10 @@ using KinematicCharacterController;
 using System;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
-[DefaultExecutionOrder(100)]
+[RequireComponent(typeof(AbilityManager))]
+[RequireComponent(typeof(LocalTime))]
+[DefaultExecutionOrder(-101)] // Runs right before PhysicsSystem
 public class WorldSpaceController : MonoBehaviour, ICharacterController {
-  [SerializeField] AbilityManager AbilityManager;
-  [SerializeField] KinematicCharacterMotor Motor;
-
   public float MaxMoveSpeed;
   public Vector3 PhysicsAcceleration;
   public Vector3 PhysicsVelocity;
@@ -20,6 +19,10 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
 
   public Action<HitStabilityReport> OnCollision;
   public Action<HitStabilityReport> OnLedge;
+
+  AbilityManager AbilityManager;
+  KinematicCharacterMotor Motor;
+  LocalTime LocalTime;
 
   public void Unground() {
     Motor.ForceUnground();
@@ -50,6 +53,12 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
 
   public bool IsGrounded => Motor.GroundingStatus.FoundAnyGround;
 
+  void Awake() {
+    this.InitComponent(out AbilityManager);
+    this.InitComponent(out Motor);
+    this.InitComponent(out LocalTime);
+  }
+
   void Start() {
     Motor.CharacterController = this;
   }
@@ -66,10 +75,16 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
     Motor.enabled = false;
   }
 
-  // TODO: Should this be here or in GroundedUpdate?
   void FixedUpdate() {
     AbilityManager.SetTag(AbilityTag.Grounded, Motor.GroundingStatus.FoundAnyGround);
     AbilityManager.SetTag(AbilityTag.Airborne, !Motor.GroundingStatus.FoundAnyGround);
+    if (LocalTime.TimeScale > 0 && !Motor.enabled) {
+      Debug.Log(Motor.Velocity);
+      Motor.enabled = true;
+    } else if (LocalTime.TimeScale <= 0 && Motor.enabled) {
+      Debug.Log(Motor.Velocity);
+      Motor.enabled = false;
+    }
   }
 
   void OnDestroy() {
@@ -77,12 +92,14 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   }
 
   public void BeforeCharacterUpdate(float deltaTime) {
+    var dt = LocalTime.TimeScale * deltaTime;
   }
 
   public void UpdateRotation(ref Quaternion currentRotation, float deltaTime) {
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) {
+    var dt = LocalTime.TimeScale * deltaTime;
     if (DirectMove) {
       currentVelocity = ScriptVelocity;
     } else {
@@ -95,7 +112,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
       PhysicsAcceleration += grounded || !HasGravity ? Vector3.zero : Physics.gravity;
       PhysicsVelocity += boundedSteeringVelocity;
       PhysicsVelocity += ScriptVelocity;
-      PhysicsVelocity += deltaTime * PhysicsAcceleration;
+      PhysicsVelocity += dt * PhysicsAcceleration;
       PhysicsVelocity.y = grounded ? 0 : PhysicsVelocity.y;
       currentVelocity = PhysicsVelocity;
     }
@@ -105,6 +122,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   }
 
   public void AfterCharacterUpdate(float deltaTime) {
+    var dt = LocalTime.TimeScale * deltaTime;
   }
 
   public bool IsColliderValidForCollisions(Collider coll) {
@@ -122,6 +140,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   }
 
   public void PostGroundingUpdate(float deltaTime) {
+    var dt = LocalTime.TimeScale * deltaTime;
   }
 
   public bool IsOnLedge = false;

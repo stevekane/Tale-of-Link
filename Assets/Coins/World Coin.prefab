@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3465275905616760090}
   - component: {fileID: 1820120842138800342}
   - component: {fileID: 4608939361324335287}
-  - component: {fileID: 5939443201807961775}
   m_Layer: 16
   m_Name: Model
   m_TagString: Untagged
@@ -84,21 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5939443201807961775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2882318114651130642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aedf8c76684b7e4d9416c5770999193, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseLocal: 1
-  Axis: {x: 0, y: 0, z: 1}
-  DegreesPerSecond: 0
 --- !u!1 &8741157496388623521
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +116,7 @@ Transform:
   m_Children:
   - {fileID: 3465275905616760090}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4475145077930158722
 MonoBehaviour:
