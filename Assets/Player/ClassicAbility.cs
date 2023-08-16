@@ -36,7 +36,8 @@ public abstract class ClassicAbility : Ability {
 
   protected TaskFunc Runner(Func<TaskScope, Task> f) => async scope => {
     try {
-      await f(scope);
+      if (f(scope) is var task && task != null)
+        await task;
     } finally {
       RunningTaskCount--;
       if (RunningTaskCount == 0) {
