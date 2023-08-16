@@ -51,7 +51,9 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
 
   public bool DirectMove;
 
+  public Collider GroundCollider => Motor.GroundingStatus.GroundCollider;
   public bool IsGrounded => Motor.GroundingStatus.FoundAnyGround;
+  public bool IsStableOnGround => Motor.GroundingStatus.IsStableOnGround;
 
   void Awake() {
     this.InitComponent(out AbilityManager);
