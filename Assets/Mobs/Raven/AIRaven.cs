@@ -22,7 +22,7 @@ public class AIRaven : TaskRunnerComponent {
   Vector3 TowardsTarget => Target ? (Target.position-transform.position).normalized : transform.forward;
   Transform Target => PlayerManager.Instance.MobTarget ? PlayerManager.Instance.MobTarget.transform : null;
   bool TargetInTerritory => Target && (Target.position - HomePosition).sqrMagnitude <= TerritoryRadius*TerritoryRadius;
-  bool CanSeeTarget => Target && Target.IsVisibleFrom(transform.position, SeeMask);
+  bool CanSeeTarget => Target && Target.IsVisibleFrom(transform.position+Vector3.up, SeeMask);
   bool AtHome() => (HomePosition-transform.position).sqrMagnitude <= .5f;
   bool ShouldAggro() => CanSeeTarget && TargetInTerritory;
   void MoveForward() {

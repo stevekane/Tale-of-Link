@@ -36,6 +36,7 @@ public class KillPlayer : ClassicAbility {
     } catch (Exception e){
       throw e;
     } finally {
+      TimeManager.Instance.Frozen = false;
       TimeManager.Instance.IgnoreFreeze.Remove(LocalTime);
     }
   }
