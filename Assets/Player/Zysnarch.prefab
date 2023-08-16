@@ -155,8 +155,6 @@ MonoBehaviour:
   ForwardOffset: 1
   UpwardOffset: 5
   RotationSpeed: 360
-  RotationDuration:
-    Millis: 500
   DisplayDuration:
     Millis: 3000
   DisplayText: 
@@ -254,7 +252,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 71.75
+  m_fontSize: 96
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -591,6 +589,80 @@ MonoBehaviour:
   AbilityManager: {fileID: 324376866214748373}
   CollectAbility: {fileID: 5464172735573135275}
   Owner: {fileID: 6515522028597025426}
+--- !u!1 &1151410106998332892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 606206556197341856}
+  - component: {fileID: 8074020723052432433}
+  m_Layer: 0
+  m_Name: Fall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &606206556197341856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151410106998332892}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: -4.8193192, y: 0, z: -5.205908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 160508514658860043}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8074020723052432433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151410106998332892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f30c56ea76fa39c4bbe6e8530550d1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: 
+  BlockActionsWith: 0
+  Tags: 0
+  AddedToOwner: 0
+  RemovedFromOwner: 0
+  Main:
+    Tags: 0
+    CancelAbilitiesWithAll: 0
+    CancelAbilitiesWithAny: 0
+    AddToAbility: 0
+    AddToOwner: 0
+    RemoveFromOwner: 480
+    OwnerActivationRequired: 0
+    OwnerActivationBlocked: 0
+    Ability: {fileID: 0}
+  Model: {fileID: 6242836880304332815}
+  FloorMask:
+    serializedVersion: 2
+    m_Bits: 1
+  MinDistance: 30
+  Starttime:
+    Millis: 100
+  Hangtime:
+    Millis: 100
+  Falltime:
+    Millis: 500
+  ReviveDelay:
+    Millis: 1000
+  FallSpeed: 9
+  FallDamage: 2
 --- !u!1 &1174112991833518453
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +776,7 @@ Transform:
   - {fileID: 560172248091981982}
   - {fileID: 5841303656195849753}
   - {fileID: 4114317649483954682}
+  - {fileID: 606206556197341856}
   m_Father: {fileID: 5567718968694952789}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1916,7 +1989,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 74.2
+  m_fontSize: 120
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2457,7 +2530,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 98.95
+  m_fontSize: 100
   m_fontSizeBase: 96
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3004,6 +3077,7 @@ MonoBehaviour:
   DesiredVelocity: {x: 0, y: 0, z: 0}
   ScriptVelocity: {x: 0, y: 0, z: 0}
   HasGravity: 1
+  Motor: {fileID: 0}
   DirectMove: 0
   IsOnLedge: 0
   LedgeDirection: {x: 0, y: 0, z: 0}
@@ -3571,7 +3645,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 92.15999, y: 92.15999}
+  m_CellSize: {x: 207.35999, y: 207.35999}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 5
@@ -4015,7 +4089,7 @@ MonoBehaviour:
   m_ChildAlignment: 6
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 56.831993, y: 56.831993}
+  m_CellSize: {x: 136.3968, y: 136.3968}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 10
@@ -6873,6 +6947,11 @@ PrefabInstance:
 --- !u!4 &6242836880303914095 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400058, guid: e4aa31f274820b94eb0d0b764e0f383b, type: 3}
+  m_PrefabInstance: {fileID: 6242836880304301781}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6242836880304332815 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100058, guid: e4aa31f274820b94eb0d0b764e0f383b, type: 3}
   m_PrefabInstance: {fileID: 6242836880304301781}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6265141439554375835
