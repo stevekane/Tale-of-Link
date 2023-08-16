@@ -18,13 +18,16 @@ public class Knockback : ClassicAbility {
 
   void OnHurt(HitEvent hit) {
     var delta = hit.Attacker.transform.position - hit.Victim.transform.position;
-    Velocity = -hit.KnockbackStrength * delta.XZ().normalized;
-    AbilityManager.Run(Main);
+    Run(-hit.KnockbackStrength * delta.XZ().normalized);
   }
 
   void OnHit(HitEvent hit) {
     var delta = hit.Attacker.transform.position - hit.Victim.transform.position;
-    Velocity = hit.RecoilStrength * delta.XZ().normalized;
+    Run(hit.RecoilStrength * delta.XZ().normalized);
+  }
+
+  public void Run(Vector3 v) {
+    Velocity = v;
     AbilityManager.Run(Main);
   }
 

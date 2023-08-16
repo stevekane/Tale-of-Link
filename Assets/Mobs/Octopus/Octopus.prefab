@@ -92,6 +92,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 363960544773001967, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: CapsuleHeight
+      value: 1.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 363960544773001967, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: CapsuleRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 363960544773001967, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: CapsuleYOffset
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 363960544773001967, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: MaxStableDistanceFromLedge
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 680194053788002104, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: HammerRecoilScale
       value: 1
@@ -119,6 +135,10 @@ PrefabInstance:
     - target: {fileID: 3360500511646581115, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Current
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360500511646581115, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: IsInvulnerable
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Speed
@@ -172,6 +192,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Octopus
       objectReference: {fileID: 0}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Model
+      value: 
+      objectReference: {fileID: 4512081903788062711}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: FallSpeed
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: MinDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Falltime.Millis
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 8027167232736130977, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -207,6 +243,18 @@ PrefabInstance:
     - target: {fileID: 8564502612646821806, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637237054026041523, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: m_Height
+      value: 1.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637237054026041523, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637237054026041523, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: m_Center.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Owner: {fileID: 0}
+  ShieldAbility: {fileID: 0}
+  CanBeHitBySword: 1
+  CanBeHitByHammer: 1
+  InstantDeathFromHammer: 0
 --- !u!135 &4051273738060577710
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -132,7 +136,7 @@ Transform:
   - {fileID: 1157252165010301416}
   - {fileID: 6240476014995812943}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2084404239984958961
 MonoBehaviour:
@@ -215,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Model: {fileID: 2437751958180267791}
   Collider: {fileID: 7933650260925755564}
-  BumpForce: 70
+  BumpForce: 30
   AnimationDecay: 3
   AnimationAmplitude: 0.25
   AnimationFrequency: 30

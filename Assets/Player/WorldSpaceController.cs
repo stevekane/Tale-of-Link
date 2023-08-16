@@ -21,7 +21,7 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
   public Action<HitStabilityReport> OnLedge;
 
   AbilityManager AbilityManager;
-  KinematicCharacterMotor Motor;
+  public KinematicCharacterMotor Motor;
   LocalTime LocalTime;
 
   public void Unground() {
