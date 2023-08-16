@@ -45,8 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96926c4cd88357e4eac9a89a9e291cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldAbility: {fileID: 0}
   Owner: {fileID: 0}
+  ShieldAbility: {fileID: 0}
+  CanBeHitBySword: 1
+  CanBeHitByHammer: 1
+  InstantDeathFromHammer: 0
 --- !u!135 &4051273738060577710
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -98,7 +101,6 @@ Transform:
   m_Children:
   - {fileID: 8244939980573339688}
   - {fileID: 2300916426426043639}
-  - {fileID: 1201608199057725657}
   m_Father: {fileID: 5518655672226566700}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -322,7 +324,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.6, z: 0}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1201608199057725657}
   m_Father: {fileID: 2437751958180267791}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -480,12 +483,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8526988607265832180}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.125, z: 0.296}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.05, z: 0.296}
+  m_LocalScale: {x: 0.2, y: 0.4, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2437751958180267791}
+  m_Father: {fileID: 8244939980573339688}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3536396045107954173
