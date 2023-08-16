@@ -55,9 +55,7 @@ public class JumpPadAbility : ClassicAbility {
   protected override void FixedUpdate() {
     base.FixedUpdate();
     if (JumpPad && !Jumped && AbilityManager.CanRun(Main) && (transform.position - JumpPad.transform.position).sqrMagnitude < InstantLaunchDistance.Sqr()) {
-      //Jumped = true;
       JumpPad.Popup();
-      //AbilityManager.Run(Main);
     }
   }
 }

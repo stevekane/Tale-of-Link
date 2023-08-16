@@ -32,6 +32,8 @@ public class JumpPad : MonoBehaviour {
   }
 
   public void Popup() {
+    if (!IsSquashed)
+      return;
     OnPopup?.Invoke();
     Model.transform.localPosition += SquashOffset;
     Invoke("EnableCollider", .5f); // Steve - I'm sorry for using this jank just testing
@@ -43,9 +45,10 @@ public class JumpPad : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (IsSquashed && --TicksRemaining <= 0) {
+    if (IsSquashed && TicksRemaining <= 1)
       Popup();
-    }
+    if (IsSquashed)
+      TicksRemaining--;
   }
 
   void OnDrawGizmos() {
