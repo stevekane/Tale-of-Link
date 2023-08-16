@@ -13,6 +13,7 @@ public class AbilityManager : MonoBehaviour {
 
   [field:SerializeField]
   public AbilityTag Tags { get; private set; }
+  public AbilityTag InitialTags = AbilityTag.CanAttack | AbilityTag.CanMove | AbilityTag.CanRotate | AbilityTag.CanUseItem;
 
   public bool HasTags(AbilityTag tags) => (Tags & tags) == tags;
   public void AddTag(AbilityTag tag) => NextSystemTags |= tag;
@@ -87,10 +88,7 @@ public class AbilityManager : MonoBehaviour {
   }
 
   void Awake() {
-    AddTag(AbilityTag.CanMove);
-    AddTag(AbilityTag.CanRotate);
-    AddTag(AbilityTag.CanAttack);
-    AddTag(AbilityTag.CanUseItem);
+    AddTag(InitialTags);
   }
 
   void OnDestroy() => Abilities.ForEach(a => a.Stop());

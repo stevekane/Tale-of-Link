@@ -37,7 +37,7 @@ public class CollectAbility : ClassicAbility {
       }
       hud.Hide();
       hud.DisplayCollectionInfo(DisplayText);
-      CameraManager.Instance.Focus();
+      CameraManager.Instance.ZoomIn();
       equipmentVisibility.DisplayNothing();
       animator.SetBool("Collecting", true);
       var displayPosition = AbilityManager.transform.position + UpwardOffset*Vector3.up + ForwardOffset*Vector3.forward;
@@ -55,7 +55,7 @@ public class CollectAbility : ClassicAbility {
       hud.Show();
       hud.HideCollectionInfo();
       Destroy(displayParticles.gameObject);
-      CameraManager.Instance.UnFocus();
+      CameraManager.Instance.ZoomOut();
       equipmentVisibility.DisplayBaseObjects();
       animator.SetBool("Collecting", false);
       OnCollect?.Invoke();

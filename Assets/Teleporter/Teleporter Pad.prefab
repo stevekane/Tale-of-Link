@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 7569118551276909839}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3659700095952382691
 MonoBehaviour:
@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Exit: {fileID: 0}
+  Model: {fileID: 7569118551276909872}
+  Active: 0
 --- !u!136 &5248943467478557799
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -154,6 +156,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CFXR3 Magic Aura A (Runic)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3280519133390621042, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -232,5 +238,10 @@ PrefabInstance:
 --- !u!4 &7569118551276909839 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3280519133390621042, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
+  m_PrefabInstance: {fileID: 4939419637456780413}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7569118551276909872 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
   m_PrefabInstance: {fileID: 4939419637456780413}
   m_PrefabAsset: {fileID: 0}

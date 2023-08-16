@@ -81,10 +81,8 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
     AbilityManager.SetTag(AbilityTag.Grounded, Motor.GroundingStatus.FoundAnyGround);
     AbilityManager.SetTag(AbilityTag.Airborne, !Motor.GroundingStatus.FoundAnyGround);
     if (LocalTime.TimeScale > 0 && !Motor.enabled) {
-      Debug.Log(Motor.Velocity);
       Motor.enabled = true;
     } else if (LocalTime.TimeScale <= 0 && Motor.enabled) {
-      Debug.Log(Motor.Velocity);
       Motor.enabled = false;
     }
   }
@@ -118,6 +116,9 @@ public class WorldSpaceController : MonoBehaviour, ICharacterController {
       PhysicsVelocity.y = grounded ? 0 : PhysicsVelocity.y;
       currentVelocity = PhysicsVelocity;
     }
+    const float MAX_MOVE_SPEED = 5; // TODO: This is obviously bullshit
+    if (TryGetComponent(out Animator animator))
+      animator.SetFloat("Normalized Move Speed", DesiredVelocity.sqrMagnitude / MAX_MOVE_SPEED);
     PhysicsAcceleration = Vector3.zero;
     DesiredVelocity = Vector3.zero;
     ScriptVelocity = Vector3.zero;

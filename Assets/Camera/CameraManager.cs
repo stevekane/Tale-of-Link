@@ -7,6 +7,7 @@ public class CameraManager : LevelManager<CameraManager> {
   [SerializeField] CinemachineVirtualCamera CloseupCamera;
   [SerializeField] CinemachineVirtualCamera WorldSpaceCamera;
   [SerializeField] CinemachineVirtualCamera WallSpaceCamera;
+  [SerializeField] CinemachineVirtualCamera FocusCamera;
   [SerializeField] Volume Volume;
 
   public Camera Camera;
@@ -14,26 +15,46 @@ public class CameraManager : LevelManager<CameraManager> {
 
   float FadeSpeed = 100;
   float TargetSaturation = 0;
+  Transform DefaultFocus;
 
   public void FadeOut(float Speed) {
     FadeSpeed = Speed * 100;
     TargetSaturation = -100;
   }
+
   public void FadeIn(float Speed) {
     FadeSpeed = Speed * 100;
     TargetSaturation = 0;
   }
 
-  public void Focus() {
+  public void ZoomIn() {
     CloseupCamera.Priority = 1;
     WorldSpaceCamera.Priority = 0;
     WallSpaceCamera.Priority = 0;
+    FocusCamera.Priority = 0;
   }
 
-  public void UnFocus() {
+  public void ZoomOut() {
     CloseupCamera.Priority = 0;
     WorldSpaceCamera.Priority = 1;
     WallSpaceCamera.Priority = 0;
+    FocusCamera.Priority = 0;
+  }
+
+  public void FocusOn(Transform t) {
+    FocusCamera.Follow = t;
+    CloseupCamera.Priority = 0;
+    WorldSpaceCamera.Priority = 0;
+    WallSpaceCamera.Priority = 0;
+    FocusCamera.Priority = 1;
+  }
+
+  public void UnFocus() {
+    FocusCamera.Follow = DefaultFocus;
+    CloseupCamera.Priority = 0;
+    WorldSpaceCamera.Priority = 1;
+    WallSpaceCamera.Priority = 0;
+    FocusCamera.Priority = 1;
   }
 
   public void ChangeConfine(Collider c) {
@@ -57,6 +78,8 @@ public class CameraManager : LevelManager<CameraManager> {
   void OnPlayerSpawn(Player player) {
     player.GetComponent<WallSpaceController>().OnEnterWallSpace += OnEnterWallSpace;
     player.GetComponent<WorldSpaceController>().OnEnterWorldSpace += OnEnterWorldSpace;
+    DefaultFocus = player.transform;
+    FocusCamera.Follow = player.transform;
     CloseupCamera.Follow = player.transform;
     WorldSpaceCamera.Follow = player.transform;
     WallSpaceCamera.LookAt = player.transform;
@@ -66,6 +89,8 @@ public class CameraManager : LevelManager<CameraManager> {
   void OnPlayerDespawn(Player player) {
     player.GetComponent<WallSpaceController>().OnEnterWallSpace -= OnEnterWallSpace;
     player.GetComponent<WorldSpaceController>().OnEnterWorldSpace -= OnEnterWorldSpace;
+    DefaultFocus = null;
+    FocusCamera.Follow = null;
     CloseupCamera.Follow = null;
     WorldSpaceCamera.Follow = null;
     WallSpaceCamera.LookAt = null;
@@ -76,11 +101,13 @@ public class CameraManager : LevelManager<CameraManager> {
     CloseupCamera.Priority = 0;
     WorldSpaceCamera.Priority = 0;
     WallSpaceCamera.Priority = 1;
+    FocusCamera.Priority = 0;
   }
 
   void OnEnterWorldSpace() {
     CloseupCamera.Priority = 0;
     WorldSpaceCamera.Priority = 1;
     WallSpaceCamera.Priority = 0;
+    FocusCamera.Priority = 0;
   }
 }

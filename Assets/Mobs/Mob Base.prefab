@@ -428,11 +428,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   MinDistance: 10
+  Starttime:
+    Millis: 0
   Hangtime:
     Millis: 1000
   Falltime:
     Millis: 200
+  ReviveDelay:
+    Millis: 1000
   FallSpeed: 9
+  FallDamage: 2
 --- !u!1 &6515522028597025426
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7b4ea621da97240bc28b18a908a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Tags>k__BackingField: 4581
+  <Tags>k__BackingField: 4101
+  InitialTags: 480
 --- !u!136 &8637237054026041523
 CapsuleCollider:
   m_ObjectHideFlags: 8

@@ -11,7 +11,7 @@ public class Teleporter : ClassicAbility {
   TeleporterPad Source;
 
   void OnTriggerEnter(Collider c) {
-    if (c.TryGetComponent(out TeleporterPad pad) && pad.Exit && AbilityManager.CanRun(Main)) {
+    if (c.TryGetComponent(out TeleporterPad pad) && pad.Active && pad.Exit && AbilityManager.CanRun(Main)) {
       if (!Source || pad != Source.Exit) {
         Source = pad;
         AbilityManager.Run(Main);
@@ -20,7 +20,7 @@ public class Teleporter : ClassicAbility {
   }
 
   void OnTriggerExit(Collider c) {
-    if (c.TryGetComponent(out TeleporterPad pad) && Source && pad == Source.Exit) {
+    if (c.TryGetComponent(out TeleporterPad pad) && pad.Active && Source && pad == Source.Exit) {
       Source = null;
     }
   }
