@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ClassicAbility : Ability {
   int RunningTaskCount;
-  TaskRunner TaskRunner;
+  protected TaskRunner TaskRunner;
   protected LocalTime LocalTime;
   public override bool IsRunning => RunningTaskCount > 0;
   public override void Stop() {

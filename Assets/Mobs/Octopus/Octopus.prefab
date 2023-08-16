@@ -136,6 +136,10 @@ PrefabInstance:
       propertyPath: Current
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3360500511646581115, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: IsInvulnerable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4833410459722514389, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: Speed
       value: 2
@@ -187,6 +191,22 @@ PrefabInstance:
     - target: {fileID: 6515522028597025426, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: m_Name
       value: Octopus
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Model
+      value: 
+      objectReference: {fileID: 4512081903788062711}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: FallSpeed
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: MinDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965788487171509399, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
+      propertyPath: Falltime.Millis
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8027167232736130977, guid: 2f2f3a0cbd96c0a49a0d595a3bbcca34, type: 3}
       propertyPath: m_LocalPosition.x
