@@ -77,14 +77,13 @@ public class FallToDeath : ClassicAbility {
       LastGroundedTime = Time.fixedTime;
     }
     if (!IsRunning && IsOverVoid() && (Time.fixedTime - LastGroundedTime) > Starttime.Seconds) {
-      Debug.Log($"{AbilityManager} falling to death at {Time.fixedTime}");
       AbilityManager.Run(Main);
     }
   }
 
-  private void OnGUI() {
-    if (LastGround == null) return;
-    var pos = LastGround.position + LastGroundedLocalPos;
-    GUIExtensions.DrawLine(pos, pos + Vector3.up, 3);
-  }
+  //private void OnGUI() {
+  //  if (LastGround == null) return;
+  //  var pos = LastGround.position + LastGroundedLocalPos;
+  //  GUIExtensions.DrawLine(pos, pos + Vector3.up, 3);
+  //}
 }
