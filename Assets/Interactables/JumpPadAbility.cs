@@ -34,7 +34,6 @@ public class JumpPadAbility : ClassicAbility {
   public override async Task MainAction(TaskScope scope) {
     try {
       var pad = JumpPad;  // cache it because it's cleared as soon as we're off it.
-      //Controller.Position = JumpPad.transform.position;
       Controller.DesiredVelocity = Vector3.zero;
       Controller.PhysicsVelocity = Vector3.zero;
       var direction = Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);

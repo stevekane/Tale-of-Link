@@ -15,7 +15,6 @@ public class CollectAbility : ClassicAbility {
   [SerializeField] float ForwardOffset = 1;
   [SerializeField] float UpwardOffset = 3;
   [SerializeField] float RotationSpeed = 180;
-  [SerializeField] Timeval RotationDuration = Timeval.FromSeconds(.5f);
   [SerializeField] Timeval DisplayDuration = Timeval.FromSeconds(2.5f);
 
   public string DisplayText;
@@ -28,6 +27,8 @@ public class CollectAbility : ClassicAbility {
     var animator = AbilityManager.GetComponent<Animator>();
     var hud = AbilityManager.GetComponentInChildren<HUD>();
     try {
+      TimeManager.Instance.Frozen = true;
+      TimeManager.Instance.IgnoreFreeze.Add(LocalTime);
       DisplayObject.SetActive(false);
       var rotationSteps = 0;
       while (controller.Forward != -Vector3.forward || rotationSteps++ > 60) {
@@ -49,6 +50,8 @@ public class CollectAbility : ClassicAbility {
     } catch (Exception e) {
       throw e;
     } finally {
+      TimeManager.Instance.Frozen = false;
+      TimeManager.Instance.IgnoreFreeze.Remove(LocalTime);
       hud.Show();
       hud.HideCollectionInfo();
       Destroy(displayParticles.gameObject);
