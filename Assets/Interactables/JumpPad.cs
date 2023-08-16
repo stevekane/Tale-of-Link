@@ -36,7 +36,7 @@ public class JumpPad : MonoBehaviour {
       return;
     OnPopup?.Invoke();
     Model.transform.localPosition += SquashOffset;
-    Invoke("EnableCollider", .5f); // Steve - I'm sorry for using this jank just testing
+    Collider.enabled = true;
     TicksRemaining = -1;
   }
 
