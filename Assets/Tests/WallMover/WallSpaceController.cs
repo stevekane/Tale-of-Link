@@ -287,8 +287,8 @@ public class WallSpaceController : MonoBehaviour {
         return false;
       // did not hit a backface
       } else if (hitBackFace) {
-        // we hit a backface but one of the two objects moves
-        if (ignoreBackFaces && (backHit.collider.GetComponent<PhysicsMover>() || hit.collider.GetComponent<PhysicsMover>())) {
+        // we hit a backface but one of the two objects moves or the backface hit is a blocker (need to get free)
+        if (ignoreBackFaces && (backHit.collider.GetComponent<Blocker>() || (backHit.collider.GetComponent<PhysicsMover>() || hit.collider.GetComponent<PhysicsMover>()))) {
           return true;
         // hit a bad backface
         } else {

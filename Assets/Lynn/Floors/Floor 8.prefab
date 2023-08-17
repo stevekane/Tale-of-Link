@@ -716,6 +716,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3659700095952382691, guid: 6911316bc4e589843be3704b98a107d7, type: 3}
+      propertyPath: Active
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7569118551276909872, guid: 6911316bc4e589843be3704b98a107d7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -736,7 +744,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_VersionIndex
-      value: 2359
+      value: 2383
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -868,35 +876,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[0].x
-      value: 6.5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[0].y
-      value: -2.2499998
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[1].x
-      value: -5.5
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[1].y
-      value: -2.2499998
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[2].x
-      value: 6.5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[2].y
-      value: 3.2500002
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[3].x
-      value: -5.5
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[3].y
-      value: 3.2500002
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_Textures0.Array.data[4].x
@@ -1281,6 +1289,14 @@ PrefabInstance:
     - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_SelectedVertices.Array.data[3]
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
+      propertyPath: m_Faces.Array.data[0].m_Uv.m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 753500266136290852, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
+      propertyPath: m_Faces.Array.data[0].m_Uv.m_Offset.y
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 923421971468181833, guid: baeaf52acd1c7c241a8ba7e67489766a, type: 3}
       propertyPath: m_VersionIndex
@@ -4588,11 +4604,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7629278327323491035, guid: b6e5ed0ccc7f6ea40a6a4299593ac852, type: 3}
       propertyPath: m_SelectedEdges.Array.size
-      value: 64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7629278327323491035, guid: b6e5ed0ccc7f6ea40a6a4299593ac852, type: 3}
       propertyPath: m_SelectedFaces.Array.size
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7629278327323491035, guid: b6e5ed0ccc7f6ea40a6a4299593ac852, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -6900,7 +6916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7629278327323491035, guid: b6e5ed0ccc7f6ea40a6a4299593ac852, type: 3}
       propertyPath: m_SelectedVertices.Array.size
-      value: 64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7629278327323491035, guid: b6e5ed0ccc7f6ea40a6a4299593ac852, type: 3}
       propertyPath: m_SelectedFaces.Array.data[10]

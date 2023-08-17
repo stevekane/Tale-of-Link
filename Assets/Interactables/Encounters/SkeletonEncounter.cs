@@ -50,8 +50,10 @@ public class SkeletonEncounter : TaskRunnerComponent {
     TimeManager.Instance.Frozen = true;
     Disable(PlayerManager.Instance.Player.gameObject);
     CameraManager.Instance.FocusOn(PortalFocus);
-    TeleporterPad.gameObject.SetActive(true); //TODO: This won't activate the other end currently... gotta address this
+    TeleporterPad.gameObject.SetActive(true);
+    TeleporterPad.Exit.gameObject.SetActive(true);
     TeleporterPad.Show();
+    TeleporterPad.Exit.Show();
     await scope.Delay(ShowPortalDelay);
     CameraManager.Instance.FocusOn(ElevatorFocus);
     TimeManager.Instance.IgnoreFreeze.Add(ElevatorController.GetComponent<LocalTime>());
@@ -64,5 +66,6 @@ public class SkeletonEncounter : TaskRunnerComponent {
     TimeManager.Instance.IgnoreFreeze.Clear();
     TimeManager.Instance.Frozen = false;
     TeleporterPad.Activate();
+    TeleporterPad.Exit.Activate();
   }
 }
