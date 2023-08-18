@@ -547,7 +547,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   DiscreteCollisionEvents: 0
   StepHandling: 1
-  MaxStepHeight: 0.5
+  MaxStepHeight: 0.05
   AllowSteppingWithoutStableGrounding: 0
   MinRequiredStepDepth: 0.1
   LedgeAndDenivelationHandling: 1
@@ -789,7 +789,7 @@ MonoBehaviour:
   AddedToOwner: 0
   RemovedFromOwner: 0
   Speed: 7
-  StopAtLedges: 1
+  LedgeStopDistance: 1
   Move:
     Tags: 0
     CancelAbilitiesWithAll: 0
