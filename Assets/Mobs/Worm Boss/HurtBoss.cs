@@ -9,6 +9,7 @@ public class HurtBoss : ClassicAbility {
   [SerializeField] Color AngryColor = Color.red;
   [SerializeField] float[] SpeedsBeforeHit;
   [SerializeField] Renderer[] Renderers;
+  [SerializeField] Hurtbox Hurtbox;
   int NumHits = 0;
 
   MoveTail MoveTail;
@@ -36,6 +37,7 @@ public class HurtBoss : ClassicAbility {
   public override async Task MainAction(TaskScope scope) {
     try {
       NumHits++;
+      Hurtbox.EnableCollision = false;
       if (NumHits >= SpeedsBeforeHit.Length)
         return;
       SetColor();
@@ -45,6 +47,7 @@ public class HurtBoss : ClassicAbility {
         Waiter.Delay(HurtDuration),
         Waiter.Repeat(Spin));
     } finally {
+      Hurtbox.EnableCollision = true;
     }
   }
 
