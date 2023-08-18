@@ -12,7 +12,8 @@ public class AIWander : TaskRunnerComponent {
     Controller.OnLedge += OnCollision;
   }
 
-  void OnDestroy() {
+  protected override void OnDestroy() {
+    base.OnDestroy();
     Controller.OnCollision -= OnCollision;
     Controller.OnLedge -= OnCollision;
   }
