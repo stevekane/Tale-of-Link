@@ -10,12 +10,7 @@ public class AIWander : TaskRunnerComponent {
   void Start() {
     Controller.OnCollision += OnCollision;
     Controller.OnLedge += OnCollision;
-  }
-
-  protected override void OnDestroy() {
-    base.OnDestroy();
-    Controller.OnCollision -= OnCollision;
-    Controller.OnLedge -= OnCollision;
+    Move.OnLedge += () => OnCollision(new());
   }
 
   Vector3 TargetDir;

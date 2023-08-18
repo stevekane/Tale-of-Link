@@ -2637,6 +2637,7 @@ namespace KinematicCharacterController
         /// <returns> Returns the number of hits </returns>
         public int CharacterCollisionsRaycast(Vector3 position, Vector3 direction, float distance, out RaycastHit closestHit, RaycastHit[] hits, bool acceptOnlyStableGroundLayer = false)
         {
+      if (hits == null) hits = _internalCharacterHits; // Fuck you
             int queryLayers = CollidableLayers;
             if (acceptOnlyStableGroundLayer)
             {
