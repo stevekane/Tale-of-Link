@@ -6,6 +6,7 @@ public class KillPlayer : ClassicAbility {
   [SerializeField] bool HasFairy;
   [SerializeField] float FadeSpeed = 1;
   [SerializeField] Timeval DyingDuration = Timeval.FromSeconds(2);
+  [SerializeField] HUD HUD;
 
   public override async Task MainAction(TaskScope scope) {
     try {
@@ -19,6 +20,9 @@ public class KillPlayer : ClassicAbility {
       TimeManager.Instance.Frozen = true;
       Debug.Log(LocalTime.TimeScale);
       Debug.Log("Predying");
+      if (!HasFairy) {
+        HUD.ShowGameOver();
+      }
       await scope.Ticks(DyingDuration.Ticks);
       Debug.Log("Postdying");
       if (HasFairy) {
@@ -30,6 +34,7 @@ public class KillPlayer : ClassicAbility {
         Debug.Log("Postviving");
         killable.Alive = true;
         CameraManager.Instance.FadeIn(FadeSpeed);
+        HasFairy = false;
       } else {
         killable.Dead = true;
       }
