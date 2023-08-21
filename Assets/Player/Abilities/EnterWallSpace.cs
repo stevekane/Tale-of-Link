@@ -55,7 +55,7 @@ public class EnterWallSpace : ClassicAbility {
       await scope.Ticks(WallTransitionDuration.Ticks);
     }
   }
-
+#if UNITY_EDITOR
   void OnDrawGizmos() {
     if (!AbilityManager || !AbilityManager.CanRun(Main))
       return;
@@ -76,4 +76,5 @@ public class EnterWallSpace : ClassicAbility {
     Gizmos.DrawWireMesh(CapsuleMesh, submeshIndex: -1, end, Quaternion.identity, Vector3.one);
     Handles.Label(end + Vector3.up, $"{(hit.collider ? hit.collider.name : default)}");
   }
+#endif
 }
