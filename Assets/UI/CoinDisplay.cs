@@ -26,10 +26,6 @@ public class CoinDisplay : MonoBehaviour {
   void Awake() {
     Coins.OnSetCurrent += SetCurrent;
     Coins.OnChangeCurrent += ChangeCurent;
-    var height = RectTransform.rect.height;
-    var position = RectTransform.anchoredPosition;
-    position.y = height;
-    RectTransform.anchoredPosition = position;
   }
 
   void OnDestroy() {
@@ -65,13 +61,22 @@ public class CoinDisplay : MonoBehaviour {
       }
       break;
 
-      case ScrollState.Visible:
+      case ScrollState.Visible: {
         Current = Mathf.MoveTowards(Current, TargetCurrent, Speed * Time.deltaTime);
         VisibleRemaining = Mathf.MoveTowards(VisibleRemaining, Current == TargetCurrent ? 0 : VisibleDuration, Time.deltaTime);
         if (VisibleRemaining <= 0) {
           ScrollState = ScrollState.SlideOut;
           VisibleRemaining = 0;
         }
+      }
+      break;
+
+      case ScrollState.Hidden: {
+        var height = RectTransform.rect.height;
+        var position = RectTransform.anchoredPosition;
+        position.y = height;
+        RectTransform.anchoredPosition = position;
+      }
       break;
     }
 
