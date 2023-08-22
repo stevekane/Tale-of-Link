@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1678399729915381931}
   - component: {fileID: 3659700095952382691}
   - component: {fileID: 5248943467478557799}
+  - component: {fileID: 5127013682964239196}
   m_Layer: 0
   m_Name: Teleporter Pad
   m_TagString: Untagged
@@ -72,6 +73,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &5127013682964239196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241484186703181174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92a6fccb16637040b57114644832176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4939419637456780413
 PrefabInstance:
   m_ObjectHideFlags: 0
