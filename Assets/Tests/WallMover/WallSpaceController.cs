@@ -120,7 +120,7 @@ public class WallSpaceController : MonoBehaviour {
     var path = Velocity <= 0 ? LeftPath : RightPath;
     if (path.Count > 0) {
       var pathDistance = Distance(path);
-      var distance = Mathf.Min(Mathf.Abs(Velocity) * Time.fixedDeltaTime, pathDistance-Width/2);
+      var distance = Mathf.Min(Mathf.Abs(Velocity) * LocalTime.FixedDeltaTime, pathDistance-Width/2);
       var newHit = PathMove(path, distance);
       var p = newHit.point;
       var n = newHit.normal;
@@ -284,6 +284,7 @@ public class WallSpaceController : MonoBehaviour {
       hitBackFace = Physics.Raycast(hit.point - WallOffset * hit.normal, hit.normal, out var backHit, MaxDistance, LayerMask, QueryTriggerInteraction.Ignore);
       // hit a blocker
       if (hit.collider.GetComponent<Blocker>()) {
+        DrawArrow(origin, MaxDistance * direction, Color.red, .25f * MaxDistance);
         return false;
       // did not hit a backface
       } else if (hitBackFace) {
@@ -292,44 +293,51 @@ public class WallSpaceController : MonoBehaviour {
           return true;
         // hit a bad backface
         } else {
+          DrawArrow(origin, MaxDistance * direction, Color.blue, .25f * MaxDistance);
           return false;
         }
       // valid
       } else {
+        DrawArrow(origin, MaxDistance * direction, Color.green, .25f * MaxDistance);
         return true;
       }
     }
+    DrawArrow(origin, MaxDistance * direction, Color.black, .25f * MaxDistance);
     hitBackFace = false;
     return false;
+  }
+
+  public static void DrawArrow(Vector3 start, Vector3 dir, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 20.0f) {
+    Vector3 right = Quaternion.LookRotation(dir) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+    Vector3 left = Quaternion.LookRotation(dir) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+    Debug.DrawRay(start, dir, color);
+    Debug.DrawRay(start + dir, right * arrowHeadLength, color);
+    Debug.DrawRay(start + dir, left * arrowHeadLength, color);
   }
 
   RaycastHit? FindNext(RaycastHit previousHit, float sign, ref bool ignoreBackFaces) {
     PotentialHits.Clear();
 
-    var normal = previousHit.normal;
-    var tangent = sign * Vector3.Cross(normal, Vector3.up);
-    var position = previousHit.point + SampleSpacing * tangent;
+    var n0 = previousHit.normal;
+    var t0 = sign * Vector3.Cross(n0, Vector3.up);
+    var p0 = previousHit.point;
+    var p1 = p0 + SampleSpacing * t0;
 
-    {
-      var rayOrigin = position + WallOffset * normal;
-      var rayDirection = -normal;
-      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit, out var hitBackFace, ref ignoreBackFaces)) {
+    const float MIN_THETA = -90;
+    const float MAX_THETA = 90;
+    const float D_THETA = 30;
+    for (var theta = MIN_THETA; theta <= MAX_THETA; theta += D_THETA) {
+      var rotation = Quaternion.Euler(0, theta, 0);
+      var n1 = rotation * n0;
+      var t1 = rotation * t0;
+      var pfar = p1 + SampleSpacing * t1 + WallOffset * n1;
+      var pnear = p0 + SampleSpacing * t1 + WallOffset * n1;
+      var hit = new RaycastHit();
+      var hitBackFace = false;
+      if (RaycastOpenFaces(pfar, -n1, out hit, out hitBackFace, ref ignoreBackFaces)) {
         PotentialHits.Add((hit, hitBackFace));
       }
-    }
-
-    {
-      var rayOrigin = position - WallOffset * normal;
-      var rayDirection = Quaternion.Euler(0, -sign * 90, 0) * -normal;
-      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit, out var hitBackFace, ref ignoreBackFaces)) {
-        PotentialHits.Add((hit, hitBackFace));
-      }
-    }
-
-    {
-      var rayOrigin = previousHit.point + WallOffset * normal;
-      var rayDirection = Quaternion.Euler(0, sign * 90, 0) * -normal;
-      if (RaycastOpenFaces(rayOrigin, rayDirection, out var hit, out var hitBackFace, ref ignoreBackFaces)) {
+      if (RaycastOpenFaces(pnear, -n1, out hit, out hitBackFace, ref ignoreBackFaces)) {
         PotentialHits.Add((hit, hitBackFace));
       }
     }
@@ -339,7 +347,7 @@ public class WallSpaceController : MonoBehaviour {
       var hit = PotentialHits[0].Item1;
       var didHitBackface = false;
       for (var p = 0; p < PotentialHits.Count; p++)  {
-        var score = Vector3.Dot(normal, PotentialHits[p].Item1.normal);
+        var score = Vector3.Dot(n0, PotentialHits[p].Item1.normal);
         if (score > bestScore) {
           bestScore = score;
           hit = PotentialHits[p].Item1;
