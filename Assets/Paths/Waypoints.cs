@@ -139,7 +139,7 @@ public class Waypoints : MonoBehaviour {
     return new(Nodes, mode);
   }
 
-  void OnValidate() {
+  void Awake() {
     var followers = FindObjectsOfType<PathController>().Where(p => p.Waypoints == this).ToList();
     followers.ForEach((p, i) => p.SetStartOffset((FollowerOffsetFromStart + (float)i / followers.Count) % 1f));
   }

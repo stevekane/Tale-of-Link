@@ -10,10 +10,10 @@ public class PathController : MonoBehaviour, IMoverController {
   public PathTraversal.Modes Mode;
   public bool IsActive = true;
   public bool IgnoreRotation = false;
+  public float StartOffset = 0f;
 
   LocalTime LocalTime;
   PathTraversal PathTraversal;
-  float StartOffset = 0f;
 
   public void Activate() => IsActive = true;
   public void Deactivate() => IsActive = false;
