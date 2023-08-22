@@ -52,15 +52,7 @@ public class AIRaven : TaskRunnerComponent {
     this.InitComponent(out WorldSpaceController);
     HomePosition = transform.position;
     HomeForward = transform.forward;
-    Run(Sleep);
-  }
-
-  // Use this to change Tasks while avoiding true mutual recursion which blows the stack
-  // This gives behavior very similar to a BehaviorTree
-  void Run(TaskFunc f) {
-    Debug.Log($"{gameObject.name} Running {f.Method.Name}");
-    //StopAllTasks();
-    StartTask(f);
+    StartTask(Sleep);
   }
 
   async Task Sleep(TaskScope scope) {
@@ -68,7 +60,7 @@ public class AIRaven : TaskRunnerComponent {
     await scope.Until(ShouldAggro);
     Animator.SetBool("Awake", true);
     WorldSpaceController.Unground();
-    Run(Charge);
+    StartTask(Charge);
   }
 
   async Task ReturnHome(TaskScope scope) {
@@ -79,7 +71,7 @@ public class AIRaven : TaskRunnerComponent {
     );
     WorldSpaceController.Position = HomePosition;
     WorldSpaceController.Forward = HomeForward;
-    Run(Sleep);
+    StartTask(Sleep);
   }
 
   async Task Windup(TaskScope scope) {
@@ -95,7 +87,7 @@ public class AIRaven : TaskRunnerComponent {
     await scope.Run(Windup);
     AbilityManager.TryRun(DiveBombAbility.Main);
     await scope.Until(() => !DiveBombAbility.IsRunning);
-    Run(ShouldAggro() ? Charge : ReturnHome);
+    StartTask(ShouldAggro() ? Charge : ReturnHome);
   }
 
   void OnDrawGizmosSelected() {
