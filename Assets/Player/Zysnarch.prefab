@@ -3103,7 +3103,6 @@ GameObject:
   - component: {fileID: 363960544773001967}
   - component: {fileID: 8309471275002162877}
   - component: {fileID: 5904440407964557133}
-  - component: {fileID: 7561947546530002219}
   - component: {fileID: 8211943088199820811}
   - component: {fileID: 4089075527452244107}
   - component: {fileID: 1375761461912038405}
@@ -3112,6 +3111,7 @@ GameObject:
   - component: {fileID: 832872550070423514}
   - component: {fileID: 6061815284226433176}
   - component: {fileID: 5880797880428980254}
+  - component: {fileID: 1258725162597095023}
   m_Layer: 10
   m_Name: Zysnarch
   m_TagString: Untagged
@@ -3426,21 +3426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7561947546530002219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6515522028597025426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 283370f5e9407e140bb796987fdfea20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Items:
-    KeyList: []
-    ValueList: 
 --- !u!114 &8211943088199820811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3564,6 +3549,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UpdateMode: 0
+--- !u!114 &1258725162597095023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515522028597025426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6525baf6e75bf5549ba80e0b0eeae707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InvulnerabilityDuration:
+    Millis: 2000
+  Model: {fileID: 6242836880304332815}
+  Hurtbox: {fileID: 2609156055419541946}
 --- !u!1 &6592911875725009129
 GameObject:
   m_ObjectHideFlags: 0
