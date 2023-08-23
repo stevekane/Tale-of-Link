@@ -58,7 +58,7 @@ public class CameraManager : LevelManager<CameraManager> {
   }
 
   public void ChangeConfine(Collider c) {
-    WorldSpaceCamera.GetComponent<CinemachineConfiner>().m_BoundingVolume = c;
+    //WorldSpaceCamera.GetComponent<CinemachineConfiner>().m_BoundingVolume = c;
   }
 
   void Start() {
@@ -81,7 +81,7 @@ public class CameraManager : LevelManager<CameraManager> {
     DefaultFocus = player.transform;
     FocusCamera.Follow = player.transform;
     CloseupCamera.Follow = player.transform;
-    WorldSpaceCamera.Follow = player.transform;
+    WorldSpaceCamera.Follow = player.CameraFocusTarget;
     WallSpaceCamera.LookAt = player.transform;
     WallSpaceCamera.GetComponent<WallCameraExtension>().WallMover = player.GetComponent<WallSpaceController>();
   }
