@@ -6,6 +6,10 @@ public class BossEncounter : TaskRunnerComponent {
   [SerializeField] GameObject Boss;
   [SerializeField] Timeval TauntDelay = Timeval.FromSeconds(2);
   [SerializeField] Timeval DeadDelay = Timeval.FromSeconds(2);
+  [SerializeField] GameObject FireworksVFX;
+  [SerializeField] float FireworksRadius = 5;
+  [SerializeField] float FireworksPeriodMin = .1f;
+  [SerializeField] float FireworksPeriodMax = .9f;
 
   void SetEnabled(AbilityManager abilityManager, bool enabled) {
     abilityManager.Abilities.ForEach(abilityManager.Stop);
@@ -13,19 +17,21 @@ public class BossEncounter : TaskRunnerComponent {
   }
   void Enable(GameObject o) => SetEnabled(o.GetComponent<AbilityManager>(), true);
   void Disable(GameObject o) => SetEnabled(o.GetComponent<AbilityManager>(), false);
+  bool IsDying(GameObject o) => o.GetComponent<Killable>().Dying;
   bool IsDead(GameObject o) => o == null;
 
   public void Run() => StartTask(Encounter);
 
   async Task Encounter(TaskScope scope) {
-    await scope.Until(() => PlayerManager.Instance.Player.GetComponent<WorldSpaceController>().IsGrounded);
+    var player = PlayerManager.Instance.Player;
+    await scope.Until(() => player.GetComponent<WorldSpaceController>().IsGrounded);
     TimeManager.Instance.Frozen = true;
     TimeManager.Instance.IgnoreFreeze.Add(LocalTime);
-    TimeManager.Instance.IgnoreFreeze.Add(PlayerManager.Instance.Player.GetComponent<LocalTime>());
+    TimeManager.Instance.IgnoreFreeze.Add(player.GetComponent<LocalTime>());
     TimeManager.Instance.IgnoreFreeze.Add(Boss.GetComponent<LocalTime>());
-    Disable(PlayerManager.Instance.Player.gameObject);
+    Disable(player.gameObject);
     Disable(Boss);
-    PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger("Alert");
+    player.GetComponent<Animator>().SetTrigger("Alert");
     CameraManager.Instance.FocusOn(Boss.transform);
     Boss.GetComponent<Animator>().SetTrigger("Taunt");
     await scope.Delay(TauntDelay);
@@ -33,15 +39,24 @@ public class BossEncounter : TaskRunnerComponent {
     TimeManager.Instance.Frozen = false;
     CameraManager.Instance.UnFocus();
     Enable(Boss);
-    Enable(PlayerManager.Instance.Player.gameObject);
-    await scope.Until(() => IsDead(Boss));
-    await scope.Delay(DeadDelay);
+    Enable(player.gameObject);
+    await scope.Until(() => IsDying(Boss));
 
-    TimeManager.Instance.Frozen = true;
-    Disable(PlayerManager.Instance.Player.gameObject);
-    // TODO: fireworks
-    Enable(PlayerManager.Instance.Player.gameObject);
-    TimeManager.Instance.IgnoreFreeze.Clear();
-    TimeManager.Instance.Frozen = false;
+    CameraManager.Instance.FocusOn(Boss.transform);
+    Disable(player.gameObject);
+    await scope.Until(() => IsDead(Boss));
+    CameraManager.Instance.FocusOn(player.transform);
+    player.GetComponent<Animator>().SetBool("Collecting", true);
+    await scope.Delay(DeadDelay);
+    await scope.Any(
+      Waiter.Seconds(10),
+      Waiter.Repeat(Fireworks));
+  }
+
+  async Task Fireworks(TaskScope scope) {
+    var pos = PlayerManager.Instance.Player.transform.position + FireworksRadius * UnityEngine.Random.onUnitSphere;
+    //pos.y = Mathf.Abs(pos.y);
+    Destroy(Instantiate(FireworksVFX, pos, Quaternion.identity), 3f);
+    await scope.Seconds(UnityEngine.Random.Range(FireworksPeriodMin, FireworksPeriodMax));
   }
 }
