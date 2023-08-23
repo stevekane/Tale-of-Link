@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class JumpPad : MonoBehaviour {
@@ -11,7 +12,7 @@ public class JumpPad : MonoBehaviour {
   public Vector3 SquashOffset = new Vector3(0, .15f, 0);
   int TicksRemaining = -1;
 
-  public Action OnPopup;
+  public Action<JumpPad> OnPopup;
   public bool IsSquashed => TicksRemaining > 0;
 
   private void Awake() {
@@ -34,13 +35,18 @@ public class JumpPad : MonoBehaviour {
   public void Popup() {
     if (!IsSquashed)
       return;
-    OnPopup?.Invoke();
-    Model.transform.localPosition += SquashOffset;
-    Collider.enabled = true;
+    OnPopup?.Invoke(this);
+    StopAllCoroutines();
+    StartCoroutine(Raise());
     TicksRemaining = -1;
   }
 
-  void EnableCollider() {
+  IEnumerator Raise() {
+    const int RaiseTicks = 5;
+    for (int i = 0; i < RaiseTicks; i++) {
+      Model.transform.localPosition += SquashOffset/RaiseTicks;
+      yield return new WaitForFixedUpdate();
+    }
     Collider.enabled = true;
   }
 

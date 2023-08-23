@@ -7,54 +7,53 @@ public class JumpPadAbility : ClassicAbility {
   public float TurnSpeed = 180f;
 
   JumpPad JumpPad;
-  bool Jumped;
+  bool Jumped = false;
 
   void OnTriggerEnter(Collider c) {
-    if (c.TryGetComponent(out JumpPad pad) && !JumpPad) {
-      JumpPad = pad;
-      JumpPad.OnPopup += OnPopup;
-      Jumped = false;
+    if (c.TryGetComponent(out JumpPad pad)) {
+      pad.OnPopup += OnPopup;
+    }
+  }
+
+  void OnTriggerStay(Collider c) {
+    if (c.TryGetComponent(out JumpPad pad)) {
+      if (!Jumped && AbilityManager.CanRun(Main) && (transform.position - pad.transform.position).sqrMagnitude < InstantLaunchDistance.Sqr()) {
+        pad.Popup();
+      }
     }
   }
 
   void OnTriggerExit(Collider c) {
-    if (c.TryGetComponent(out JumpPad pad) && pad == JumpPad) {
-      JumpPad.OnPopup -= OnPopup;
-      JumpPad = null;
+    if (c.TryGetComponent(out JumpPad pad)) {
+      pad.OnPopup -= OnPopup;
     }
   }
 
-  void OnPopup() {
-    if (JumpPad && !Jumped && AbilityManager.CanRun(Main)) {
+  void OnPopup(JumpPad jumpPad) {
+    if (!Jumped && AbilityManager.CanRun(Main)) {
       Jumped = true;
+      JumpPad = jumpPad;
       AbilityManager.Run(Main);
     }
   }
 
   public override async Task MainAction(TaskScope scope) {
     try {
-      var pad = JumpPad;  // cache it because it's cleared as soon as we're off it.
       Controller.DesiredVelocity = Vector3.zero;
       Controller.PhysicsVelocity = Vector3.zero;
-      var direction = Vector3.RotateTowards(pad.transform.forward, Vector3.up, pad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
-      var velocity = pad.LaunchSpeed * direction;
+      var direction = Vector3.RotateTowards(JumpPad.transform.forward, Vector3.up, JumpPad.LaunchAngleDeg * Mathf.Deg2Rad, 0f);
+      var velocity = JumpPad.LaunchSpeed * direction;
       var acceleration = velocity / LocalTime.FixedDeltaTime;
       Controller.Launch(acceleration);
       await scope.Until(() => !Controller.IsGrounded);
       while (!Controller.IsGrounded) {
-        Controller.Rotation = Quaternion.RotateTowards(Controller.transform.rotation, pad.transform.rotation, Time.fixedDeltaTime * TurnSpeed);
+        Controller.Rotation = Quaternion.RotateTowards(Controller.transform.rotation, JumpPad.transform.rotation, Time.fixedDeltaTime * TurnSpeed);
         await scope.Tick();
       }
     } finally {
       Controller.DirectMove = false;
       Jumped = false;
-    }
-  }
-
-  protected override void FixedUpdate() {
-    base.FixedUpdate();
-    if (JumpPad && !Jumped && AbilityManager.CanRun(Main) && (transform.position - JumpPad.transform.position).sqrMagnitude < InstantLaunchDistance.Sqr()) {
-      JumpPad.Popup();
+      JumpPad = null;
     }
   }
 }
