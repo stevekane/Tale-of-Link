@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+  public Transform CameraFocusTarget;
+
   void Start() {
     PlayerManager.Instance.SpawnPlayer(this);
   }
