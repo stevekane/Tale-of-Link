@@ -19,6 +19,7 @@ public class HurtInvulnerable : MonoBehaviour {
   }
 
   void OnHurt(HitEvent hitEvent) {
+    if (hitEvent.Blocked) return;
     Hurtbox.EnableCollision = false;
     Scope.Start(InvulnEffect);
   }
