@@ -15,7 +15,7 @@ public class AngryTileSet : TaskRunnerComponent {
 
   [ContextMenu("Anger")]
   public void Anger() {
-    StartTask(Run);
+    RunTask(Run);
   }
 
   int CellToArrayIndex(int x, int y, int w) => y * w + x;

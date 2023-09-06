@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ public class BossEncounter : TaskRunnerComponent {
   bool IsDying(GameObject o) => o.GetComponent<Killable>().Dying;
   bool IsDead(GameObject o) => o == null;
 
-  public void Run() => StartTask(Encounter);
+  public void Run() => RunTask(Encounter);
 
   async Task Encounter(TaskScope scope) {
     var player = PlayerManager.Instance.Player;

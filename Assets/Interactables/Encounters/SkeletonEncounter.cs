@@ -25,7 +25,7 @@ public class SkeletonEncounter : TaskRunnerComponent {
   bool IsDead(GameObject o) => o == null;
   bool AllSkeletonsDead() => Skeletons.All(IsDead);
 
-  public void Run() => StartTask(Encounter);
+  public void Run() => RunTask(Encounter);
 
   async Task Encounter(TaskScope scope) {
     TimeManager.Instance.Frozen = true;

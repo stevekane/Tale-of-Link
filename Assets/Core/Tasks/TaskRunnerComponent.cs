@@ -28,7 +28,7 @@ public class TaskRunnerComponent : MonoBehaviour {
     Scheduler.StopAllTasks();
   }
 
-  public void StartTask(TaskFunc f) {
-    Scheduler.StartTask(f);
+  public void RunTask(TaskFunc f) {
+    Scheduler.RunTask(f);
   }
 }

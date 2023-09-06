@@ -45,24 +45,13 @@ public class TaskRunner : TaskScheduler, IDisposable {
     if (LocalTime && LocalTime.TimeScale <= 0) {
       return;
     }
-    var old = SynchronizationContext.Current;
     ProcessingItems = true;
     try {
-      // This dumb hack is necessary because .NET will ignore the current TaskScheduler if there's a SynchronizationContext
-      // (which Unity controls). If it's null, it'll use our current TaskScheduler when awaiting.
-      SynchronizationContext.SetSynchronizationContext(null);
-      while (Tasks.TryDequeue(out var task)) {
-        try {
-          TryExecuteTask(task);
-        } catch (Exception e) {
-          Debug.LogException(e);
-        }
-      }
-
+      while (Tasks.TryDequeue(out var task))
+        WrapExecuteTask(task);
       NextTick.TrySetResult(true);
     } finally {
       ProcessingItems = false;
-      SynchronizationContext.SetSynchronizationContext(old);
     }
     NextTick = new TaskCompletionSource<bool>(TaskCreationOptions.AttachedToParent);
   }
@@ -71,9 +60,16 @@ public class TaskRunner : TaskScheduler, IDisposable {
     return NextTick.Task;
   }
 
-  public void StartTask(TaskFunc f) {
+  // Queues up a task to begin on the next FixedUpdate tick.
+  public void PostTask(TaskFunc f) {
     MainScope.Start(f, this);
   }
+  // Starts a task immediately, with continuations handled by this TaskRunner.
+  public void RunTask(TaskFunc f) {
+    var task = Task.CompletedTask.ContinueWith(t => MainScope.Run(f), this);
+    WrapExecuteTask(task);
+  }
+
   public void StopAllTasks() {
     MainScope?.Dispose();
     MainScope = new();
@@ -95,11 +91,27 @@ public class TaskRunner : TaskScheduler, IDisposable {
       //else
       return false;
     } else {
-      return TryExecuteTask(task);
+      return WrapExecuteTask(task);
     }
   }
 
   protected override IEnumerable<Task> GetScheduledTasks() {
     return Tasks.ToArray();
+  }
+
+  bool WrapExecuteTask(Task task) {
+    var old = SynchronizationContext.Current;
+    try {
+      // This dumb hack is necessary because .NET will ignore the current TaskScheduler if there's a SynchronizationContext
+      // (which Unity controls). If it's null, .NET will use our current TaskScheduler when awaiting. Another option
+      // is to replace Unity's SynchronizationContext with a custom one, but I don't know how to do that.
+      SynchronizationContext.SetSynchronizationContext(null);
+      return TryExecuteTask(task);
+    } catch (Exception e) {
+      Debug.LogException(e);
+    } finally {
+      SynchronizationContext.SetSynchronizationContext(old);
+    }
+    return false;
   }
 }

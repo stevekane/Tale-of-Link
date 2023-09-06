@@ -52,7 +52,7 @@ public class AIRaven : TaskRunnerComponent {
     this.InitComponent(out WorldSpaceController);
     HomePosition = transform.position;
     HomeForward = transform.forward;
-    StartTask(Sleep);
+    RunTask(Sleep);
   }
 
   async Task Sleep(TaskScope scope) {
@@ -60,7 +60,7 @@ public class AIRaven : TaskRunnerComponent {
     await scope.Until(ShouldAggro);
     Animator.SetBool("Awake", true);
     WorldSpaceController.Unground();
-    StartTask(Charge);
+    RunTask(Charge);
   }
 
   async Task ReturnHome(TaskScope scope) {
@@ -71,7 +71,7 @@ public class AIRaven : TaskRunnerComponent {
     );
     WorldSpaceController.Position = HomePosition;
     WorldSpaceController.Forward = HomeForward;
-    StartTask(Sleep);
+    RunTask(Sleep);
   }
 
   async Task Windup(TaskScope scope) {
@@ -87,7 +87,7 @@ public class AIRaven : TaskRunnerComponent {
     await scope.Run(Windup);
     AbilityManager.TryRun(DiveBombAbility.Main);
     await scope.Until(() => !DiveBombAbility.IsRunning);
-    StartTask(ShouldAggro() ? Charge : ReturnHome);
+    RunTask(ShouldAggro() ? Charge : ReturnHome);
   }
 
   void OnDrawGizmosSelected() {

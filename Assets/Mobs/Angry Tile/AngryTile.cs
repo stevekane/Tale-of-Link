@@ -25,14 +25,14 @@ public class AngryTile : TaskRunnerComponent {
   }
 
   void Start() {
-    StartTask(LieInWaiting);
+    RunTask(LieInWaiting);
   }
 
   async Task LieInWaiting(TaskScope scope) {
     DormantCollider.enabled = true;
     ContactHitbox.IsActive = false;
     await scope.Until(IsAngry);
-    StartTask(Kamikaze);
+    RunTask(Kamikaze);
   }
 
   async Task Kamikaze(TaskScope scope) {

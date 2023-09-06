@@ -28,7 +28,7 @@ public class AISkeleton : TaskRunnerComponent {
     AIWander.enabled = true;
     AIChasePlayer.enabled = false;
     AIWander.Move.Speed = WanderSpeed;
-    StartTask(Waiter.Repeat(Behavior));
+    RunTask(Waiter.Repeat(Behavior));
   }
 
   async Task Behavior(TaskScope scope) {

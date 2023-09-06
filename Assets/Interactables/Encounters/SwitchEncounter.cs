@@ -4,7 +4,7 @@ using UnityEngine;
 public class SwitchEncounter : TaskRunnerComponent {
   [SerializeField] PathController Platform;
 
-  public void Run() => StartTask(Encounter);
+  public void Run() => RunTask(Encounter);
 
   async Task Encounter(TaskScope scope) {
     var player = PlayerManager.Instance.Player;

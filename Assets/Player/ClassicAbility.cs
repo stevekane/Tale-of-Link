@@ -30,7 +30,7 @@ public abstract class ClassicAbility : Ability {
   }
 
   void FireMain() {
-    TaskRunner.StartTask(Runner(MainAction));
+    TaskRunner.RunTask(Runner(MainAction));
     RunningTaskCount++;
   }
 
