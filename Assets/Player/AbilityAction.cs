@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class AbilityAction : IEventSource {
@@ -32,7 +31,6 @@ public class AbilityAction : IEventSource {
 public class AbilityAction<T> : IEventSource<T> {
   EventSource<T> Source = new();
   public AbilityTag Tags;
-  [FormerlySerializedAs("CancelAbilitiesWith")]
   public AbilityTag CancelAbilitiesWithAll;
   public AbilityTag CancelAbilitiesWithAny;
   public AbilityTag AddToAbility;
