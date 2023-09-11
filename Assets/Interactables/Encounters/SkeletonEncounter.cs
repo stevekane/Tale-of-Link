@@ -15,6 +15,7 @@ public class SkeletonEncounter : TaskRunnerComponent {
   [SerializeField] Timeval SkeletonsDeadDelay = Timeval.FromSeconds(2);
   [SerializeField] Timeval ShowPortalDelay = Timeval.FromSeconds(2);
   [SerializeField] Timeval ShowElevatorDelay = Timeval.FromSeconds(2);
+  [SerializeField] AudioClip Music;
 
   void SetEnabled(AbilityManager abilityManager, bool enabled) {
     abilityManager.Abilities.ForEach(abilityManager.Stop);
@@ -28,6 +29,8 @@ public class SkeletonEncounter : TaskRunnerComponent {
   public void Run() => RunTask(Encounter);
 
   async Task Encounter(TaskScope scope) {
+    AudioManager.Instance.MusicSource.Play(Music);
+
     TimeManager.Instance.Frozen = true;
     TimeManager.Instance.IgnoreFreeze.Add(LocalTime);
     TimeManager.Instance.IgnoreFreeze.Add(PlayerManager.Instance.Player.GetComponent<LocalTime>());
@@ -46,6 +49,8 @@ public class SkeletonEncounter : TaskRunnerComponent {
     Skeletons.ForEach(Enable);
     Enable(PlayerManager.Instance.Player.gameObject);
     await scope.Until(AllSkeletonsDead);
+    AudioManager.Instance.ResetBackgroundMusic();
+
     await scope.Delay(SkeletonsDeadDelay);
     TimeManager.Instance.Frozen = true;
     Disable(PlayerManager.Instance.Player.gameObject);

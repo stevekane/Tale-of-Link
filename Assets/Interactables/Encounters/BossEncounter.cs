@@ -9,6 +9,8 @@ public class BossEncounter : TaskRunnerComponent {
   [SerializeField] float FireworksRadius = 5;
   [SerializeField] float FireworksPeriodMin = .1f;
   [SerializeField] float FireworksPeriodMax = .9f;
+  [SerializeField] AudioClip BossMusic;
+  [SerializeField] AudioClip VictoryMusic;
 
   void SetEnabled(AbilityManager abilityManager, bool enabled) {
     abilityManager.Abilities.ForEach(abilityManager.Stop);
@@ -30,6 +32,7 @@ public class BossEncounter : TaskRunnerComponent {
     TimeManager.Instance.IgnoreFreeze.Add(Boss.GetComponent<LocalTime>());
     Disable(player.gameObject);
     Disable(Boss);
+    AudioManager.Instance.MusicSource.Play(BossMusic);
     player.GetComponent<Animator>().SetTrigger("Alert");
     CameraManager.Instance.FocusOn(Boss.transform);
     Boss.GetComponent<Animator>().SetTrigger("Taunt");
@@ -40,10 +43,12 @@ public class BossEncounter : TaskRunnerComponent {
     Enable(Boss);
     Enable(player.gameObject);
     await scope.Until(() => IsDying(Boss));
+    AudioManager.Instance.MusicSource.Stop();
 
     CameraManager.Instance.FocusOn(Boss.transform);
     Disable(player.gameObject);
     await scope.Until(() => IsDead(Boss));
+    AudioManager.Instance.MusicSource.Play(VictoryMusic);
     CameraManager.Instance.FocusOn(player.transform);
     player.GetComponent<Animator>().SetBool("Collecting", true);
     await scope.Delay(DeadDelay);
