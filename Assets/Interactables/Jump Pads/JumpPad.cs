@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+
 public class JumpPad : MonoBehaviour {
   public GameObject Model;
   public Collider Collider;
