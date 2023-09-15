@@ -127,7 +127,7 @@ Transform:
   - {fileID: 4028548881955465589}
   - {fileID: 3232550592048709894}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4052448500409341614
 MonoBehaviour:
@@ -163,6 +163,8 @@ MonoBehaviour:
     Millis: 350
   RecoveryDuration:
     Millis: 150
+  SwingSFX: {fileID: 0}
+  ImpactSFX: {fileID: 8300000, guid: d0f166575306db84091dc03fce0eff69, type: 3}
   ImpactVFX: {fileID: 2720210472414266156, guid: e6ac23da593d302439fd95efd4657289, type: 3}
   CameraShakeIntensity: 15
 --- !u!1 &6753371017265939478

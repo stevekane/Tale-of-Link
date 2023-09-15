@@ -116,7 +116,7 @@ Transform:
   - {fileID: 4028548881955465589}
   - {fileID: 8115818989708540826}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2365759498327439963
 MonoBehaviour:
@@ -146,6 +146,7 @@ MonoBehaviour:
     OwnerActivationBlocked: 1536
     Ability: {fileID: 2365759498327439963}
   VisualEffect: {fileID: 5085749814203835899}
+  WooshSFX: {fileID: 8300000, guid: 90fb91c5d9f18df4183363d36d921429, type: 3}
   Hitbox: {fileID: 5055285624746455675}
   Direction: {x: 0, y: 0, z: 0}
   Duration:

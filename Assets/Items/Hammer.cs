@@ -8,6 +8,7 @@ public class Hammer : ClassicAbility {
   public Vector3 Direction;
   public Timeval SwingDuration = Timeval.FromMillis(250);
   public Timeval RecoveryDuration = Timeval.FromMillis(250);
+  public AudioClip ImpactSFX;
   public GameObject ImpactVFX;
   public float CameraShakeIntensity = 10;
 
@@ -32,6 +33,7 @@ public class Hammer : ClassicAbility {
       Stunbox.EnableCollision = true;
       var impactPosition = AbilityManager.transform.position + AbilityManager.transform.forward;
       var impactRotation = AbilityManager.transform.rotation;
+      AudioManager.Instance.SoundSource.PlayOneShot(ImpactSFX);
       Instantiate(ImpactVFX, impactPosition, impactRotation);
       CameraShaker.Instance.Shake(CameraShakeIntensity);
       await scope.Ticks(RecoveryDuration.Ticks);
