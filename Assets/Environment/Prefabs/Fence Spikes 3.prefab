@@ -92,6 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3642985115376713265}
+  - component: {fileID: 697931878042139573}
+  - component: {fileID: 7530449818715392837}
   m_Layer: 0
   m_Name: Fence Spikes 3
   m_TagString: Untagged
@@ -121,6 +123,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &697931878042139573
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912746163487173153}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.25, y: 2.5, z: 3}
+  m_Center: {x: 0, y: 1.25, z: 0}
+--- !u!114 &7530449818715392837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912746163487173153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037e59646c0d9a3449092f78366bae1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &988237011353549837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,7 +212,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fence Spike_3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4151791629136107865, guid: 882d21795627b434194922ec98a47983, type: 3}
+    - {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -243,7 +284,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fence Post_1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 252283569815422568, guid: 50ae703d90ff26d48aa121a1169a3c34, type: 3}
+    - {fileID: 3689107665724993025, guid: 50ae703d90ff26d48aa121a1169a3c34, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -309,7 +352,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fence Spike
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4151791629136107865, guid: 882d21795627b434194922ec98a47983, type: 3}
+    - {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -375,7 +424,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fence Spike_1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4151791629136107865, guid: 882d21795627b434194922ec98a47983, type: 3}
+    - {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -437,11 +492,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3689107665724993025, guid: 50ae703d90ff26d48aa121a1169a3c34, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8124926069148596645, guid: 50ae703d90ff26d48aa121a1169a3c34, type: 3}
       propertyPath: m_Name
       value: Fence Post
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 252283569815422568, guid: 50ae703d90ff26d48aa121a1169a3c34, type: 3}
+    - {fileID: 3689107665724993025, guid: 50ae703d90ff26d48aa121a1169a3c34, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -507,7 +568,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fence Spike_2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -4151791629136107865, guid: 882d21795627b434194922ec98a47983, type: 3}
+    - {fileID: 7465781954738305566, guid: 882d21795627b434194922ec98a47983, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
