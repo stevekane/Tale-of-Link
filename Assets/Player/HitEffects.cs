@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class HitEffects : MonoBehaviour {
   [SerializeField] Combatant Combatant;
-  [SerializeField] AudioSource BlockSound;
-  [SerializeField] AudioSource DamageSound;
+  [SerializeField] AudioSource SoundSource;
+  [SerializeField] AudioClip SwordBlockSFX;
+  [SerializeField] AudioClip DamageSFX;
   [SerializeField] GameObject BlockVFX;
   [SerializeField] GameObject DamageVFX;
   [SerializeField] float BlockCameraShakeIntensity = 5;
@@ -19,16 +20,17 @@ public class HitEffects : MonoBehaviour {
 
   void OnHit(HitEvent hitEvent) {
     if (hitEvent.NoDamage) {
-      if (BlockSound)
-        BlockSound?.PlayOneShot(BlockSound.clip);
-      if (DamageVFX)
+      // Hack: would need a more robust system for hits of different types.
+      if (SwordBlockSFX && hitEvent.HitConfig.HitType == HitConfig.Types.Sword)
+        SoundSource.PlayOneShot(SwordBlockSFX);
+      if (BlockVFX)
         Destroy(Instantiate(BlockVFX, hitEvent.Victim.transform.position + .5f * Vector3.up, hitEvent.Victim.transform.rotation), 2);
       CameraShaker.Instance.Shake(BlockCameraShakeIntensity);
     } else {
-      if (DamageSound)
-        DamageSound.PlayOneShot(DamageSound.clip);
-      if (BlockVFX)
-        Destroy(Instantiate(DamageVFX, hitEvent.Victim.transform.position + .5f * Vector3.up, hitEvent.Victim.transform.rotation), 2);
+      if (DamageSFX)
+        SoundSource.PlayOneShot(DamageSFX);
+      if (DamageVFX)
+          Destroy(Instantiate(DamageVFX, hitEvent.Victim.transform.position + .5f * Vector3.up, hitEvent.Victim.transform.rotation), 2);
       CameraShaker.Instance.Shake(DamageCameraShakeIntensity);
     }
   }
