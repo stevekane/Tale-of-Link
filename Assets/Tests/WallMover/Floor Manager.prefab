@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &58799599685470889
 MonoBehaviour:
@@ -45,9 +45,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FloorGroups:
-  - MinRenderHeight: 0
+  - MinRenderHeight: -2
     Chunks:
     - {fileID: 0}
-  - MinRenderHeight: 10
-    Chunks: []
+  - MinRenderHeight: 9
+    Chunks:
+    - {fileID: 0}
+  - MinRenderHeight: 13
+    Chunks:
+    - {fileID: 0}
+    - {fileID: 0}
+  - MinRenderHeight: 20
+    Chunks:
+    - {fileID: 0}
+  - MinRenderHeight: 30
+    Chunks:
+    - {fileID: 0}
+  - MinRenderHeight: 35
+    Chunks:
+    - {fileID: 0}
+  - MinRenderHeight: 45
+    Chunks:
+    - {fileID: 0}
+    - {fileID: 0}
+  - MinRenderHeight: 53
+    Chunks:
+    - {fileID: 0}
+    - {fileID: 0}
+  - MinRenderHeight: 59
+    Chunks:
+    - {fileID: 0}
+  - MinRenderHeight: 66
+    Chunks:
+    - {fileID: 0}
+  - MinRenderHeight: 71
+    Chunks:
+    - {fileID: 0}
+    - {fileID: 0}
+  - MinRenderHeight: 80
+    Chunks:
+    - {fileID: 0}
+    - {fileID: 0}
   Player: {fileID: 0}
