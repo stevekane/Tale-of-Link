@@ -7,10 +7,8 @@ public class SwitchEncounter : TaskRunnerComponent {
   public void Run() => RunTask(Encounter);
 
   async Task Encounter(TaskScope scope) {
-    var player = PlayerManager.Instance.Player;
     TimeManager.Instance.Frozen = true;
     TimeManager.Instance.IgnoreFreeze.Add(LocalTime);
-    TimeManager.Instance.IgnoreFreeze.Add(player.GetComponent<LocalTime>());
     TimeManager.Instance.IgnoreFreeze.Add(Platform.GetComponent<LocalTime>());
     CameraManager.Instance.FocusOn(Platform.transform);
     await scope.Seconds(1f);
