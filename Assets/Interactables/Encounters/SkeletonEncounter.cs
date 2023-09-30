@@ -30,7 +30,6 @@ public class SkeletonEncounter : TaskRunnerComponent {
 
   async Task Encounter(TaskScope scope) {
     AudioManager.Instance.MusicSource.Play(Music);
-
     TimeManager.Instance.Frozen = true;
     TimeManager.Instance.IgnoreFreeze.Add(LocalTime);
     TimeManager.Instance.IgnoreFreeze.Add(PlayerManager.Instance.Player.GetComponent<LocalTime>());
@@ -43,14 +42,12 @@ public class SkeletonEncounter : TaskRunnerComponent {
     await scope.Delay(SkeletonTauntDelay);
     Skeletons[1..].ForEach(skeleton => skeleton.GetComponent<Animator>().SetTrigger("Taunt"));
     await scope.Delay(SkeletonResponseDelay);
-    // TODO: Play encounter music
     TimeManager.Instance.Frozen = false;
     CameraManager.Instance.UnFocus();
     Skeletons.ForEach(Enable);
     Enable(PlayerManager.Instance.Player.gameObject);
     await scope.Until(AllSkeletonsDead);
     AudioManager.Instance.ResetBackgroundMusic();
-
     await scope.Delay(SkeletonsDeadDelay);
     TimeManager.Instance.Frozen = true;
     Disable(PlayerManager.Instance.Player.gameObject);
