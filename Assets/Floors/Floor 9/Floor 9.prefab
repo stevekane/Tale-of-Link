@@ -5066,7 +5066,8 @@ GameObject:
   - component: {fileID: 4847291065086779325}
   - component: {fileID: 2510956165418485644}
   - component: {fileID: 7235948436367983986}
-  - component: {fileID: 801265247674107695}
+  - component: {fileID: 2343141561052247909}
+  - component: {fileID: 2024972353041451063}
   m_Layer: 28
   m_Name: Area Encounter
   m_TagString: Untagged
@@ -5125,10 +5126,10 @@ MonoBehaviour:
   TriggerEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 801265247674107695}
-        m_TargetAssemblyTypeName: Encounter, Assembly-CSharp
-        m_MethodName: set_Active
-        m_Mode: 6
+      - m_Target: {fileID: 2024972353041451063}
+        m_TargetAssemblyTypeName: AngryTileEncounter, Assembly-CSharp
+        m_MethodName: Run
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5158,7 +5159,7 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 134217728
---- !u!114 &801265247674107695
+--- !u!114 &2343141561052247909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5167,64 +5168,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2025703452592018468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb88d6e5f183cad4e83562feb8da89c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ce684be052cea34b8b1001304812b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnBegin:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5228181207838253970}
-        m_TargetAssemblyTypeName: VerticalDoor, Assembly-CSharp
-        m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2901527322945923257}
-        m_TargetAssemblyTypeName: AngryTileSet, Assembly-CSharp
-        m_MethodName: Anger
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5228181207838253970}
-        m_TargetAssemblyTypeName: VerticalDoor, Assembly-CSharp
-        m_MethodName: Open
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3927530990946236082}
-        m_TargetAssemblyTypeName: PathController, Assembly-CSharp
-        m_MethodName: Activate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  TrackedObjects:
+--- !u!114 &2024972353041451063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025703452592018468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4246daaf5d4e52e4a979274ec239c572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VerticalDoor: {fileID: 5228181207838253970}
+  AngryTileSet: {fileID: 2901527322945923257}
+  AngryTiles:
   - {fileID: 3971596101467707677}
   - {fileID: 5395093932003196045}
   - {fileID: 3479517167568859178}
@@ -5241,6 +5202,10 @@ MonoBehaviour:
   - {fileID: 2031958145264218992}
   - {fileID: 8968876375262744504}
   - {fileID: 4299313811748203257}
+  ElevatorController: {fileID: 3927530990946236082}
+  Music: {fileID: 8300000, guid: 455a2a845ef1a9b4785bb41218d9fe74, type: 3}
+  FocusDelay:
+    Millis: 2000
 --- !u!1 &2120196223972959194
 GameObject:
   m_ObjectHideFlags: 0
@@ -24278,10 +24243,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5518655672226566700, guid: 2893d5f5a63e0c14c96adcfad93878bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7529500401658721847, guid: 2893d5f5a63e0c14c96adcfad93878bf, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
