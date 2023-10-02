@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 1825420660644919777}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &637719995760616530
 MeshRenderer:
@@ -54,7 +54,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e5f3f2ce8e8483d4a8a34bd19fb76a17, type: 2}
+  - {fileID: 2100000, guid: f9de8f58dd67a1645960affa8a4e192f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,6 +144,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9203310512043853831, guid: 1f512e52a5a38e24b89035c3582321bc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 64bc3b483c133f24ca1739f65405bf45, type: 2}
     m_RemovedComponents:
     - {fileID: 4363102006708579989, guid: 1f512e52a5a38e24b89035c3582321bc, type: 3}
     - {fileID: 3402265895876404481, guid: 1f512e52a5a38e24b89035c3582321bc, type: 3}
