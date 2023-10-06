@@ -54,7 +54,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b8bb127cdeb610141a59d4875e41efe7, type: 2}
+  - {fileID: 2100000, guid: 2dcde70d59a810645ada32ec8c912f3e, type: 2}
   - {fileID: 2100000, guid: cab1fb57990711f46b6121e1a3b13f8e, type: 2}
   - {fileID: 2100000, guid: b80b3dbbf466c8345accdba1969b309c, type: 2}
   m_StaticBatchInfo:
@@ -221,8 +221,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c6483810fbedb6e4da7c592490913a29, type: 2}
-  - {fileID: 2100000, guid: cab1fb57990711f46b6121e1a3b13f8e, type: 2}
+  - {fileID: 2100000, guid: 0e8666c8aab62da4cac1118add2208ff, type: 2}
+  - {fileID: 2100000, guid: fa522adf4171c7846aacc4af34e2a7d5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -390,9 +390,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c6483810fbedb6e4da7c592490913a29, type: 2}
-  - {fileID: 2100000, guid: b8bb127cdeb610141a59d4875e41efe7, type: 2}
-  - {fileID: 2100000, guid: b73710cc626a48c4fb5b461f49b699c3, type: 2}
+  - {fileID: 2100000, guid: 0e8666c8aab62da4cac1118add2208ff, type: 2}
+  - {fileID: 2100000, guid: ed0d84436163324429421e50fc22b34e, type: 2}
+  - {fileID: 2100000, guid: fa522adf4171c7846aacc4af34e2a7d5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -681,10 +681,10 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b8bb127cdeb610141a59d4875e41efe7, type: 2}
-  - {fileID: 2100000, guid: cab1fb57990711f46b6121e1a3b13f8e, type: 2}
+  - {fileID: 2100000, guid: ed0d84436163324429421e50fc22b34e, type: 2}
+  - {fileID: 2100000, guid: fa522adf4171c7846aacc4af34e2a7d5, type: 2}
   - {fileID: 2100000, guid: 25a9fb42d361f46ad89221f6d301e96e, type: 2}
-  - {fileID: 2100000, guid: c6483810fbedb6e4da7c592490913a29, type: 2}
+  - {fileID: 2100000, guid: 0e8666c8aab62da4cac1118add2208ff, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1026,6 +1026,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6176070946144772404, guid: 1cc3458ed6ba2f644acc0233a2760795, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 05902fd91c280294eb05b0470dacdd02, type: 2}
     - target: {fileID: 9190042882725776272, guid: 1cc3458ed6ba2f644acc0233a2760795, type: 3}
       propertyPath: m_Name
       value: Door Frame
@@ -3190,19 +3194,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 308191376630602262, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 857120840758780896, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 1269044015876278062, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 2886
+      value: 2892
       objectReference: {fileID: 0}
     - target: {fileID: 1647974762657434503, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1606
+      value: 1612
       objectReference: {fileID: 0}
     - target: {fileID: 1836686762775442033, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
@@ -3210,7 +3214,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2179597627815968472, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 2886
+      value: 2892
       objectReference: {fileID: 0}
     - target: {fileID: 2213372783864323373, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_Name
@@ -3218,15 +3222,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3972877670010186984, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 4071693320402556190, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 4201528393616522317, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 4142
+      value: 4148
       objectReference: {fileID: 0}
     - target: {fileID: 5518655672226566700, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_RootOrder
@@ -3274,27 +3278,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5586054858949955582, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1615
+      value: 1621
       objectReference: {fileID: 0}
     - target: {fileID: 5933948484901226741, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 6310375488162254932, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 6354866746949331362, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 6771845956316197123, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 1159
+      value: 1165
       objectReference: {fileID: 0}
     - target: {fileID: 6995705183966935092, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
-      value: 4133
+      value: 4139
       objectReference: {fileID: 0}
     - target: {fileID: 7977647891136119234, guid: d43f1e1e2eafbe944b14168f1561941c, type: 3}
       propertyPath: m_VersionIndex
